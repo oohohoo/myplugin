@@ -86,26 +86,62 @@ if (startIndex !== -1 && endIndex !== -1) {
 /*************************************************************************/
 /* CHCK IF THERE ARE DELETED ITEMS IN THE DELETED FOLDER AND DISPLAY THE UNDO BUTTON
 /*************************************************************************/
+
+
+/* const http = require('http');
+
 function checkDeletedItems() {
-  fetch('/deleted-items', {
-      method: 'GET'
-  })
-  .then(response => response.json())
-  .then(data => {
-      // If there are items in the deleted folder, display the undo button
+  http.get('http://localhost:3000/deleted-items', (res) => {
+    let data = '';
+
+    // A chunk of data has been received.
+    res.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received.
+    res.on('end', () => {
+      data = JSON.parse(data);
+      const undoButton = document.getElementById('undo-button');
+
       if (data.length > 0) {
-          document.getElementById('undo-button').style.display = 'block';
+        undoButton.textContent = `Undo (${data.length})`;
+        undoButton.style.display = 'block';
       } else {
-          document.getElementById('undo-button').style.display = 'none';
+        undoButton.style.display = 'none';
       }
+    });
+
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
   });
 }
 
+checkDeletedItems(); */
 
-   checkDeletedItems(); 
 
+/* function checkDeletedItems() {
+  fetch('/deleted-items', {
+    method: 'GET'
+  })
+  .then(response => response.json())
+  .then(data => {
+    const undoButton = document.getElementById('undo-button');
+
+    // If there are items in the deleted folder, display the undo button
+    // and show the number of deleted items
+    if (data.length > 0) {
+      undoButton.textContent = `Undo (${data.length})`;
+      undoButton.style.display = 'block';
+    } else {
+      undoButton.style.display = 'none';
+    }
+  });
 }
 
+checkDeletedItems(); */
+
+}
 /* NOVA FUNKCIJA EDIT COMPONENT*/
 function editComponent(componentName) {
   // Fetch the component data from the server

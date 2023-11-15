@@ -51,51 +51,6 @@ document.getElementById('component-form').addEventListener('submit', function(ev
 
 });
 
-
-
-
-/* SAVE EDITED COMPONENT */
-
-function saveEditedComponent() {
-  // Get the updated component data from the form
-  const updatedComponent = {
-    name: document.getElementById('edit-form-name').value,
-    html: document.getElementById('edit-form-html').value,
-    js: document.getElementById('edit-form-js').value,
-    css: document.getElementById('edit-form-css').value
-  };
-
-  // Form validation goes here
-
-  // Send a POST request to the server to update the component
-  fetch(`/components/${encodeURIComponent(updatedComponent.name)}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(updatedComponent)
-  })
-  .then(response => {
-    if (response.ok) {
-      // If the response is OK, hide the edit form and refresh the components
-      document.getElementById('edit-form').style.display = 'none';
-      updateComponents();
-    } else {
-      console.error('Failed to update component');
-      // Update the UI to indicate that the update failed
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    // Update the UI to indicate that an error occurred
-  });
-}
-
-
-document.getElementById('edit-button').addEventListener('click', saveEditedComponent);
-
-
-
 /*************************************************************************/
 /* OPEN CLOSE FORM
 /*************************************************************************/
@@ -228,8 +183,6 @@ document.querySelectorAll('.edit-component').forEach(function(button) {
   
 
 
-
-
 /*************************************************************************/
 /* FILTER & SEARCH
 /*************************************************************************/
@@ -286,6 +239,44 @@ document.getElementById('close-button').addEventListener('click', function () {
 });
  */
 
+/* DELETE BUTTON*/
+
+
+/* DELETE BUTTON */
+
+/* document.querySelectorAll(".delbut").forEach(function(deleteButton){
+  deleteButton.addEventListener("click", function(){
+
+    console.log('Button clicked');
+
+    var confirmation = window.confirm("Do you want to delete this component?");
+    if (confirmation) {
+      var component = deleteButton.closest(".grid-item");
+      var componentName = component.getAttribute("data-component-name");
+      
+      if (componentName) {
+        let urlComponentName = componentName.replace(/ /g, '-');
+        let url = `/delete-component/${urlComponentName}`;
+
+        fetch(url, {
+          method: 'DELETE',
+        }).then((response) => {
+          if (!response.ok) {
+              throw new Error(`Error: ${response.statusText}`);
+          }
+          return response.text();
+        }).then((data) => {
+          // handle successful deletion
+          // remove the component from the DOM
+          component.remove();
+        }).catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+    }
+  });
+});
+ */
 
 
 /* load unload iframe*/
@@ -304,6 +295,8 @@ document.querySelectorAll('.grid-item').forEach(function(gridItem) {
     iframe.src = '';
   });
 });
+
+
 
 
 
@@ -345,4 +338,92 @@ function deleteComponent(componentId) {
       }
   });
 }
+
+
+
+/* document.querySelectorAll(".delbut").forEach(function(deleteButton){
+  deleteButton.addEventListener("click", function(){
+
+    console.log('Button clicked');
+
+    var confirmation = window.confirm("Do you want to delete this component?");
+    var componentName = component.getAttribute("data-component-name");
+    if (componentName) {
+      var component = deleteButton.closest(".grid-item");
+      var componentName = component.getAttribute("data-component-name");
+      let urlComponentName = componentName.replace(/ /g, '-');
+      let url = `/delete-component/${urlComponentName}`;
+
+      fetch(url, {
+        method: 'DELETE',
+      }).then((response) => {
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        return response.text();
+      }).then((data) => {
+        // handle successful deletion
+        // remove the component from the DOM
+        component.remove();
+      }).catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+  });
+});
+ */
+
+/* OLD CODE*/
+/* document.querySelectorAll(".delbut").forEach(function(deleteButton){
+  deleteButton.addEventListener("click", function(){
+
+    console.log('Button clicked');
+
+
+    var confirmation = window.confirm("Do you want to delete this component?");
+      if (confirmation) {
+          var component = deleteButton.closest(".grid-item");
+          var componentId = component.id;
+
+
+         fetch('/delete-component/' + componentId, {
+    method: 'DELETE',
+
+
+ }).then((response) => {
+    if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+    }
+    return response.text();  // Change this line
+}).then((data) => {
+    // handle successful deletion
+    // remove the component from the DOM
+    component.remove();
+}).catch((error) => {
+    console.error('Error:', error);
+});
+      }
+  });
+});  */
+
+/* document.getElementById("deleteButton").addEventListener("click", function(){
+  var confirmation = window.confirm("Do you want to delete this component?");
+  if (confirmation) {
+    fetch('delete-component/ghf')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      // handle data
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    });
+  }
+}); */
+
+
 

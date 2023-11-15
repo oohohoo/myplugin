@@ -27,9 +27,6 @@
             <input type="checkbox" value="mobile"> 
             <?php _e( 'Mobile', 'ohoho_components_app' ); ?>
         </label>
-        <button id="undo-button" style="display: block;">
-            <?php _e( 'Undo Delete', 'ohoho_components_app' ); ?>
-        </button>
     </div>
 </header>
 <div id="components-container"></div>
@@ -55,9 +52,9 @@
         <!-- START AUTO-GENERATED COMPONENTS -->
         <?php while ( $components_query->have_posts() ) : $components_query->the_post(); ?>
             <?php PG_Helper_v2::rememberShownPost(); ?>
-            <div id="gggg" data-component-name="gggg" <?php post_class( 'grid-item' ); ?>>
+            <div id="ja-sam-jebena" data-component-name="ja sam jebena" <?php post_class( 'grid-item' ); ?>>
                 <h2 class="fulliframe"><?php the_title(); ?></h2>
-                <iframe data-src="./components/gggg/gggg.html" title="Live Preview"></iframe>
+                <iframe data-src="./components/ja sam jebena/ja sam jebena.html" title="Live Preview"></iframe>
                 <ul class="tags">
                     <li>
                         <?php _e( 'mobile', 'ohoho_components_app' ); ?>
@@ -70,45 +67,19 @@
                     <?php _e( 'Close', 'ohoho_components_app' ); ?>
                 </button>
                 <div class="button-container">
-                    <button onclick="copyFileContent('components/gggg/gggg.html', this)">
+                    <button onclick="copyFileContent('components/ja sam jebena/ja sam jebena.html', this)">
                         <?php _e( 'HTML', 'ohoho_components_app' ); ?>
                     </button>
-                    <button onclick="copyFileContent('components/gggg/gggg.js', this)">
+                    <button onclick="copyFileContent('components/ja sam jebena/ja sam jebena.js', this)">
                         <?php _e( 'JS', 'ohoho_components_app' ); ?>
                     </button>
-                    <button onclick="copyFileContent('components/gggg/gggg.css', this)">
+                    <button onclick="copyFileContent('components/ja sam jebena/ja sam jebena.css', this)">
                         <?php _e( 'CSS', 'ohoho_components_app' ); ?>
                     </button>
                 </div>
             </div>
         <?php endwhile; ?>
         <?php wp_reset_postdata(); ?>
-        <div class="grid-item" id="ja-sam-jebena" data-component-name="ja sam jebena">
-            <h2 class="fulliframe"><?php the_title(); ?></h2>
-            <iframe data-src="./components/ja sam jebena/ja sam jebena.html" title="Live Preview"></iframe>
-            <ul class="tags">
-                <li>
-                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
-                </li>
-                <li>
-                    <?php _e( 'media', 'ohoho_components_app' ); ?>
-                </li>
-            </ul>
-            <button class="close-button">
-                <?php _e( 'Close', 'ohoho_components_app' ); ?>
-            </button>
-            <div class="button-container">
-                <button onclick="copyFileContent('components/ja sam jebena/ja sam jebena.html', this)">
-                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/ja sam jebena/ja sam jebena.js', this)">
-                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/ja sam jebena/ja sam jebena.css', this)">
-                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
-                </button>
-            </div>
-        </div>
         <div class="grid-item" id="mala-maša" data-component-name="mala maša">
             <h2 class="fulliframe"><?php the_title(); ?></h2>
             <iframe data-src="./components/mala maša/mala maša.html" title="Live Preview"></iframe>
@@ -161,32 +132,6 @@
                 </button>
             </div>
         </div>
-        <div class="grid-item" id="r3r3" data-component-name="r3r3">
-            <h2 class="fulliframe"><?php the_title(); ?></h2>
-            <iframe data-src="./components/r3r3/r3r3.html" title="Live Preview"></iframe>
-            <ul class="tags">
-                <li>
-                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
-                </li>
-                <li>
-                    <?php _e( 'media', 'ohoho_components_app' ); ?>
-                </li>
-            </ul>
-            <button class="close-button">
-                <?php _e( 'Close', 'ohoho_components_app' ); ?>
-            </button>
-            <div class="button-container">
-                <button onclick="copyFileContent('components/r3r3/r3r3.html', this)">
-                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/r3r3/r3r3.js', this)">
-                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/r3r3/r3r3.css', this)">
-                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
-                </button>
-            </div>
-        </div>
         <div class="grid-item" id="tabs" data-component-name="tabs">
             <h2 class="fulliframe"><?php the_title(); ?></h2>
             <iframe data-src="./components/tabs/tabs.html" title="Live Preview"></iframe>
@@ -209,32 +154,6 @@
                     <?php _e( 'JS', 'ohoho_components_app' ); ?>
                 </button>
                 <button onclick="copyFileContent('components/tabs/tabs.css', this)">
-                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
-                </button>
-            </div>
-        </div>
-        <div class="grid-item" id="tttt" data-component-name="tttt">
-            <h2 class="fulliframe"><?php the_title(); ?></h2>
-            <iframe data-src="./components/tttt/tttt.html" title="Live Preview"></iframe>
-            <ul class="tags">
-                <li>
-                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
-                </li>
-                <li>
-                    <?php _e( 'media', 'ohoho_components_app' ); ?>
-                </li>
-            </ul>
-            <button class="close-button">
-                <?php _e( 'Close', 'ohoho_components_app' ); ?>
-            </button>
-            <div class="button-container">
-                <button onclick="copyFileContent('components/tttt/tttt.html', this)">
-                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/tttt/tttt.js', this)">
-                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/tttt/tttt.css', this)">
                     <?php _e( 'CSS', 'ohoho_components_app' ); ?>
                 </button>
             </div>

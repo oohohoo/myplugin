@@ -78,63 +78,36 @@ app.post('/save-component', (req, res) => {
 /*************************************************************************/
 app.delete('/delete-component/:id', (req, res) => {
   const componentId = req.params.id;
-  const componentPath = path.join(__dirname, 'public', 'components', componentId);
-  const deletedComponentPath = path.join(__dirname, 'public', 'components', 'deleted', componentId);
+  const componentPath = path.join(__dirname, 'public', 'components', componentId); 
 
   if (!fs.existsSync(componentPath)) {
-    res.status(404).send('File not found');
+      res.status(404).send('File not found');
+      return;
+  }
+
+ // Delete the component
+ fs.rmdir(componentPath, { recursive: true }, (err) => {
+  if(err){
+    console.error(err);
+    res.status(500).json({ message: err.message });
     return;
   }
 
-  // Move the component to the deleted folder instead of deleting it
-  fs.rename(componentPath, deletedComponentPath, (err) => {
-    if(err){
-      console.error(err);
-      res.status(500).json({ message: err.message });
-      return;
-    }
+  // Update the components list in index.html
+  updateComponents();
 
-    // Update the components list in index.html
-    updateComponents();
-
-    res.json({ message: 'Component moved to deleted' });
-  });
+  res.json({ message: 'Component deleted' });
+});
 });
 
-
-/*************************************************************************/
-/* UNDO DELETE
-/*************************************************************************/
-app.post('/undo-delete', (req, res) => {
-  const deletedComponentsDir = path.join(__dirname, 'public', 'components', 'deleted');
-  const components = fs.readdirSync(deletedComponentsDir, { withFileTypes: true })
+// Server.js
+app.get('/components', (req, res) => {
+  const componentDirs = fs.readdirSync(path.join(__dirname, 'public', 'components'), { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
 
-  if (components.length === 0) {
-    res.status(404).send('No components to undo');
-    return;
-  }
-
-  const lastDeletedComponent = components[components.length - 1];
-  const deletedComponentPath = path.join(deletedComponentsDir, lastDeletedComponent);
-  const componentPath = path.join(__dirname, 'public', 'components', lastDeletedComponent);
-
-  // Move the last deleted component back to the components folder
-  fs.rename(deletedComponentPath, componentPath, (err) => {
-    if(err){
-      console.error(err);
-      res.status(500).json({ message: err.message });
-      return;
-    }
-
-    // Update the components list in index.html
-    updateComponents();
-
-    res.json({ message: 'Component restored' });
-  });
+  res.send(componentDirs);
 });
-
 
 /*************************************************************************/
 /* RESET COMPONENTS ON EVERY RELOAD
@@ -147,8 +120,3 @@ app.get('/', function(req, res) {
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
-
-
-/*************************************************************************/
-/* EDIT COMPONENT
-/*************************************************************************/
