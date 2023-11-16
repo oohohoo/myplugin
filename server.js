@@ -120,3 +120,8 @@ app.get('/', function(req, res) {
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
+
+
+/*************************************************************************/
+/* RESET COMPONENTS ON EVERY RELOAD
+/*************************************************************************/

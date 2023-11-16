@@ -28,9 +28,6 @@ document.getElementById('component-form').addEventListener('submit', function(ev
     if (gridItem) {
       gridItem.id = componentId;
     }
-
-    
-
 });
 
 
@@ -287,3 +284,26 @@ function deleteComponent(componentId) {
   });
 }
 
+
+
+/* EDIT COMPONENT */
+
+document.getElementById('save-button').addEventListener('click', function() {
+  const componentName = document.getElementById('edit-form-name').value;
+  const html = document.getElementById('edit-form-html').value;
+  const js = document.getElementById('edit-form-js').value;
+  const css = document.getElementById('edit-form-css').value;
+
+  fetch(`/components/${componentName}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name: componentName, html: html, js: js, css: css }),
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Network response was not ok');
+    alert('Component updated successfully!');
+  })
+  .catch(error => console.error('There has been a problem with your fetch operation: ', error));
+});
