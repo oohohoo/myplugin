@@ -96,6 +96,12 @@ document.getElementById('component-form').addEventListener('submit', function(ev
             });
         });
 
+      // Reset the form fields
+      document.getElementById('component-name').value = '';
+      document.getElementById('html-code').value = '';
+      document.getElementById('css-code').value = '';
+      document.getElementById('js-code').value = '';
+
       // Log errors
       socket.onerror = function(error) {
         console.log(`WebSocket error: ${error}`);
@@ -119,13 +125,13 @@ document.getElementById('add-component').addEventListener('click', function() {
   document.getElementById('side-panel').classList.remove('side-panel-hidden');
 });
 
-document.querySelectorAll('.edit-component').forEach(function(button) {
+/* document.querySelectorAll('.edit-component').forEach(function(button) {
   button.addEventListener('click', function() {
     document.getElementById('side-panel').classList.add('side-panel-shown');
     document.getElementById('side-panel').classList.remove('side-panel-hidden');
     // Load the component's data into the form
   });
-});
+}); */
 
 
 
