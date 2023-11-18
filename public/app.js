@@ -152,30 +152,54 @@ document
 										);
 									}
 
+									const puppeteer = require("puppeteer");
+									const path = require("path");
+									// Add a new function to generate a screenshot of the iframe content
+									async function generateScreenshot(componentName, dataSrc) {
+										const browser = await puppeteer.launch();
+										const page = await browser.newPage();
+										await page.goto(dataSrc);
+										const screenshotPath = path.join(
+											__dirname,
+											"public",
+											"components",
+											componentName,
+											"screenshot.jpg"
+										);
+										await page.screenshot({ path: screenshotPath });
+										await browser.close();
+									}
+
 									// Add all components to the DOM
-									components.forEach((componentName) => {
+									components.forEach(async (componentName) => {
 										const componentElement = document.createElement("div");
 										componentElement.className = "grid-item";
 										componentElement.id = componentName.replace(/ /g, "-");
 										componentElement.dataset.componentName = componentName;
 										componentElement.innerHTML = `
-                  <h2 class="fulliframe" cms-post-title>${componentName}</h2>
-                  <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
-                  <ul class="tags">
-                    <li>mobile</li>
-                    <li>media</li>
-                  </ul>
-                  <button class="close-button">Close</button>
-                  <div class="button-container">
-                    <button onclick="copyFileContent('components/${componentName}/${componentName}.html', this)">HTML</button>
-                    <button onclick="copyFileContent('components/${componentName}/${componentName}.js', this)">JS</button>
-                    <button onclick="copyFileContent('components/${componentName}/${componentName}.css', this)">CSS</button>
-                  </div>
-                  <button class="edit-button" onclick="editComponent('${componentName}')">Edit</button>
-                `;
+    <h2 class="fulliframe" cms-post-title>${componentName}</h2>
+    <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
+    <ul class="tags">
+      <li>mobile</li>
+      <li>media</li>
+    </ul>
+    <button class="close-button">Close</button>
+    <div class="button-container">
+      <button onclick="copyFileContent('components/${componentName}/${componentName}.html', this)">HTML</button>
+      <button onclick="copyFileContent('components/${componentName}/${componentName}.js', this)">JS</button>
+      <button onclick="copyFileContent('components/${componentName}/${componentName}.css', this)">CSS</button>
+    </div>
+    <button class="edit-button" onclick="editComponent('${componentName}')">Edit</button>
+  `;
 										componentContainer.appendChild(componentElement);
-									});
 
+										// Generate the screenshot for the iframe content
+										const iframe = componentElement.querySelector("iframe");
+										const dataSrc = `./components/${componentName}/${componentName}.html`;
+										iframe.dataset.src = dataSrc; // Set the data-src attribute correctly
+										console.log(dataSrc);
+										await generateScreenshot(componentName, dataSrc);
+									});
 									attachEventListeners();
 								});
 						});
@@ -209,7 +233,7 @@ document
 
 			.then((data) => {
 				// Refresh the window after successful save
-				window.location.reload();
+			//	window.location.reload();
 				console.log(
 					"MOŽDA NADOGRADITI DA SE U BUDUĆNOSTI NE REFRESHA CILI PAGE"
 				);
