@@ -26,7 +26,12 @@ socket.onerror = function(error) {
 };
 
 function attachEventListeners() {
-  document.getElementById('component-form').addEventListener('submit', function(event) {
+  // Remove all existing event listeners
+  const oldForm = document.getElementById('component-form');
+  const newForm = oldForm.cloneNode(true);
+  oldForm.parentNode.replaceChild(newForm, oldForm);
+
+  newForm.addEventListener('submit', function(event) {
   event.preventDefault();
   
   let componentName = document.getElementById('component-name').value;
@@ -94,6 +99,9 @@ function attachEventListeners() {
                 `;
                 componentContainer.appendChild(componentElement);
               });
+
+              // Attach event listeners to all components
+              attachEventListeners();
             });
         });
 
@@ -134,8 +142,13 @@ document.getElementById('add-component').addEventListener('click', function() {
   document.getElementById('side-panel').classList.remove('side-panel-hidden');
 });
 
-document.querySelectorAll('.edit-button').forEach(function(button) {
-  button.addEventListener('click', function() {
+// Remove all existing event listeners
+const oldButtons = document.querySelectorAll('.edit-button');
+oldButtons.forEach(function(oldButton) {
+  const newButton = oldButton.cloneNode(true);
+  oldButton.parentNode.replaceChild(newButton, oldButton);
+
+  newButton.addEventListener('click', function() {
     let componentName = this.closest('.grid-item').dataset.componentName;
     fetch(`/components/${componentName}`)
       .then(response => response.json())
@@ -215,8 +228,13 @@ document.querySelectorAll('.edit-button').forEach(function(button) {
 /* DELETE BUTTON - CLOSE BUTTON!!
 /*************************************************************************/
 
-  document.querySelectorAll('.close-button').forEach(button => {
-    button.addEventListener('click', (event) => {
+  // Remove all existing event listeners
+  const oldButtons = document.querySelectorAll('.close-button');
+  oldButtons.forEach(function(oldButton) {
+    const newButton = oldButton.cloneNode(true);
+    oldButton.parentNode.replaceChild(newButton, oldButton);
+
+    newButton.addEventListener('click', (event) => {
       // Get the parent component of the clicked button
       const component = event.target.closest('.grid-item');
       // Extract the component's unique name
@@ -245,17 +263,22 @@ document.querySelectorAll('.edit-button').forEach(function(button) {
 
 /* load unload iframe*/
 // Add event listeners to each .grid-item
-document.querySelectorAll('.grid-item').forEach(function(gridItem) {
-  let iframe = gridItem.querySelector('iframe');
+// Remove all existing event listeners
+const oldGridItems = document.querySelectorAll('.grid-item');
+oldGridItems.forEach(function(oldGridItem) {
+  const newGridItem = oldGridItem.cloneNode(true);
+  oldGridItem.parentNode.replaceChild(newGridItem, oldGridItem);
+
+  let iframe = newGridItem.querySelector('iframe');
   let dataSrc = iframe.dataset.src;  // Correctly access the data-src attribute
 
   // On mouseover, set the src attribute of the iframe
-  gridItem.addEventListener('mouseover', function() {
+  newGridItem.addEventListener('mouseover', function() {
     iframe.src = dataSrc;
   });
 
   // On mouseleave, remove the src attribute of the iframe
-  gridItem.addEventListener('mouseleave', function() {
+  newGridItem.addEventListener('mouseleave', function() {
     iframe.src = '';
   });
 });
