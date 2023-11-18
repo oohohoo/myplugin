@@ -58,10 +58,12 @@ document.getElementById('component-form').addEventListener('submit', function(ev
         .then(components => {
           // Remove all existing components from the DOM
           const componentContainer = document.getElementById('component-container');
-          if (componentContainer) {
-            while (componentContainer.firstChild) {
-              componentContainer.removeChild(componentContainer.firstChild);
-            }
+          if (!componentContainer) {
+            console.error('No element with id "component-container" found');
+            return;
+          }
+          while (componentContainer.firstChild) {
+            componentContainer.removeChild(componentContainer.firstChild);
           }
 
           // Add each component in the updated list to the DOM
