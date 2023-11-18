@@ -123,5 +123,33 @@ app.listen(port, () => {
 
 
 /*************************************************************************/
-/* RESET COMPONENTS ON EVERY RELOAD
+/* PUSH UPDATES WHEN APPLICATION ADDED
 /*************************************************************************/
+
+
+const WebSocket = require('ws');
+
+// Create a WebSocket server
+const wss = new WebSocket.Server({ port: 8080 });
+
+// Broadcast function to send data to all clients
+wss.broadcast = function(data) {
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(data);
+  //    console.log(data)
+    }
+  });
+};
+
+// Listen for changes in the components directory
+fs.watch('./public/components', (eventType, filename) => {
+  // Run the updateComponents function whenever a change is detected
+  const componentHTML = updateComponents();
+
+
+ // console.log(componentHTML);
+
+  // Broadcast the updated components to all clients
+  wss.broadcast(JSON.stringify(componentHTML));
+});

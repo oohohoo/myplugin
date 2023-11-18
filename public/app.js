@@ -1,6 +1,4 @@
-/*************************************************************************/
-/* ADD NEW COMPONENT - FORM SUBMIT
-/*************************************************************************/
+/* ADD NEW COMPONENT - FORM SUBMIT */
 
 document.getElementById('component-form').addEventListener('submit', function(event) {
   event.preventDefault();
@@ -50,27 +48,6 @@ document.getElementById('component-form').addEventListener('submit', function(ev
 .catch(error => console.error('Error:', error));
 
 });
-
-/*************************************************************************/
-/* OPEN CLOSE FORM
-/*************************************************************************/
-/*   document.querySelector('#show-form-button').addEventListener('click', function() {
-    let form = document.querySelector('#component-form');
-    form.style.display = 'block';
-    setTimeout(function(){
-      form.classList.add('visible');
-    }, 50);
-  });
-  
-  document.querySelector('#close-form-button').addEventListener('click', function() {
-    let form = document.querySelector('#component-form');
-    form.classList.remove('visible');
-    setTimeout(function(){
-      form.style.display = 'none';
-    }, 500); // this should be the same as the transition duration in the CSS
-  });
-
- */
 
   /*************************************************************************/
 /* ADD COMPONENT - PROVJERI
@@ -182,103 +159,6 @@ document.querySelectorAll('.edit-component').forEach(function(button) {
   });
   
 
-
-/*************************************************************************/
-/* FILTER & SEARCH
-/*************************************************************************/
-
-function filterItems() {
-    var query = document.getElementById('search-input').value.toLowerCase();
-    var checkboxes = document.querySelectorAll('#tag-filter input[type=checkbox]');
-    var tags = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
-  
-    var allItems = document.querySelectorAll('.grid-item');
-    allItems.forEach(function(item) {
-      var name = item.querySelector('h2').textContent.toLowerCase();
-      var itemTags = Array.from(item.querySelectorAll('.tags li')).map(li => li.textContent);
-  
-      if ((tags.length === 0 || tags.some(tag => itemTags.includes(tag))) && (!query || name.includes(query))) {
-        item.style.display = 'block';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  }
-  
-  // Event listeners for checkboxes and search input
-  var checkboxes = document.querySelectorAll('#tag-filter input[type=checkbox]');
-  checkboxes.forEach(function(checkbox) {
-    checkbox.addEventListener('change', filterItems);
-  });
-  document.getElementById('search-input').addEventListener('input', filterItems);
-  
-  // Button to clear search field
-  document.getElementById('clear-search').addEventListener('click', function() {
-    document.getElementById('search-input').value = '';
-    filterItems();
-  });
-
-
-
-
-
-/*************************************************************************/
-/* FULLSCREEN IFRAME 
-/*************************************************************************/
-
-/* document.querySelectorAll('.grid-itexxm').forEach(button => {
-  button.addEventListener('click', function () {
-    const iframeSrc = this.querySelector('iframe').src; // Get the src from the smaller iframe
-    document.getElementById('fullscreen-iframe').src = iframeSrc; // Set the src of the fullscreen iframe
-    document.getElementById('fullscreen-container').classList.remove('hidden');
-  });
-});
-
-document.getElementById('close-button').addEventListener('click', function () {
-  document.getElementById('fullscreen-container').classList.add('hidden');
-});
- */
-
-/* DELETE BUTTON*/
-
-
-/* DELETE BUTTON */
-
-/* document.querySelectorAll(".delbut").forEach(function(deleteButton){
-  deleteButton.addEventListener("click", function(){
-
-    console.log('Button clicked');
-
-    var confirmation = window.confirm("Do you want to delete this component?");
-    if (confirmation) {
-      var component = deleteButton.closest(".grid-item");
-      var componentName = component.getAttribute("data-component-name");
-      
-      if (componentName) {
-        let urlComponentName = componentName.replace(/ /g, '-');
-        let url = `/delete-component/${urlComponentName}`;
-
-        fetch(url, {
-          method: 'DELETE',
-        }).then((response) => {
-          if (!response.ok) {
-              throw new Error(`Error: ${response.statusText}`);
-          }
-          return response.text();
-        }).then((data) => {
-          // handle successful deletion
-          // remove the component from the DOM
-          component.remove();
-        }).catch((error) => {
-          console.error('Error:', error);
-        });
-      }
-    }
-  });
-});
- */
-
-
 /* load unload iframe*/
 // Add event listeners to each .grid-item
 document.querySelectorAll('.grid-item').forEach(function(gridItem) {
@@ -338,92 +218,4 @@ function deleteComponent(componentId) {
       }
   });
 }
-
-
-
-/* document.querySelectorAll(".delbut").forEach(function(deleteButton){
-  deleteButton.addEventListener("click", function(){
-
-    console.log('Button clicked');
-
-    var confirmation = window.confirm("Do you want to delete this component?");
-    var componentName = component.getAttribute("data-component-name");
-    if (componentName) {
-      var component = deleteButton.closest(".grid-item");
-      var componentName = component.getAttribute("data-component-name");
-      let urlComponentName = componentName.replace(/ /g, '-');
-      let url = `/delete-component/${urlComponentName}`;
-
-      fetch(url, {
-        method: 'DELETE',
-      }).then((response) => {
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
-        return response.text();
-      }).then((data) => {
-        // handle successful deletion
-        // remove the component from the DOM
-        component.remove();
-      }).catch((error) => {
-        console.error('Error:', error);
-      });
-    }
-  });
-});
- */
-
-/* OLD CODE*/
-/* document.querySelectorAll(".delbut").forEach(function(deleteButton){
-  deleteButton.addEventListener("click", function(){
-
-    console.log('Button clicked');
-
-
-    var confirmation = window.confirm("Do you want to delete this component?");
-      if (confirmation) {
-          var component = deleteButton.closest(".grid-item");
-          var componentId = component.id;
-
-
-         fetch('/delete-component/' + componentId, {
-    method: 'DELETE',
-
-
- }).then((response) => {
-    if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-    }
-    return response.text();  // Change this line
-}).then((data) => {
-    // handle successful deletion
-    // remove the component from the DOM
-    component.remove();
-}).catch((error) => {
-    console.error('Error:', error);
-});
-      }
-  });
-});  */
-
-/* document.getElementById("deleteButton").addEventListener("click", function(){
-  var confirmation = window.confirm("Do you want to delete this component?");
-  if (confirmation) {
-    fetch('delete-component/ghf')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      // handle data
-    })
-    .catch(error => {
-      console.error('There was an error!', error);
-    });
-  }
-}); */
-
-
 
