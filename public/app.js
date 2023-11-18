@@ -60,9 +60,6 @@ document.getElementById('component-form').addEventListener('submit', function(ev
           fetch('/components')
             .then(response => response.json())
             .then(components => {
-              // Sort components before rendering
-              components.sort((a, b) => a.localeCompare(b));
-
               // Remove all existing components from the DOM
               const componentContainer = document.getElementById('component-container');
               if (!componentContainer) {
@@ -73,8 +70,8 @@ document.getElementById('component-form').addEventListener('submit', function(ev
                 componentContainer.removeChild(componentContainer.firstChild);
               }
 
-              // Add all components to the DOM in reverse order
-              components.reverse().forEach(componentName => {
+              // Add all components to the DOM
+              components.forEach(componentName => {
                 const componentElement = document.createElement('div');
                 componentElement.className = 'grid-item';
                 componentElement.id = componentName.replace(/ /g, "-");
