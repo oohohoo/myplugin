@@ -129,8 +129,7 @@ app.listen(port, () => {
 
 // Ensure WebSocket server is correctly set up
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
-
+const wss = new WebSocket.Server({ port: 8080 });n
 wss.broadcast = function(data) {
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
