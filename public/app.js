@@ -25,7 +25,12 @@ socket.onerror = function(error) {
   console.log(`[error] ${error.message}`);
 };
 
+function attachEventListeners() {
+  // Add all event listeners here...
+}
+
 document.getElementById('component-form').addEventListener('submit', function(event) {
+  attachEventListeners();
   event.preventDefault();
   
   let componentName = document.getElementById('component-name').value;
@@ -190,6 +195,7 @@ oldButtons.forEach(function(oldButton) {
 
   // Check each file when the page is loaded
   document.addEventListener('DOMContentLoaded', function() {
+    attachEventListeners();
     const buttons = document.querySelectorAll('.button-container button');
     buttons.forEach(function(button) {
       const filePath = button.getAttribute('onclick').split("'")[1];

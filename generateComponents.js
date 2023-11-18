@@ -72,6 +72,10 @@ if (startIndex !== -1 && endIndex !== -1) {
   if (typeof window !== 'undefined' && typeof window.attachEventListeners === 'function') {
     setTimeout(window.attachEventListeners, 0);
   }
+  // Call the function in the client-side JavaScript
+  if (typeof attachEventListeners === 'function') {
+    attachEventListeners();
+  }
 
 /*************************************************************************/
 /* CHCK IF THERE ARE DELETED ITEMS IN THE DELETED FOLDER AND DISPLAY THE UNDO BUTTON
