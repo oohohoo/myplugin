@@ -102,6 +102,10 @@ document.getElementById('component-form').addEventListener('submit', function(ev
       document.getElementById('css-code').value = '';
       document.getElementById('js-code').value = '';
 
+      // Hide the side panel
+      document.getElementById('side-panel').classList.remove('side-panel-shown');
+      document.getElementById('side-panel').classList.add('side-panel-hidden');
+
       // Log errors
       socket.onerror = function(error) {
         console.log(`WebSocket error: ${error}`);
