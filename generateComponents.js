@@ -15,8 +15,7 @@ function updateComponents() {
         time: fs.statSync('./public/components/' + dirent.name).mtime.getTime()
     }))
     .sort((a, b) => b.time - a.time)
-    .map(dirent => dirent.name)
-    .reverse();
+    .map(dirent => dirent.name);
   
 
 const componentHTML = componentDirs.map(dir => `
