@@ -14,7 +14,7 @@ function updateComponents() {
         name: dirent.name,
         time: fs.statSync('./public/components/' + dirent.name).mtime.getTime()
     }))
-    .sort((a, b) => a.time - b.time)
+    .sort((a, b) => b.time - a.time)
     .map(dirent => dirent.name);
   
 
