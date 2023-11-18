@@ -132,8 +132,6 @@ checkDeletedItems(); */
 
 
 
-
-
 return componentHTML;
 
 
