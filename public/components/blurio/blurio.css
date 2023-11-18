@@ -1,0 +1,53 @@
+body {
+  font-size: 100px;
+  color: #f00;
+  background-color: #fff;
+  margin: 50px;
+  font-family: Helvetica;
+}
+
+.right {
+  text-align: right;
+}
+
+#blurs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+  line-height: 40%;
+}
+
+.red {
+  background: rgba(255, 255, 255, 0.1);
+  animation: gradient 2s infinite steps(1, end);
+}
+
+.blue {
+  animation: gradient 2s infinite steps(1, end);
+  animation-delay: 1s;
+}
+
+.blur {
+  margin: 0;
+  margin-left: -25px;
+  padding: 0;
+  display: inline-block;
+  border-radius: 100px;
+  width: 200px;
+  height: 200px;
+  backdrop-filter: blur(6px);
+}
+
+@keyframes gradient {
+  0% {
+    backdrop-filter: blur(20px);
+  }
+  50% {
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    backdrop-filter: blur(20px);
+  }
+}
