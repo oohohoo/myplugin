@@ -12,25 +12,6 @@ function updateComponents() {
     .filter(dirent => dirent.name !== 'deleted') // Ignore the "deleted" directory
     .map(dirent => dirent.name);
   
-/*************************************************************************/
-/* GENERATE HTML FOR EACH COMPONENT
-/*************************************************************************/
- /*  const componentHTML = componentDirs.map(dir => `
-  <div class="grid-item" id="${dir.replace(/ /g, "-")}" data-component-name="${dir}">
-    <h2 class="fulliframe" cms-post-title>${dir}</h2>
-    <iframe data-src="./components/${dir}/${dir}.html" title="Live Preview"></iframe>
-  <ul class="tags">
-    <li>mobile</li>
-    <li>media</li>
-  </ul>
-  <button class="close-button">Close</button>
-  <div class="button-container">
-    <button onclick="copyFileContent('components/${dir}/${dir}.html', this)">HTML</button>
-    <button onclick="copyFileContent('components/${dir}/${dir}.js', this)">JS</button>
-    <button onclick="copyFileContent('components/${dir}/${dir}.css', this)">CSS</button>
-  </div>
-</div>
-`).join('\n'); */
 
 const componentHTML = componentDirs.map(dir => `
 <div class="grid-item" id="${dir.replace(/ /g, "-")}" data-component-name="${dir}">
@@ -86,9 +67,8 @@ if (startIndex !== -1 && endIndex !== -1) {
 /*************************************************************************/
 /* CHCK IF THERE ARE DELETED ITEMS IN THE DELETED FOLDER AND DISPLAY THE UNDO BUTTON
 /*************************************************************************/
-
-
-/* const http = require('http');
+/* 
+const http = require('http');
 
 function checkDeletedItems() {
   http.get('http://localhost:3000/deleted-items', (res) => {
@@ -117,7 +97,7 @@ function checkDeletedItems() {
   });
 }
 
-checkDeletedItems(); */
+checkDeletedItems();  */
 
 
 /* function checkDeletedItems() {
@@ -140,6 +120,15 @@ checkDeletedItems(); */
 }
 
 checkDeletedItems(); */
+
+
+
+
+
+return componentHTML;
+
+
+
 
 }
 /* NOVA FUNKCIJA EDIT COMPONENT*/
