@@ -68,8 +68,9 @@ if (startIndex !== -1 && endIndex !== -1) {
 /*WRITE THE UPDATED HTML BACK TO THE INDEX.HTML FILE
 /*************************************************************************/
   fs.writeFileSync('./public/index.html', indexHTML);
+  // Call attachEventListeners after the components are updated
   if (typeof window !== 'undefined' && typeof window.attachEventListeners === 'function') {
-    window.attachEventListeners();
+    setTimeout(window.attachEventListeners, 0);
   }
 
 /*************************************************************************/
