@@ -32,8 +32,18 @@ document.getElementById('component-form').addEventListener('submit', function(ev
       fetch('/components')
         .then(response => response.json())
         .then(components => {
-          // Code to refresh the components list goes here...
-          window.location.reload();
+          // Remove all existing components from the DOM
+          const componentContainer = document.getElementById('component-container');
+          while (componentContainer.firstChild) {
+            componentContainer.removeChild(componentContainer.firstChild);
+          }
+
+          // Add each component in the updated list to the DOM
+          components.forEach(component => {
+            const componentElement = document.createElement('div');
+            componentElement.textContent = component;
+            componentContainer.appendChild(componentElement);
+          });
         });
 
       // Log errors
