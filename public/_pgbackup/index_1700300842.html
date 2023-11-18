@@ -40,23 +40,6 @@
         </div> -->
         <div id="component-container" class="grid-container" cms-post="query" cms-post-type="components" cms-post-type-register cms-post-type-query-name="components_query" cms-post-type-name="Components" cms-post-type-name-singular="Component" cms-post-items-container="this" cms-post-repeat="> div:nth-of-type(1)">
             <!-- START AUTO-GENERATED COMPONENTS -->
-<div class="grid-item" id="blurio" data-component-name="blurio">
-  <h2 class="fulliframe" cms-post-title>blurio</h2>
-  <iframe data-src="./components/blurio/blurio.html" title="Live Preview"></iframe>
-  <ul class="tags">
-    <li>mobile</li>
-    <li>media</li>
-  </ul>
-  <button class="close-button">Close</button>
-  <div class="button-container">
-    <button onclick="copyFileContent('components/blurio/blurio.html', this)">HTML</button>
-    <button onclick="copyFileContent('components/blurio/blurio.js', this)">JS</button>
-    <button onclick="copyFileContent('components/blurio/blurio.css', this)">CSS</button>
-  </div>
-  <button class="edit-button" onclick="editComponent('blurio')">Edit</button> <!-- Add this line -->
-</div>
-
-
 <div class="grid-item" id="MOJA-LUDILO-KOMPONENTA" data-component-name="MOJA LUDILO KOMPONENTA">
   <h2 class="fulliframe" cms-post-title>MOJA LUDILO KOMPONENTA</h2>
   <iframe data-src="./components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.html" title="Live Preview"></iframe>
@@ -193,6 +176,20 @@
                 <textarea id="notes" placeholder="Notes"></textarea>
                 <button type="submit">SAVE</button>
             </form>
+        </div>
+        <div id="editModal" class="modal" data-pg-collapsed>
+            <div class="modal-content"><span class="close-button">&times;</span>
+                <h2>Edit Component</h2>
+                <label for="edit-form-name">Name</label>
+                <input type="text" id="edit-form-name" name="edit-form-name">
+                <label for="edit-form-html">HTML</label>
+                <textarea id="edit-form-html" name="edit-form-html"></textarea>
+                <label for="edit-form-css">CSS</label>
+                <textarea id="edit-form-css" name="edit-form-css"></textarea>
+                <label for="edit-form-js">JavaScript</label>
+                <textarea id="edit-form-js" name="edit-form-js"></textarea>
+                <button id="save-button">Save</button>
+            </div>
         </div>
         <script src="app.js"></script>
     </body>

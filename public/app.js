@@ -26,7 +26,10 @@ socket.onerror = function(error) {
 };
 
 function attachEventListeners() {
-  const form = document.getElementById('component-form');
+  // Remove all existing event listeners
+  const oldForm = document.getElementById('component-form');
+  const newForm = oldForm.cloneNode(true);
+  oldForm.parentNode.replaceChild(newForm, oldForm);
 
   newForm.addEventListener('submit', function(event) {
   event.preventDefault();
@@ -128,7 +131,7 @@ function attachEventListeners() {
   });
 }
 
-// Move this line to the end of the file
+attachEventListeners();
 
   /*************************************************************************/
 /* ADD COMPONENT - PROVJERI
@@ -139,7 +142,11 @@ document.getElementById('add-component').addEventListener('click', function() {
   document.getElementById('side-panel').classList.remove('side-panel-hidden');
 });
 
-// Do not remove existing event listeners
+// Remove all existing event listeners
+const oldButtons = document.querySelectorAll('.edit-button');
+oldButtons.forEach(function(oldButton) {
+  const newButton = oldButton.cloneNode(true);
+  oldButton.parentNode.replaceChild(newButton, oldButton);
 
   newButton.addEventListener('click', function() {
     let componentName = this.closest('.grid-item').dataset.componentName;
@@ -221,7 +228,11 @@ document.getElementById('add-component').addEventListener('click', function() {
 /* DELETE BUTTON - CLOSE BUTTON!!
 /*************************************************************************/
 
-  // Do not remove existing event listeners
+  // Remove all existing event listeners
+  const oldButtons = document.querySelectorAll('.close-button');
+  oldButtons.forEach(function(oldButton) {
+    const newButton = oldButton.cloneNode(true);
+    oldButton.parentNode.replaceChild(newButton, oldButton);
 
     newButton.addEventListener('click', (event) => {
       // Get the parent component of the clicked button
@@ -252,7 +263,11 @@ document.getElementById('add-component').addEventListener('click', function() {
 
 /* load unload iframe*/
 // Add event listeners to each .grid-item
-// Do not remove existing event listeners
+// Remove all existing event listeners
+const oldGridItems = document.querySelectorAll('.grid-item');
+oldGridItems.forEach(function(oldGridItem) {
+  const newGridItem = oldGridItem.cloneNode(true);
+  oldGridItem.parentNode.replaceChild(newGridItem, oldGridItem);
 
   let iframe = newGridItem.querySelector('iframe');
   let dataSrc = iframe.dataset.src;  // Correctly access the data-src attribute
@@ -273,8 +288,7 @@ document.getElementById('add-component').addEventListener('click', function() {
 
 
 
-// Add this line to the end of the file
-attachEventListeners();
+/* UNDO BUTTON */
 
 /* document.getElementById('undo-button').addEventListener('click', function() {
   fetch('/undo-delete', {
