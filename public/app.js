@@ -1,5 +1,6 @@
 /* ADD NEW COMPONENT - FORM SUBMIT */
 
+// Ensure WebSocket connection is correctly established and updates are received
 document.getElementById('component-form').addEventListener('submit', function(event) {
   event.preventDefault();
   
@@ -7,11 +8,7 @@ document.getElementById('component-form').addEventListener('submit', function(ev
   let htmlCode = document.getElementById('html-code').value;
   let cssCode = document.getElementById('css-code').value;
   let jsCode = document.getElementById('js-code').value;
-
-    // create an ID by replacing spaces in componentName with underscores
-    let componentId = componentName.replace(/ /g, "");
-    console.log("componentId: ", componentId); // Log componentId
-
+  let componentId = componentName.replace(/ /g, "");
 
   let componentData = {
     id: componentId,
@@ -21,32 +18,36 @@ document.getElementById('component-form').addEventListener('submit', function(ev
     jsCode: jsCode
   };
 
-    // Select the .grid-item element and assign the ID
-    let gridItem = document.querySelector('.grid-item');
-    if (gridItem) {
-      gridItem.id = componentId;
-    }
-
   fetch('/save-component', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(componentData)
-})
-.then(response => response.json()) // Parse the response from the server as JSON
-.then(data => {
-  console.log(data);
-  
-  if (data.status === 'success') {
-    let newGridItem = document.createElement('div');
-    newGridItem.className = 'grid-item';
-    newGridItem.id = componentId;
-    document.querySelector('.grid-container').appendChild(newGridItem);
-  }
-})
-.catch(error => console.error('Error:', error));
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === 'success') {
+      // Create a new WebSocket connection
+      const socket = new WebSocket('ws://localhost:8080');
 
+      // When the connection is open, send a message to the server
+      socket.onopen = function(event) {
+        socket.send('New component added');
+      };
+
+      // Log errors
+      socket.onerror = function(error) {
+        console.log(`WebSocket error: ${error}`);
+      };
+
+      // Log messages from the server
+      socket.onmessage = function(event) {
+        console.log('Server says: ' + event.data);
+      };
+    }
+  })
+  .catch(error => console.error('Error:', error));
 });
 
   /*************************************************************************/
