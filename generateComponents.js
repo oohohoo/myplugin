@@ -68,6 +68,9 @@ if (startIndex !== -1 && endIndex !== -1) {
 /*WRITE THE UPDATED HTML BACK TO THE INDEX.HTML FILE
 /*************************************************************************/
   fs.writeFileSync('./public/index.html', indexHTML);
+  if (typeof window !== 'undefined' && typeof window.attachEventListeners === 'function') {
+    window.attachEventListeners();
+  }
 
 /*************************************************************************/
 /* CHCK IF THERE ARE DELETED ITEMS IN THE DELETED FOLDER AND DISPLAY THE UNDO BUTTON
