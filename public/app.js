@@ -28,13 +28,13 @@ document.getElementById('component-form').addEventListener('submit', function(ev
   .then(response => response.json())
   .then(data => {
     if (data.status === 'success') {
-      // Create a new WebSocket connection
-      const socket = new WebSocket('ws://localhost:8080');
-
-      // When the connection is open, send a message to the server
-      socket.onopen = function(event) {
-        socket.send('New component added');
-      };
+      // Fetch the updated list of components and refresh the page
+      fetch('/components')
+        .then(response => response.json())
+        .then(components => {
+          // Code to refresh the components list goes here...
+          window.location.reload();
+        });
 
       // Log errors
       socket.onerror = function(error) {
