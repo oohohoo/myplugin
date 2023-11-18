@@ -60,6 +60,9 @@ document.getElementById('component-form').addEventListener('submit', function(ev
           fetch('/components')
             .then(response => response.json())
             .then(components => {
+              // Sort components before rendering
+              components.sort((a, b) => a.localeCompare(b));
+
               // Remove all existing components from the DOM
               const componentContainer = document.getElementById('component-container');
               if (!componentContainer) {
