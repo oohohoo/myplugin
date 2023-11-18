@@ -109,7 +109,7 @@ app.get('/components', (req, res) => {
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
 
-  res.send(componentDirs);
+  res.send(componentDirs.reverse());
 });
 
 /*************************************************************************/
