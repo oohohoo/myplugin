@@ -13,7 +13,7 @@ function updateComponents() {
     .map(dirent => dirent.name);
   
 
-const componentHTML = componentDirs.map(dir => `
+const componentHTML = componentDirs.reverse().map(dir => `
 <div class="grid-item" id="${dir.replace(/ /g, "-")}" data-component-name="${dir}">
   <h2 class="fulliframe" cms-post-title>${dir}</h2>
   <iframe data-src="./components/${dir}/${dir}.html" title="Live Preview"></iframe>
