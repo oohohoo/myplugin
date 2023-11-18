@@ -125,13 +125,21 @@ document.getElementById('add-component').addEventListener('click', function() {
   document.getElementById('side-panel').classList.remove('side-panel-hidden');
 });
 
-/* document.querySelectorAll('.edit-component').forEach(function(button) {
+document.querySelectorAll('.edit-button').forEach(function(button) {
   button.addEventListener('click', function() {
-    document.getElementById('side-panel').classList.add('side-panel-shown');
-    document.getElementById('side-panel').classList.remove('side-panel-hidden');
-    // Load the component's data into the form
+    let componentName = this.closest('.grid-item').dataset.componentName;
+    fetch(`/components/${componentName}`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('component-name').value = data.componentName;
+        document.getElementById('html-code').value = data.htmlCode;
+        document.getElementById('css-code').value = data.cssCode;
+        document.getElementById('js-code').value = data.jsCode;
+        document.getElementById('side-panel').classList.add('side-panel-shown');
+        document.getElementById('side-panel').classList.remove('side-panel-hidden');
+      });
   });
-}); */
+});
 
 
 
