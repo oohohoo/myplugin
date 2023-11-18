@@ -25,7 +25,8 @@ socket.onerror = function(error) {
   console.log(`[error] ${error.message}`);
 };
 
-document.getElementById('component-form').addEventListener('submit', function(event) {
+function attachEventListeners() {
+  document.getElementById('component-form').addEventListener('submit', function(event) {
   event.preventDefault();
   
   let componentName = document.getElementById('component-name').value;
@@ -111,14 +112,18 @@ document.getElementById('component-form').addEventListener('submit', function(ev
         console.log(`WebSocket error: ${error}`);
       };
 
-      // Log messages from the server
+      // Log messages from the server and attach event listeners to new components
       socket.onmessage = function(event) {
         console.log('Server says: ' + event.data);
+        attachEventListeners();
       };
     }
   })
   .catch(error => console.error('Error:', error));
-});
+  });
+}
+
+attachEventListeners();
 
   /*************************************************************************/
 /* ADD COMPONENT - PROVJERI
