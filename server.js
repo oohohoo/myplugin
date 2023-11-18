@@ -168,3 +168,19 @@ fs.watch('./public/components', (eventType, filename) => {
   const componentHTML = updateComponents();
   wss.broadcast(JSON.stringify(componentHTML));
 });
+const puppeteer = require('puppeteer');
+
+app.post('/generate-screenshot/:name', async (req, res) => {
+	const componentName = req.params.name;
+	const componentDir = path.join(__dirname, 'public', 'components', componentName);
+	if (!fs.existsSync(componentDir)) {
+		res.status(404).send('Component not found');
+		return;
+	}
+	const browser = await puppeteer.launch();
+	const page = await browser.newPage();
+	await page.goto(`http://localhost:${port}/components/${componentName}/${componentName}.html`);
+	await page.screenshot({ path: path.join(componentDir, 'screenshot.jpg') });
+	await browser.close();
+	res.send({ status: 'success' });
+});

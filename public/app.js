@@ -152,23 +152,6 @@ document
 										);
 									}
 
-									const puppeteer = require("puppeteer");
-									const path = require("path");
-									// Add a new function to generate a screenshot of the iframe content
-									async function generateScreenshot(componentName, dataSrc) {
-										const browser = await puppeteer.launch();
-										const page = await browser.newPage();
-										await page.goto(dataSrc);
-										const screenshotPath = path.join(
-											__dirname,
-											"public",
-											"components",
-											componentName,
-											"screenshot.jpg"
-										);
-										await page.screenshot({ path: screenshotPath });
-										await browser.close();
-									}
 
 									// Add all components to the DOM
 									components.forEach(async (componentName) => {
@@ -193,12 +176,10 @@ document
   `;
 										componentContainer.appendChild(componentElement);
 
-										// Generate the screenshot for the iframe content
-										const iframe = componentElement.querySelector("iframe");
-										const dataSrc = `./components/${componentName}/${componentName}.html`;
-										iframe.dataset.src = dataSrc; // Set the data-src attribute correctly
-										console.log(dataSrc);
-										await generateScreenshot(componentName, dataSrc);
+										// Request the server to generate a screenshot for the iframe content
+										fetch(`/generate-screenshot/${componentName}`, {
+											method: "POST",
+										});
 									});
 									attachEventListeners();
 								});
