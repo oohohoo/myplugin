@@ -36,6 +36,8 @@ app.use(function (err, req, res, next) {
 /* SAVE COMPONENT
 /*************************************************************************/
 app.post('/save-component', (req, res) => {
+  console.log('POST /save-component');
+  
   let componentName = req.body.componentName;
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
@@ -63,8 +65,9 @@ app.post('/save-component', (req, res) => {
   fs.writeFileSync(path.join(componentDir, `${componentName}.css`), cssCode);
   fs.writeFileSync(path.join(componentDir, `${componentName}.js`), jsCode);
 
+  console.log('Component created:', componentName);
+  
   generateComponents(); // Call the function after a new component is created
-
 
   res.send({ status: 'success' });
 });
