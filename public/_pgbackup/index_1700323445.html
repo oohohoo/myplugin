@@ -40,20 +40,20 @@
         </div> -->
         <div id="component-container" class="grid-container" cms-post="query" cms-post-type="components" cms-post-type-register cms-post-type-query-name="components_query" cms-post-type-name="Components" cms-post-type-name-singular="Component" cms-post-items-container="this" cms-post-repeat="> div:nth-of-type(1)">
             <!-- START AUTO-GENERATED COMPONENTS -->
-<div class="grid-item" id="mala-mašanka" data-component-name="mala mašanka">
-  <h2 class="fulliframe" cms-post-title>mala mašanka</h2>
-  <iframe data-src="./components/mala mašanka/mala mašanka.html" title="Live Preview"></iframe>
+<div class="grid-item" id="novaaaaa" data-component-name="novaaaaa">
+  <h2 class="fulliframe" cms-post-title>novaaaaa</h2>
+  <iframe data-src="./components/novaaaaa/novaaaaa.html" title="Live Preview"></iframe>
   <ul class="tags">
     <li>mobile</li>
     <li>media</li>
   </ul>
   <button class="close-button">Close</button>
   <div class="button-container">
-    <button onclick="copyFileContent('components/mala mašanka/mala mašanka.html', this)">HTML</button>
-    <button onclick="copyFileContent('components/mala mašanka/mala mašanka.js', this)">JS</button>
-    <button onclick="copyFileContent('components/mala mašanka/mala mašanka.css', this)">CSS</button>
+    <button onclick="copyFileContent('components/novaaaaa/novaaaaa.html', this)">HTML</button>
+    <button onclick="copyFileContent('components/novaaaaa/novaaaaa.js', this)">JS</button>
+    <button onclick="copyFileContent('components/novaaaaa/novaaaaa.css', this)">CSS</button>
   </div>
-  <button class="edit-button" onclick="editComponent('mala mašanka')">Edit</button> <!-- Add this line -->
+  <button class="edit-button" onclick="editComponent('novaaaaa')">Edit</button> <!-- Add this line -->
 </div>
 
 
@@ -197,13 +197,13 @@
             <!-- Side panel for adding/editing components -->
             <!-- Additional components would follow the same structure -->
         </div>
-        <div id="side-panel" class="side-panel-hidden" data-pg-name="SIDEPANEL">
+        <div id="side-panel" class="side-panel-hidden" data-pg-name="SIDEPANEL" data-pg-collapsed>
             <form id="component-form">
                 <button type="button" id="close-form-button">Close</button>
                 <input type="text" id="component-name" placeholder="Component name" required>
-                <textarea id="html-code" placeholder="HTML code"></textarea>
-                <textarea id="css-code" placeholder="CSS code"></textarea>
-                <textarea id="js-code" placeholder="JavaScript code"></textarea>
+                <textarea id="html-code" placeholder="HTML code" required></textarea>
+                <textarea id="css-code" placeholder="CSS code" required></textarea>
+                <textarea id="js-code" placeholder="JavaScript code" required></textarea>
                 <select id="tag-selection">
                     <!-- Add options for each tag -->
                 </select>

@@ -3,148 +3,162 @@
 // Ensure WebSocket connection is correctly established and updates are received
 let socket = new WebSocket("ws://localhost:8080");
 
-socket.onopen = function(e) {
-  console.log("[open] Connection established");
-  console.log("Sending to server");
-  socket.send("My name is John");
+socket.onopen = function (e) {
+	console.log("[open] Connection established");
+	console.log("Sending to server");
+	socket.send("My name is John");
 };
 
-socket.onmessage = function(event) {
-  console.log(`[message] Data received from server: ${event.data}`);
+socket.onmessage = function (event) {
+	console.log(`[message] Data received from server: ${event.data}`);
 };
 
-socket.onclose = function(event) {
-  if (event.wasClean) {
-    console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-  } else {
-    console.log('[close] Connection died');
-  }
+socket.onclose = function (event) {
+	if (event.wasClean) {
+		console.log(
+			`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
+		);
+	} else {
+		console.log("[close] Connection died");
+	}
 };
 
-socket.onerror = function(error) {
-  console.log(`[error] ${error.message}`);
+socket.onerror = function (error) {
+	console.log(`[error] ${error.message}`);
 };
 
 function attachEventListeners() {
-  // Add event listeners to each .grid-item
-  document.querySelectorAll('.grid-item').forEach(function(gridItem) {
-    let iframe = gridItem.querySelector('iframe');
-    let dataSrc = iframe.dataset.src;  // Correctly access the data-src attribute
+	// Add event listeners to each .grid-item
+	document.querySelectorAll(".grid-item").forEach(function (gridItem) {
+		let iframe = gridItem.querySelector("iframe");
+		let dataSrc = iframe.dataset.src; // Correctly access the data-src attribute
 
-    // On mouseover, set the src attribute of the iframe
-    gridItem.addEventListener('mouseover', function() {
-      iframe.src = dataSrc;
-    });
+		// On mouseover, set the src attribute of the iframe
+		gridItem.addEventListener("mouseover", function () {
+			iframe.src = dataSrc;
+		});
 
-    // On mouseleave, remove the src attribute of the iframe
-    gridItem.addEventListener('mouseleave', function() {
-      iframe.src = '';
-    });
-  });
+		// On mouseleave, remove the src attribute of the iframe
+		gridItem.addEventListener("mouseleave", function () {
+			iframe.src = "";
+		});
+	});
 
-  // Add event listeners to each .close-button
-  document.querySelectorAll('.close-button').forEach(button => {
-    button.addEventListener('click', (event) => {
-      // Get the parent component of the clicked button
-      const component = event.target.closest('.grid-item');
-      // Extract the component's unique name
-      const componentName = component.dataset.componentName;
-      // Send a DELETE request to the server
-      fetch(`/delete-component/${componentName}`, {
-        method: 'DELETE'
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Success:', data);
-        // Refresh the window after successful deletion
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    });
-  });
+	// Add event listeners to each .close-button
+	document.querySelectorAll(".close-button").forEach((button) => {
+		button.addEventListener("click", (event) => {
+			// Get the parent component of the clicked button
+			const component = event.target.closest(".grid-item");
+			// Extract the component's unique name
+			const componentName = component.dataset.componentName;
+			// Send a DELETE request to the server
+			fetch(`/delete-component/${componentName}`, {
+				method: "DELETE",
+			})
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(`Error: ${response.statusText}`);
+					}
+					return response.json();
+				})
+				.then((data) => {
+					console.log("Success:", data);
+					// Refresh the window after successful deletion
+					window.location.reload();
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				});
+		});
+	});
 
-  // Add event listeners to each .edit-button
-  const oldButtons = document.querySelectorAll('.edit-button');
-  oldButtons.forEach(function(oldButton) {
-    const newButton = oldButton.cloneNode(true);
-    oldButton.parentNode.replaceChild(newButton, oldButton);
+	// Add event listeners to each .edit-button
+	const oldButtons = document.querySelectorAll(".edit-button");
+	oldButtons.forEach(function (oldButton) {
+		const newButton = oldButton.cloneNode(true);
+		oldButton.parentNode.replaceChild(newButton, oldButton);
 
-    newButton.addEventListener('click', function() {
-      let componentName = this.closest('.grid-item').dataset.componentName;
-      fetch(`/components/${componentName}`)
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('component-name').value = data.componentName;
-          document.getElementById('html-code').value = data.htmlCode;
-          document.getElementById('css-code').value = data.cssCode;
-          document.getElementById('js-code').value = data.jsCode;
-          document.getElementById('side-panel').classList.add('side-panel-shown');
-          document.getElementById('side-panel').classList.remove('side-panel-hidden');
-        });
-    });
-  });
+		newButton.addEventListener("click", function () {
+			let componentName = this.closest(".grid-item").dataset.componentName;
+			fetch(`/components/${componentName}`)
+				.then((response) => response.json())
+				.then((data) => {
+					document.getElementById("component-name").value = data.componentName;
+					document.getElementById("html-code").value = data.htmlCode;
+					document.getElementById("css-code").value = data.cssCode;
+					document.getElementById("js-code").value = data.jsCode;
+					document
+						.getElementById("side-panel")
+						.classList.add("side-panel-shown");
+					document
+						.getElementById("side-panel")
+						.classList.remove("side-panel-hidden");
+				});
+		});
+	});
 }
 
-document.getElementById('component-form').addEventListener('submit', function(event) {
-  attachEventListeners();
-  event.preventDefault();
-  
-  let componentName = document.getElementById('component-name').value;
-  let htmlCode = document.getElementById('html-code').value;
-  let cssCode = document.getElementById('css-code').value;
-  let jsCode = document.getElementById('js-code').value;
-  let componentId = componentName.replace(/ /g, "");
+document
+	.getElementById("component-form")
+	.addEventListener("submit", function (event) {
+		attachEventListeners();
+		event.preventDefault();
 
-  let componentData = {
-    id: componentId,
-    componentName: componentName,
-    htmlCode: htmlCode,
-    cssCode: cssCode,
-    jsCode: jsCode
-  };
+		let componentName = document.getElementById("component-name").value;
+		let htmlCode = document.getElementById("html-code").value;
+		let cssCode = document.getElementById("css-code").value;
+		let jsCode = document.getElementById("js-code").value;
+		let componentId = componentName.replace(/ /g, "");
 
-  fetch('/save-component', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(componentData)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.status === 'success') {
-      // Fetch the updated list of components and refresh the page
-      fetch('/components')
-        .then(response => response.json())
-        .then(components => {
-          // Fetch the updated list of components and refresh the page
-          fetch('/components')
-            .then(response => response.json())
-            .then(components => {
-              // Remove all existing components from the DOM
-              const componentContainer = document.getElementById('component-container');
-              if (!componentContainer) {
-                console.error('No element with id "component-container" found');
-                return;
-              }
-              while (componentContainer.firstChild) {
-                componentContainer.removeChild(componentContainer.firstChild);
-              }
+		let componentData = {
+			id: componentId,
+			componentName: componentName,
+			htmlCode: htmlCode,
+			cssCode: cssCode,
+			jsCode: jsCode,
+		};
 
-              // Add all components to the DOM
-              components.forEach(componentName => {
-                const componentElement = document.createElement('div');
-                componentElement.className = 'grid-item';
-                componentElement.id = componentName.replace(/ /g, "-");
-                componentElement.dataset.componentName = componentName;
-                componentElement.innerHTML = `
+		fetch("/save-component", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(componentData),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.status === "success") {
+					// Fetch the updated list of components and refresh the page
+					fetch("/components")
+						.then((response) => response.json())
+						.then((components) => {
+							// Fetch the updated list of components and refresh the page
+							fetch("/components")
+								.then((response) => response.json())
+								.then((components) => {
+									// Remove all existing components from the DOM
+									const componentContainer = document.getElementById(
+										"component-container"
+									);
+									if (!componentContainer) {
+										console.error(
+											'No element with id "component-container" found'
+										);
+										return;
+									}
+									while (componentContainer.firstChild) {
+										componentContainer.removeChild(
+											componentContainer.firstChild
+										);
+									}
+
+									// Add all components to the DOM
+									components.forEach((componentName) => {
+										const componentElement = document.createElement("div");
+										componentElement.className = "grid-item";
+										componentElement.id = componentName.replace(/ /g, "-");
+										componentElement.dataset.componentName = componentName;
+										componentElement.innerHTML = `
                   <h2 class="fulliframe" cms-post-title>${componentName}</h2>
                   <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
                   <ul class="tags">
@@ -159,175 +173,237 @@ document.getElementById('component-form').addEventListener('submit', function(ev
                   </div>
                   <button class="edit-button" onclick="editComponent('${componentName}')">Edit</button>
                 `;
-                componentContainer.appendChild(componentElement);
-              });
-            });
-        });
+										componentContainer.appendChild(componentElement);
+									});
 
-      // Reset the form fields
-      document.getElementById('component-name').value = '';
-      document.getElementById('html-code').value = '';
-      document.getElementById('css-code').value = '';
-      document.getElementById('js-code').value = '';
+									attachEventListeners();
+								});
+						});
 
-      // Log errors
-      socket.onerror = function(error) {
-        console.log(`WebSocket error: ${error}`);
-      };
+					// Reset the form fields
+					document.getElementById("component-name").value = "";
+					document.getElementById("html-code").value = "";
+					document.getElementById("css-code").value = "";
+					document.getElementById("js-code").value = "";
 
-      // Log messages from the server
-      socket.onmessage = function(event) {
-        console.log('Server says: ' + event.data);
-      };
-    }
-  })
-  .catch(error => console.error('Error:', error));
-});
+					// Close the form and reset its fields
+					document.getElementById("component-form").reset();
+					document
+						.getElementById("side-panel")
+						.classList.remove("side-panel-shown");
+					document
+						.getElementById("side-panel")
+						.classList.add("side-panel-hidden");
+
+					// Log errors
+					socket.onerror = function (error) {
+						console.log(`WebSocket error: ${error}`);
+					};
+
+					// Log messages from the server
+					socket.onmessage = function (event) {
+						console.log("Server says: " + event.data);
+					};
+				}
+			})
+
+			.then((data) => {
+				// Refresh the window after successful save
+				window.location.reload();
+				console.log(
+					"MOŽDA NADOGRADITI DA SE U BUDUĆNOSTI NE REFRESHA CILI PAGE"
+				);
+			})
+
+			.catch((error) => console.error("Error:", error));
+	});
+
+document
+	.getElementById("close-form-button")
+	.addEventListener("click", function () {
+		document.getElementById("side-panel").classList.remove("side-panel-shown");
+		document.getElementById("side-panel").classList.add("side-panel-hidden");
+	});
 
 /*************************************************************************/
 /* ADD COMPONENT - PROVJERI
 /*************************************************************************/
 
-document.getElementById('add-component').addEventListener('click', function() {
-  document.getElementById('side-panel').classList.add('side-panel-shown');
-  document.getElementById('side-panel').classList.remove('side-panel-hidden');
+document.getElementById("add-component").addEventListener("click", function () {
+	document.getElementById("side-panel").classList.add("side-panel-shown");
+	document.getElementById("side-panel").classList.remove("side-panel-hidden");
 });
 
 // Remove all existing event listeners
-const oldButtons = document.querySelectorAll('.edit-button');
-oldButtons.forEach(function(oldButton) {
-  const newButton = oldButton.cloneNode(true);
-  oldButton.parentNode.replaceChild(newButton, oldButton);
+const oldButtons = document.querySelectorAll(".edit-button");
+oldButtons.forEach(function (oldButton) {
+	const newButton = oldButton.cloneNode(true);
+	oldButton.parentNode.replaceChild(newButton, oldButton);
 
-  newButton.addEventListener('click', function() {
-    let componentName = this.closest('.grid-item').dataset.componentName;
-    fetch(`/components/${componentName}`)
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('component-name').value = data.componentName;
-        document.getElementById('html-code').value = data.htmlCode;
-        document.getElementById('css-code').value = data.cssCode;
-        document.getElementById('js-code').value = data.jsCode;
-        document.getElementById('side-panel').classList.add('side-panel-shown');
-        document.getElementById('side-panel').classList.remove('side-panel-hidden');
-      });
-  });
+	newButton.addEventListener("click", function () {
+		let componentName = this.closest(".grid-item").dataset.componentName;
+		fetch(`/components/${componentName}`)
+			.then((response) => response.json())
+			.then((data) => {
+				document.getElementById("component-name").value = data.componentName;
+				document.getElementById("html-code").value = data.htmlCode;
+				document.getElementById("css-code").value = data.cssCode;
+				document.getElementById("js-code").value = data.jsCode;
+				document.getElementById("side-panel").classList.add("side-panel-shown");
+				document
+					.getElementById("side-panel")
+					.classList.remove("side-panel-hidden");
+			});
+	});
 });
-
 
 /*************************************************************************/
 /* COPY TO CLIPBOARD
 /*************************************************************************/
-  function copyFileContent(filePath, button) {
-    // Reset all buttons
-    resetButtons();
+function copyFileContent(filePath, button) {
+	// Reset all buttons
+	resetButtons();
 
-    // Store the original button text in a data attribute, if not already stored
-    if (!button.dataset.originalText) {
-      button.dataset.originalText = button.textContent;
-    }
+	// Store the original button text in a data attribute, if not already stored
+	if (!button.dataset.originalText) {
+		button.dataset.originalText = button.textContent;
+	}
 
-    fetch(filePath)
-      .then(response => response.text())
-      .then(data => {
-        if (data.trim() === '') {
-          // Disable the button and return early if the file is empty
-          button.disabled = true;
-          return;
-        }
+	fetch(filePath)
+		.then((response) => response.text())
+		.then((data) => {
+			if (data.trim() === "") {
+				// Disable the button and return early if the file is empty
+				button.disabled = true;
+				return;
+			}
 
-        navigator.clipboard.writeText(data).then(function() {
-          // Change the button text and color when the copy is successful
-          button.textContent = 'Copied!';
-          button.style.backgroundColor = 'red';
-          console.log('Copying to clipboard was successful!');
-        }, function(err) {
-          console.error('Could not copy text: ', err);
-        });
-      });
-  }
+			navigator.clipboard.writeText(data).then(
+				function () {
+					// Store the original button text in a data attribute, if not already stored
+					if (!button.dataset.originalText) {
+						button.dataset.originalText = button.textContent;
+					}
 
-  function resetButtons() {
-    document.querySelectorAll('.button-container button').forEach(function(button) {
-      if (button.dataset.originalText) {
-        button.textContent = button.dataset.originalText;
-      }
-      button.style.backgroundColor = '';
-    });
-  }
+					// Change the button text and color when the copy is successful
+					button.textContent = "Copied!";
+					button.style.backgroundColor = "red";
+					console.log("Copying to clipboard was successful!");
 
-  // Check each file when the page is loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    attachEventListeners();
-    const buttons = document.querySelectorAll('.button-container button');
-    buttons.forEach(function(button) {
-      const filePath = button.getAttribute('onclick').split("'")[1];
-      fetch(filePath)
-        .then(response => response.text())
-        .then(data => {
-          if (data.trim() === '') {
-            button.disabled = true;
-          }
-        });
-    });
-  });
+					// Add the 'clicked' class to trigger the click animation
+					button.classList.add("clicked");
 
+					// Reset the button after 2 seconds
+					setTimeout(function () {
+						// Retrieve the original button text from the data attribute
+						button.textContent = button.dataset.originalText;
+						button.style.backgroundColor = ""; // Set to default color
 
+						// Add the 'reset' class to trigger the reset animation
+						button.classList.add("reset");
+
+						// Remove the 'clicked' and 'reset' classes after the animation is complete
+						setTimeout(function () {
+							button.classList.remove("clicked");
+							button.classList.remove("reset");
+						}, 500); // Adjust the duration to match the animation duration
+					}, 2000);
+				},
+				function (err) {
+					console.error("Could not copy text: ", err);
+				}
+			);
+		});
+}
+
+function resetButtons() {
+	document
+		.querySelectorAll(".button-container button")
+		.forEach(function (button) {
+			if (button.dataset.originalText) {
+				button.textContent = button.dataset.originalText;
+			}
+			button.style.backgroundColor = "";
+		});
+}
+
+// Check each file when the page is loaded
+document.addEventListener("DOMContentLoaded", function () {
+	attachEventListeners();
+	const buttons = document.querySelectorAll(".button-container button");
+	buttons.forEach(function (button) {
+		const filePath = button.getAttribute("onclick").split("'")[1];
+		fetch(filePath)
+			.then((response) => response.text())
+			.then((data) => {
+				if (data.trim() === "") {
+					button.disabled = true;
+				}
+			});
+	});
+
+	/* setTimeout(resetButtons, 0); */
+});
 
 /*************************************************************************/
 /* DELETE BUTTON - CLOSE BUTTON!!
 /*************************************************************************/
 
-  document.querySelectorAll('.close-button').forEach(button => {
-    button.addEventListener('click', (event) => {
-      // Get the parent component of the clicked button
-      const component = event.target.closest('.grid-item');
-      // Extract the component's unique name
-      const componentName = component.dataset.componentName;
-      // Send a DELETE request to the server
-      fetch(`/delete-component/${componentName}`, {
-        method: 'DELETE'
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Success:', data);
-        // Refresh the window after successful deletion
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    });
-  });
-  
+document.querySelectorAll(".close-button").forEach((button) => {
+	button.addEventListener("click", (event) => {
+		// Get the parent component of the clicked button
+		const component = event.target.closest(".grid-item");
+		// Extract the component's unique name
+		const componentName = component.dataset.componentName;
+		// Send a DELETE request to the server
+		fetch(`/delete-component/${componentName}`, {
+			method: "DELETE",
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`Error: ${response.statusText}`);
+				}
+				return response.json();
+			})
+			.then((data) => {
+				console.log("Success:", data);
+				// Refresh the window after successful deletion
+				window.location.reload();
+			})
+			.catch((error) => {
+				console.error("Error:", error);
+			});
+	});
+});
 
 /* load unload iframe*/
 // Add event listeners to each .grid-item
-document.querySelectorAll('.grid-item').forEach(function(gridItem) {
-  let iframe = gridItem.querySelector('iframe');
-  let dataSrc = iframe.dataset.src;  // Correctly access the data-src attribute
+document.querySelectorAll(".grid-item").forEach(function (gridItem) {
+	let iframe = gridItem.querySelector("iframe");
+	let dataSrc = iframe.dataset.src; // Correctly access the data-src attribute
 
-  // On mouseover, set the src attribute of the iframe
-  gridItem.addEventListener('mouseover', function() {
-    iframe.src = dataSrc;
-  });
+	// On mouseover, set the src attribute of the iframe and remove the fade-out class
+	gridItem.addEventListener("mouseover", function () {
+		iframe.classList.remove("fade-out");
+		iframe.src = dataSrc;
+		// Force a reflow by accessing the offsetHeight property
+		iframe.offsetHeight;
+		// Add the fade-in class to trigger the fade-in animation
+		iframe.classList.add("fade-in");
+	});
 
-  // On mouseleave, remove the src attribute of the iframe
-  gridItem.addEventListener('mouseleave', function() {
-    iframe.src = '';
-  });
+	// On mouseleave, add the fade-out class to trigger the fade-out animation
+	gridItem.addEventListener("mouseleave", function () {
+		iframe.classList.remove("fade-in");
+		iframe.classList.add("fade-out");
+		iframe.src = "";
+
+		// Remove the fade-out class after the transition is complete
+		setTimeout(function () {
+			iframe.classList.remove("fade-out");
+		}, 500); // Adjust the duration to match the transition duration
+	});
 });
-
-
-
-
-
-
 /* UNDO BUTTON */
 
 /* document.getElementById('undo-button').addEventListener('click', function() {
