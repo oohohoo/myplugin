@@ -140,7 +140,22 @@ return componentHTML;
 
 
 }
-// Removed the editComponent function as it's not needed in this file
+/* NOVA FUNKCIJA EDIT COMPONENT*/
+function editComponent(componentName) {
+  // Fetch the component data from the server
+  fetch(`/components/${componentName}`)
+    .then(response => response.json())
+    .then(data => {
+      // Populate the edit form with the component data
+      document.getElementById('edit-form-name').value = data.name;
+      document.getElementById('edit-form-html').value = data.html;
+      document.getElementById('edit-form-js').value = data.js;
+      document.getElementById('edit-form-css').value = data.css;
+
+      // Show the edit form
+      document.getElementById('edit-form').style.display = 'block';
+    });
+}
 
 
 

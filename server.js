@@ -104,24 +104,6 @@ app.delete('/delete-component/:id', (req, res) => {
 });
 
 // Server.js
-app.get('/components/:name', (req, res) => {
-  const componentName = req.params.name;
-  const componentDir = path.join(__dirname, 'public', 'components', componentName);
-  if (!fs.existsSync(componentDir)) {
-    res.status(404).send('Component not found');
-    return;
-  }
-  const htmlCode = fs.readFileSync(path.join(componentDir, `${componentName}.html`), 'utf-8');
-  const cssCode = fs.readFileSync(path.join(componentDir, `${componentName}.css`), 'utf-8');
-  const jsCode = fs.readFileSync(path.join(componentDir, `${componentName}.js`), 'utf-8');
-  res.send({
-    componentName: componentName,
-    htmlCode: htmlCode,
-    cssCode: cssCode,
-    jsCode: jsCode
-  });
-});
-
 app.get('/components', (req, res) => {
   const componentDirs = fs.readdirSync(path.join(__dirname, 'public', 'components'), { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
