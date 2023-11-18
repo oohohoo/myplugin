@@ -8,8 +8,13 @@ const path = require('path');
 function updateComponents() {
   // Get the names of all directories in the components directory
   const componentDirs = fs.readdirSync('./public/components', { withFileTypes: true })
-     .filter(dirent => dirent.isDirectory())
+    .filter(dirent => dirent.isDirectory())
     .filter(dirent => dirent.name !== 'deleted') // Ignore the "deleted" directory
+    .map(dirent => ({
+        name: dirent.name,
+        time: fs.statSync('./public/components/' + dirent.name).mtime.getTime()
+    }))
+    .sort((a, b) => b.time - a.time)
     .map(dirent => dirent.name);
   
 
