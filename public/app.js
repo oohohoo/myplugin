@@ -26,7 +26,70 @@ socket.onerror = function(error) {
 };
 
 function attachEventListeners() {
-  // Add all event listeners here...
+  // Add event listeners to each .grid-item
+  document.querySelectorAll('.grid-item').forEach(function(gridItem) {
+    let iframe = gridItem.querySelector('iframe');
+    let dataSrc = iframe.dataset.src;  // Correctly access the data-src attribute
+
+    // On mouseover, set the src attribute of the iframe
+    gridItem.addEventListener('mouseover', function() {
+      iframe.src = dataSrc;
+    });
+
+    // On mouseleave, remove the src attribute of the iframe
+    gridItem.addEventListener('mouseleave', function() {
+      iframe.src = '';
+    });
+  });
+
+  // Add event listeners to each .close-button
+  document.querySelectorAll('.close-button').forEach(button => {
+    button.addEventListener('click', (event) => {
+      // Get the parent component of the clicked button
+      const component = event.target.closest('.grid-item');
+      // Extract the component's unique name
+      const componentName = component.dataset.componentName;
+      // Send a DELETE request to the server
+      fetch(`/delete-component/${componentName}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        // Refresh the window after successful deletion
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  });
+
+  // Add event listeners to each .edit-button
+  const oldButtons = document.querySelectorAll('.edit-button');
+  oldButtons.forEach(function(oldButton) {
+    const newButton = oldButton.cloneNode(true);
+    oldButton.parentNode.replaceChild(newButton, oldButton);
+
+    newButton.addEventListener('click', function() {
+      let componentName = this.closest('.grid-item').dataset.componentName;
+      fetch(`/components/${componentName}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('component-name').value = data.componentName;
+          document.getElementById('html-code').value = data.htmlCode;
+          document.getElementById('css-code').value = data.cssCode;
+          document.getElementById('js-code').value = data.jsCode;
+          document.getElementById('side-panel').classList.add('side-panel-shown');
+          document.getElementById('side-panel').classList.remove('side-panel-hidden');
+        });
+    });
+  });
 }
 
 document.getElementById('component-form').addEventListener('submit', function(event) {
