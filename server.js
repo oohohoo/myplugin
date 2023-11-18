@@ -103,7 +103,6 @@ app.delete('/delete-component/:id', (req, res) => {
 });
 });
 
-
 // Server.js
 app.get('/components/:name', (req, res) => {
   const componentName = req.params.name;
