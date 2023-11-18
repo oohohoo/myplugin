@@ -107,9 +107,14 @@ app.delete('/delete-component/:id', (req, res) => {
 app.get('/components', (req, res) => {
   const componentDirs = fs.readdirSync(path.join(__dirname, 'public', 'components'), { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
+    .map(dirent => ({
+        name: dirent.name,
+        time: fs.statSync(path.join(__dirname, 'public', 'components', dirent.name)).mtime.getTime()
+    }))
+    .sort((a, b) => b.time - a.time)
     .map(dirent => dirent.name);
 
-  res.send(componentDirs.reverse());
+  res.send(componentDirs);
 });
 
 /*************************************************************************/
