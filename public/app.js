@@ -56,37 +56,44 @@ document.getElementById('component-form').addEventListener('submit', function(ev
       fetch('/components')
         .then(response => response.json())
         .then(components => {
-          // Remove all existing components from the DOM
-          const componentContainer = document.getElementById('component-container');
-          if (!componentContainer) {
-            console.error('No element with id "component-container" found');
-            return;
-          }
-          while (componentContainer.firstChild) {
-            componentContainer.removeChild(componentContainer.firstChild);
-          }
+          // Fetch the updated list of components and refresh the page
+          fetch('/components')
+            .then(response => response.json())
+            .then(components => {
+              // Remove all existing components from the DOM
+              const componentContainer = document.getElementById('component-container');
+              if (!componentContainer) {
+                console.error('No element with id "component-container" found');
+                return;
+              }
+              while (componentContainer.firstChild) {
+                componentContainer.removeChild(componentContainer.firstChild);
+              }
 
-          // Add the new component to the DOM
-          const componentElement = document.createElement('div');
-          componentElement.className = 'grid-item';
-          componentElement.id = componentData.id.replace(/ /g, "-");
-          componentElement.dataset.componentName = componentData.componentName;
-          componentElement.innerHTML = `
-            <h2 class="fulliframe" cms-post-title>${componentData.componentName}</h2>
-            <iframe data-src="./components/${componentData.componentName}/${componentData.componentName}.html" title="Live Preview"></iframe>
-            <ul class="tags">
-              <li>mobile</li>
-              <li>media</li>
-            </ul>
-            <button class="close-button">Close</button>
-            <div class="button-container">
-              <button onclick="copyFileContent('components/${componentData.componentName}/${componentData.componentName}.html', this)">HTML</button>
-              <button onclick="copyFileContent('components/${componentData.componentName}/${componentData.componentName}.js', this)">JS</button>
-              <button onclick="copyFileContent('components/${componentData.componentName}/${componentData.componentName}.css', this)">CSS</button>
-            </div>
-            <button class="edit-button" onclick="editComponent('${componentData.componentName}')">Edit</button>
-          `;
-          componentContainer.appendChild(componentElement);
+              // Add all components to the DOM
+              components.forEach(componentName => {
+                const componentElement = document.createElement('div');
+                componentElement.className = 'grid-item';
+                componentElement.id = componentName.replace(/ /g, "-");
+                componentElement.dataset.componentName = componentName;
+                componentElement.innerHTML = `
+                  <h2 class="fulliframe" cms-post-title>${componentName}</h2>
+                  <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
+                  <ul class="tags">
+                    <li>mobile</li>
+                    <li>media</li>
+                  </ul>
+                  <button class="close-button">Close</button>
+                  <div class="button-container">
+                    <button onclick="copyFileContent('components/${componentName}/${componentName}.html', this)">HTML</button>
+                    <button onclick="copyFileContent('components/${componentName}/${componentName}.js', this)">JS</button>
+                    <button onclick="copyFileContent('components/${componentName}/${componentName}.css', this)">CSS</button>
+                  </div>
+                  <button class="edit-button" onclick="editComponent('${componentName}')">Edit</button>
+                `;
+                componentContainer.appendChild(componentElement);
+              });
+            });
         });
 
       // Log errors
