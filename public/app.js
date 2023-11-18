@@ -194,7 +194,7 @@ document.querySelectorAll('.grid-item').forEach(function(gridItem) {
 
 /* UNDO BUTTON */
 
-document.getElementById('undo-button').addEventListener('click', function() {
+/* document.getElementById('undo-button').addEventListener('click', function() {
   fetch('/undo-delete', {
       method: 'POST'
   })
@@ -224,9 +224,9 @@ function deleteComponent(componentId) {
         console.log(data); // Log data received from the server
 
           // If the component was moved to the deleted folder, show the undo button
-         /*  document.getElementById('undo-button').style.display = 'block'; */
+         // document.getElementById('undo-button').style.display = 'block'; 
           //updateComponents();
       }
   });
 }
-
+ */
