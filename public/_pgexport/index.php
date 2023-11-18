@@ -55,9 +55,9 @@
         <!-- START AUTO-GENERATED COMPONENTS -->
         <?php while ( $components_query->have_posts() ) : $components_query->the_post(); ?>
             <?php PG_Helper_v2::rememberShownPost(); ?>
-            <div id="blurio" data-component-name="blurio" <?php post_class( 'grid-item' ); ?>>
+            <div id="nobajo" data-component-name="nobajo" <?php post_class( 'grid-item' ); ?>>
                 <h2 class="fulliframe"><?php the_title(); ?></h2>
-                <iframe data-src="./components/blurio/blurio.html" title="Live Preview"></iframe>
+                <iframe data-src="./components/nobajo/nobajo.html" title="Live Preview"></iframe>
                 <ul class="tags">
                     <li>
                         <?php _e( 'mobile', 'ohoho_components_app' ); ?>
@@ -70,17 +70,17 @@
                     <?php _e( 'Close', 'ohoho_components_app' ); ?>
                 </button>
                 <div class="button-container">
-                    <button onclick="copyFileContent('components/blurio/blurio.html', this)">
+                    <button onclick="copyFileContent('components/nobajo/nobajo.html', this)">
                         <?php _e( 'HTML', 'ohoho_components_app' ); ?>
                     </button>
-                    <button onclick="copyFileContent('components/blurio/blurio.js', this)">
+                    <button onclick="copyFileContent('components/nobajo/nobajo.js', this)">
                         <?php _e( 'JS', 'ohoho_components_app' ); ?>
                     </button>
-                    <button onclick="copyFileContent('components/blurio/blurio.css', this)">
+                    <button onclick="copyFileContent('components/nobajo/nobajo.css', this)">
                         <?php _e( 'CSS', 'ohoho_components_app' ); ?>
                     </button>
                 </div>
-                <button class="edit-button" onclick="editComponent('blurio')">
+                <button class="edit-button" onclick="editComponent('nobajo')">
                     <?php _e( 'Edit', 'ohoho_components_app' ); ?>
                 </button>                         
 
@@ -88,6 +88,68 @@
             </div>
         <?php endwhile; ?>
         <?php wp_reset_postdata(); ?>
+        <div class="grid-item" id="noba" data-component-name="noba">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/noba/noba.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/noba/noba.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/noba/noba.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/noba/noba.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('noba')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="blurio" data-component-name="blurio">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/blurio/blurio.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/blurio/blurio.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/blurio/blurio.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/blurio/blurio.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('blurio')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
         <div class="grid-item" id="MOJA-LUDILO-KOMPONENTA" data-component-name="MOJA LUDILO KOMPONENTA">
             <h2 class="fulliframe"><?php the_title(); ?></h2>
             <iframe data-src="./components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.html" title="Live Preview"></iframe>

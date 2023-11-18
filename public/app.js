@@ -116,7 +116,7 @@ document.getElementById('component-form').addEventListener('submit', function(ev
   .catch(error => console.error('Error:', error));
 });
 
-  /*************************************************************************/
+/*************************************************************************/
 /* ADD COMPONENT - PROVJERI
 /*************************************************************************/
 

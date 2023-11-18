@@ -157,10 +157,6 @@ function editComponent(componentName) {
     });
 }
 
-
-
-
-
 module.exports = {
   generateComponents: function() {
 /*************************************************************************/
