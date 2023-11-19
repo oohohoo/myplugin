@@ -6,6 +6,10 @@ const port = 3000;
 
 const { generateComponents, updateComponents } = require('./generateComponents.js'); // Import the generateComponents function
 
+
+/*************************************************************************/
+/* UPDATE COMPONENTS ON SERVER START
+/*************************************************************************/
 updateComponents(); 
 
 app.use(express.static('public'));
@@ -17,17 +21,25 @@ app.use(function (err, req, res, next) {
 });
 
 
-/* SAVE */
+/* app.post('/create-component', (req, res) => {
+  // Code to create new component goes here...
+
+  // After new component is created, update components
+  updateComponents();
+
+  // Send response
+  res.send('Component created successfully!');
+});
+ */
+
+/*************************************************************************/
+/* SAVE COMPONENT
+/*************************************************************************/
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
-  if (!req.body.oldComponentName || !req.body.componentName) {
-    res.status(400).send('Component name is missing');
-    return;
-  }
-
   let oldComponentName = req.body.oldComponentName;
-  let componentName = req.body.componentName;
+  let componentName = req.body.componentName || oldComponentName;
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
@@ -43,13 +55,8 @@ app.post('/save-component', (req, res) => {
   } else {
     fs.mkdirSync(newComponentDir, { recursive: true });
   }
-
-  if (oldComponentName !== componentName) {
-    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.html`), path.join(newComponentDir, `${componentName}.html`));
-    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.css`), path.join(newComponentDir, `${componentName}.css`));
-    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.js`), path.join(newComponentDir, `${componentName}.js`));
-  }
   
+  // Add links to the CSS and JS files in the HTML code
   let linkedHtmlCode = `
     <!DOCTYPE html>
     <html>
@@ -69,13 +76,18 @@ app.post('/save-component', (req, res) => {
 
   console.log('Component created:', componentName);
   
-  generateComponents(); 
+  generateComponents(); // Call the function after a new component is created
 
   res.send({ status: 'success' });
 });
 
 
-/* DELETE */
+/* const { updateComponents } = require('./generateComponents.js'); */
+
+
+/*************************************************************************/
+/* DELETE COMPONENT
+/*************************************************************************/
 app.delete('/delete-component/:id', (req, res) => {
   const componentId = req.params.id;
   const componentPath = path.join(__dirname, 'public', 'components', componentId); 
@@ -85,6 +97,7 @@ app.delete('/delete-component/:id', (req, res) => {
       return;
   }
 
+ // Delete the component
  fs.rmdir(componentPath, { recursive: true }, (err) => {
   if(err){
     console.error(err);
@@ -92,6 +105,7 @@ app.delete('/delete-component/:id', (req, res) => {
     return;
   }
 
+  // Update the components list in index.html
   updateComponents();
 
   res.json({ message: 'Component deleted' });
@@ -130,7 +144,9 @@ app.get('/components', (req, res) => {
   res.send(componentDirs);
 });
 
-/* RESET ON RELOAD */
+/*************************************************************************/
+/* RESET COMPONENTS ON EVERY RELOAD
+/*************************************************************************/
 app.get('/', function(req, res) {
   updateComponents();
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -140,7 +156,13 @@ app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-/* PUSH UPDATES */
+
+/*************************************************************************/
+/* PUSH UPDATES WHEN APPLICATION ADDED
+/*************************************************************************/
+
+
+// Ensure WebSocket server is correctly set up
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 wss.broadcast = function(data) {
@@ -155,7 +177,7 @@ fs.watch('./public/components', (eventType, filename) => {
   const componentHTML = updateComponents();
   wss.broadcast(JSON.stringify(componentHTML));
 });
-
+/* const fs = require('fs'); */
 const puppeteer = require('puppeteer');
 
 app.post('/generate-screenshot/:name', async (req, res) => {
