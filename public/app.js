@@ -1,18 +1,13 @@
-/* ADD NEW COMPONENT - FORM SUBMIT */
-
-// Ensure WebSocket connection is correctly established and updates are received
+/* ADD NEW COMP - FORM */
 let socket = new WebSocket("ws://localhost:8080");
-
 socket.onopen = function (e) {
 	console.log("[open] Connection established");
 	console.log("Sending to server");
 	socket.send("My name is John");
 };
-
 socket.onmessage = function (event) {
 	console.log(`[message] Data received from server: ${event.data}`);
 };
-
 socket.onclose = function (event) {
 	if (event.wasClean) {
 		console.log(
@@ -26,32 +21,24 @@ socket.onclose = function (event) {
 socket.onerror = function (error) {
 	console.log(`[error] ${error.message}`);
 };
-
 function attachEventListeners() {
-	// Add event listeners to each .grid-item
 	document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 		let iframe = gridItem.querySelector("iframe");
-		let dataSrc = iframe.dataset.src; // Correctly access the data-src attribute
+		let dataSrc = iframe.dataset.src; 
 
-		// On mouseover, set the src attribute of the iframe
 		gridItem.addEventListener("mouseover", function () {
 			iframe.src = dataSrc;
 		});
 
-		// On mouseleave, remove the src attribute of the iframe
 		gridItem.addEventListener("mouseleave", function () {
 			iframe.src = "";
 		});
 	});
 
-	// Add event listeners to each .close-button
 	document.querySelectorAll(".close-button").forEach((button) => {
 		button.addEventListener("click", (event) => {
-			// Get the parent component of the clicked button
 			const component = event.target.closest(".grid-item");
-			// Extract the component's unique name
 			const componentName = component.dataset.componentName;
-			// Send a DELETE request to the server
 			fetch(`/delete-component/${componentName}`, {
 				method: "DELETE",
 			})
@@ -63,7 +50,6 @@ function attachEventListeners() {
 				})
 				.then((data) => {
 					console.log("Success:", data);
-					// Refresh the window after successful deletion
 					window.location.reload();
 				})
 				.catch((error) => {
@@ -72,7 +58,6 @@ function attachEventListeners() {
 		});
 	});
 
-	// Add event listeners to each .edit-button
 	const oldButtons = document.querySelectorAll(".edit-button");
 	oldButtons.forEach(function (oldButton) {
 		const newButton = oldButton.cloneNode(true);
@@ -131,15 +116,12 @@ document
 			.then((response) => response.json())
 			.then((data) => {
 				if (data.status === "success") {
-					// Fetch the updated list of components and refresh the page
 					fetch("/components")
 						.then((response) => response.json())
 						.then((components) => {
-							// Fetch the updated list of components and refresh the page
 							fetch("/components")
 								.then((response) => response.json())
 								.then((components) => {
-									// Remove all existing components from the DOM
 									const componentContainer = document.getElementById(
 										"component-container"
 									);
@@ -156,7 +138,7 @@ document
 									}
 
 
-									// Add all components to the DOM
+									// Add comp to DOM
 									components.forEach(async (componentName) => {
 										const componentElement = document.createElement("div");
 										componentElement.className = "grid-item";
@@ -179,7 +161,6 @@ document
   `;
 										componentContainer.appendChild(componentElement);
 
-										// Request the server to generate a screenshot for the iframe content
 										fetch(`/generate-screenshot/${componentName}`, {
 											method: "POST",
 										});
@@ -188,13 +169,11 @@ document
 								});
 						});
 
-					// Reset the form fields
 					document.getElementById("component-name").value = "";
 					document.getElementById("html-code").value = "";
 					document.getElementById("css-code").value = "";
 					document.getElementById("js-code").value = "";
 
-					// Close the form and reset its fields
 					document.getElementById("component-form").reset();
 					document
 						.getElementById("side-panel")
@@ -203,26 +182,18 @@ document
 						.getElementById("side-panel")
 						.classList.add("side-panel-hidden");
 
-					// Log errors
 					socket.onerror = function (error) {
 						console.log(`WebSocket error: ${error}`);
 					};
 
-					// Log messages from the server
 					socket.onmessage = function (event) {
 						console.log("Server says: " + event.data);
 					};
 				}
 			})
-
 			.then((data) => {
-				// Refresh the window after successful save
 			//	window.location.reload();
-				console.log(
-					"MOŽDA NADOGRADITI DA SE U BUDUĆNOSTI NE REFRESHA CILI PAGE"
-				);
-			})
-
+						})
 			.catch((error) => console.error("Error:", error));
 	});
 
@@ -233,16 +204,12 @@ document
 		document.getElementById("side-panel").classList.add("side-panel-hidden");
 	});
 
-/*************************************************************************/
-/* ADD COMPONENT - PROVJERI
-/*************************************************************************/
-
+/* ADD COMP*/
 document.getElementById("add-component").addEventListener("click", function () {
 	document.getElementById("side-panel").classList.add("side-panel-shown");
 	document.getElementById("side-panel").classList.remove("side-panel-hidden");
 });
 
-// Remove all existing event listeners
 const oldButtons = document.querySelectorAll(".edit-button");
 oldButtons.forEach(function (oldButton) {
 	const newButton = oldButton.cloneNode(true);
@@ -265,105 +232,11 @@ oldButtons.forEach(function (oldButton) {
 	});
 });
 
-/*************************************************************************/
-/* COPY TO CLIPBOARD
-/*************************************************************************/
-function copyFileContent(filePath, button) {
-	// Reset all buttons
-	resetButtons();
-
-	// Store the original button text in a data attribute, if not already stored
-	if (!button.dataset.originalText) {
-		button.dataset.originalText = button.textContent;
-	}
-
-	fetch(filePath)
-		.then((response) => response.text())
-		.then((data) => {
-			if (data.trim() === "") {
-				// Disable the button and return early if the file is empty
-				button.disabled = true;
-				return;
-			}
-
-			navigator.clipboard.writeText(data).then(
-				function () {
-					// Store the original button text in a data attribute, if not already stored
-					if (!button.dataset.originalText) {
-						button.dataset.originalText = button.textContent;
-					}
-
-					// Change the button text and color when the copy is successful
-					button.textContent = "Copied!";
-					button.style.backgroundColor = "red";
-					console.log("Copying to clipboard was successful!");
-
-					// Add the 'clicked' class to trigger the click animation
-					button.classList.add("clicked");
-
-					// Reset the button after 2 seconds
-					setTimeout(function () {
-						// Retrieve the original button text from the data attribute
-						button.textContent = button.dataset.originalText;
-						button.style.backgroundColor = ""; // Set to default color
-
-						// Add the 'reset' class to trigger the reset animation
-						button.classList.add("reset");
-
-						// Remove the 'clicked' and 'reset' classes after the animation is complete
-						setTimeout(function () {
-							button.classList.remove("clicked");
-							button.classList.remove("reset");
-						}, 500); // Adjust the duration to match the animation duration
-					}, 2000);
-				},
-				function (err) {
-					console.error("Could not copy text: ", err);
-				}
-			);
-		});
-}
-
-function resetButtons() {
-	document
-		.querySelectorAll(".button-container button")
-		.forEach(function (button) {
-			if (button.dataset.originalText) {
-				button.textContent = button.dataset.originalText;
-			}
-			button.style.backgroundColor = "";
-		});
-}
-
-// Check each file when the page is loaded
-document.addEventListener("DOMContentLoaded", function () {
-	attachEventListeners();
-	const buttons = document.querySelectorAll(".button-container button");
-	buttons.forEach(function (button) {
-		const filePath = button.getAttribute("onclick").split("'")[1];
-		fetch(filePath)
-			.then((response) => response.text())
-			.then((data) => {
-				if (data.trim() === "") {
-					button.disabled = true;
-				}
-			});
-	});
-
-	/* setTimeout(resetButtons, 0); */
-});
-
-/*************************************************************************/
-/* DELETE BUTTON - CLOSE BUTTON!!
-/*************************************************************************/
-
+/* DEL BUTTON */
 document.querySelectorAll(".close-button").forEach((button) => {
 	button.addEventListener("click", (event) => {
-		// Get the parent component of the clicked button
 		const component = event.target.closest(".grid-item");
-		// Extract the component's unique name
 		const componentName = component.dataset.componentName;
-		// Send a DELETE request to the server
 		fetch(`/delete-component/${componentName}`, {
 			method: "DELETE",
 		})
@@ -375,7 +248,6 @@ document.querySelectorAll(".close-button").forEach((button) => {
 			})
 			.then((data) => {
 				console.log("Success:", data);
-				// Refresh the window after successful deletion
 				window.location.reload();
 			})
 			.catch((error) => {
@@ -385,30 +257,24 @@ document.querySelectorAll(".close-button").forEach((button) => {
 });
 
 /* load unload iframe*/
-// Add event listeners to each .grid-item
 document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 	let iframe = gridItem.querySelector("iframe");
-	let dataSrc = iframe.dataset.src; // Correctly access the data-src attribute
+	let dataSrc = iframe.dataset.src; 
 
-	// On mouseover, set the src attribute of the iframe and remove the fade-out class
 	gridItem.addEventListener("mouseover", function () {
 		iframe.classList.remove("fade-out");
 		iframe.src = dataSrc;
-		// Force a reflow by accessing the offsetHeight property
 		iframe.offsetHeight;
-		// Add the fade-in class to trigger the fade-in animation
 		iframe.classList.add("fade-in");
 	});
 
-	// On mouseleave, add the fade-out class to trigger the fade-out animation
 	gridItem.addEventListener("mouseleave", function () {
 		iframe.classList.remove("fade-in");
 		iframe.classList.add("fade-out");
 		iframe.src = "";
 
-		// Remove the fade-out class after the transition is complete
 		setTimeout(function () {
 			iframe.classList.remove("fade-out");
-		}, 500); // Adjust the duration to match the transition duration
+		}, 500); 
 	});
 });
