@@ -2,14 +2,12 @@
 const fs = require('fs');
 const path = require('path');
 
-/*************************************************************************/
-/* FUNCTION TO UPDATE COMPONENT
-/*************************************************************************/
+
+/* UPDATE COMPONENT */
 function updateComponents() {
-  // Get the names of all directories in the components directory
   const componentDirs = fs.readdirSync('./public/components', { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
-    .filter(dirent => dirent.name !== 'deleted') // Ignore the "deleted" directory
+    .filter(dirent => dirent.name !== 'deleted')
     .map(dirent => ({
         name: dirent.name,
         time: fs.statSync('./public/components/' + dirent.name).mtime.getTime()
@@ -36,27 +34,13 @@ const componentHTML = componentDirs.map(dir => `
 </div>
 `).join('\n');
 
-/*************************************************************************/
-/* READ THE INDEX HTML FILE
-/*************************************************************************/
   let indexHTML = fs.readFileSync('./public/index.html', 'utf-8');
-
- /*************************************************************************/
-/* DEFINE START AND END POINT OF AUTO-GENERATED COMPONENTS
-/*************************************************************************/ 
   const startTag = '<!-- START AUTO-GENERATED COMPONENTS -->';
   const endTag = '<!-- END AUTO-GENERATED COMPONENTS -->';
-
-/*************************************************************************/
-/* FIND THE START AND END INDEXES OF THE AUTO-GENERATED COMPONENT SECTION
-/*************************************************************************/
 let startIndex = indexHTML.indexOf(startTag);
 let endIndex = indexHTML.indexOf(endTag);
 
-/*************************************************************************/
-/* IF BOTH TAGS ARE FOUND, REPLACE THE EXISTING AUTO-GENERATED COMPONENTS
-WITH NEW ONES
-/*************************************************************************/
+
 if (startIndex !== -1 && endIndex !== -1) {
     startIndex += startTag.length;
     indexHTML = indexHTML.substring(0, startIndex) + 
@@ -64,22 +48,15 @@ if (startIndex !== -1 && endIndex !== -1) {
                 indexHTML.substring(endIndex, indexHTML.length);
 }
 
-/*************************************************************************/
-/*WRITE THE UPDATED HTML BACK TO THE INDEX.HTML FILE
-/*************************************************************************/
   fs.writeFileSync('./public/index.html', indexHTML);
-  // Call attachEventListeners after the components are updated
   if (typeof window !== 'undefined' && typeof window.attachEventListeners === 'function') {
     setTimeout(window.attachEventListeners, 0);
   }
-  // Call the function in the client-side JavaScript
   if (typeof attachEventListeners === 'function') {
     attachEventListeners();
   }
 
-/*************************************************************************/
-/* CHCK IF THERE ARE DELETED ITEMS IN THE DELETED FOLDER AND DISPLAY THE UNDO BUTTON
-/*************************************************************************/
+/* UNDO */
 /* 
 const http = require('http');
 
@@ -87,12 +64,10 @@ function checkDeletedItems() {
   http.get('http://localhost:3000/deleted-items', (res) => {
     let data = '';
 
-    // A chunk of data has been received.
     res.on('data', (chunk) => {
       data += chunk;
     });
 
-    // The whole response has been received.
     res.on('end', () => {
       data = JSON.parse(data);
       const undoButton = document.getElementById('undo-button');
@@ -121,8 +96,6 @@ checkDeletedItems();  */
   .then(data => {
     const undoButton = document.getElementById('undo-button');
 
-    // If there are items in the deleted folder, display the undo button
-    // and show the number of deleted items
     if (data.length > 0) {
       undoButton.textContent = `Undo (${data.length})`;
       undoButton.style.display = 'block';
@@ -134,44 +107,30 @@ checkDeletedItems();  */
 
 checkDeletedItems(); */
 
-
-
 return componentHTML;
-
-
-
-
 }
-/* NOVA FUNKCIJA EDIT COMPONENT*/
+
+/* EDIT COMPONENT*/
 function editComponent(componentName) {
-  // Fetch the component data from the server
   fetch(`/components/${componentName}`)
     .then(response => response.json())
     .then(data => {
-      // Populate the edit form with the component data
       document.getElementById('edit-form-name').value = data.name;
       document.getElementById('edit-form-html').value = data.html;
       document.getElementById('edit-form-js').value = data.js;
       document.getElementById('edit-form-css').value = data.css;
-
-      // Show the edit form
       document.getElementById('edit-form').style.display = 'block';
     });
 }
 
 module.exports = {
   generateComponents: function() {
-/*************************************************************************/
-/* RUN THE UPDATECOMPONENTS FUNCTION INITIALLY
-/*************************************************************************/
-    updateComponents();
 
-    // Watch the components directory for changes
+/* UPDATE COMP. INITIAL */
+    updateComponents();
     fs.watch('./public/components', (eventType, filename) => {
-      // Run the updateComponents function whenever a change is detected
       updateComponents();
     });
   },
-
   updateComponents: updateComponents
 }

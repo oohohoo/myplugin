@@ -55,9 +55,9 @@
         <!-- START AUTO-GENERATED COMPONENTS -->
         <?php while ( $components_query->have_posts() ) : $components_query->the_post(); ?>
             <?php PG_Helper_v2::rememberShownPost(); ?>
-            <div id="mala-mašanka" data-component-name="mala mašanka" <?php post_class( 'grid-item' ); ?>>
+            <div id="mobile-nav" data-component-name="mobile-nav" <?php post_class( 'grid-item' ); ?>>
                 <h2 class="fulliframe"><?php the_title(); ?></h2>
-                <iframe data-src="./components/mala mašanka/mala mašanka.html" title="Live Preview"></iframe>
+                <iframe data-src="./components/mobile-nav/mobile-nav.html" title="Live Preview"></iframe>
                 <ul class="tags">
                     <li>
                         <?php _e( 'mobile', 'ohoho_components_app' ); ?>
@@ -70,17 +70,17 @@
                     <?php _e( 'Close', 'ohoho_components_app' ); ?>
                 </button>
                 <div class="button-container">
-                    <button onclick="copyFileContent('components/mala mašanka/mala mašanka.html', this)">
+                    <button onclick="copyFileContent('components/mobile-nav/mobile-nav.html', this)">
                         <?php _e( 'HTML', 'ohoho_components_app' ); ?>
                     </button>
-                    <button onclick="copyFileContent('components/mala mašanka/mala mašanka.js', this)">
+                    <button onclick="copyFileContent('components/mobile-nav/mobile-nav.js', this)">
                         <?php _e( 'JS', 'ohoho_components_app' ); ?>
                     </button>
-                    <button onclick="copyFileContent('components/mala mašanka/mala mašanka.css', this)">
+                    <button onclick="copyFileContent('components/mobile-nav/mobile-nav.css', this)">
                         <?php _e( 'CSS', 'ohoho_components_app' ); ?>
                     </button>
                 </div>
-                <button class="edit-button" onclick="editComponent('mala mašanka')">
+                <button class="edit-button" onclick="editComponent('mobile-nav')">
                     <?php _e( 'Edit', 'ohoho_components_app' ); ?>
                 </button>                         
 
@@ -119,9 +119,9 @@
 
             <!-- Add this line -->
         </div>
-        <div class="grid-item" id="MOJA-LUDILO-KOMPONENTA" data-component-name="MOJA LUDILO KOMPONENTA">
+        <div class="grid-item" id="mala-maša" data-component-name="mala maša">
             <h2 class="fulliframe"><?php the_title(); ?></h2>
-            <iframe data-src="./components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.html" title="Live Preview"></iframe>
+            <iframe data-src="./components/mala maša/mala maša.html" title="Live Preview"></iframe>
             <ul class="tags">
                 <li>
                     <?php _e( 'mobile', 'ohoho_components_app' ); ?>
@@ -134,17 +134,17 @@
                 <?php _e( 'Close', 'ohoho_components_app' ); ?>
             </button>
             <div class="button-container">
-                <button onclick="copyFileContent('components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.html', this)">
+                <button onclick="copyFileContent('components/mala maša/mala maša.html', this)">
                     <?php _e( 'HTML', 'ohoho_components_app' ); ?>
                 </button>
-                <button onclick="copyFileContent('components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.js', this)">
+                <button onclick="copyFileContent('components/mala maša/mala maša.js', this)">
                     <?php _e( 'JS', 'ohoho_components_app' ); ?>
                 </button>
-                <button onclick="copyFileContent('components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.css', this)">
+                <button onclick="copyFileContent('components/mala maša/mala maša.css', this)">
                     <?php _e( 'CSS', 'ohoho_components_app' ); ?>
                 </button>
             </div>
-            <button class="edit-button" onclick="editComponent('MOJA LUDILO KOMPONENTA')">
+            <button class="edit-button" onclick="editComponent('mala maša')">
                 <?php _e( 'Edit', 'ohoho_components_app' ); ?>
             </button>                     
 
@@ -181,37 +181,6 @@
 
             <!-- Add this line -->
         </div>
-        <div class="grid-item" id="Interactive-Mouse-Cursor-Effect-" data-component-name="Interactive Mouse Cursor Effect ">
-            <h2 class="fulliframe"><?php the_title(); ?></h2>
-            <iframe data-src="./components/Interactive Mouse Cursor Effect /Interactive Mouse Cursor Effect .html" title="Live Preview"></iframe>
-            <ul class="tags">
-                <li>
-                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
-                </li>
-                <li>
-                    <?php _e( 'media', 'ohoho_components_app' ); ?>
-                </li>
-            </ul>
-            <button class="close-button">
-                <?php _e( 'Close', 'ohoho_components_app' ); ?>
-            </button>
-            <div class="button-container">
-                <button onclick="copyFileContent('components/Interactive Mouse Cursor Effect /Interactive Mouse Cursor Effect .html', this)">
-                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/Interactive Mouse Cursor Effect /Interactive Mouse Cursor Effect .js', this)">
-                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/Interactive Mouse Cursor Effect /Interactive Mouse Cursor Effect .css', this)">
-                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
-                </button>
-            </div>
-            <button class="edit-button" onclick="editComponent('Interactive Mouse Cursor Effect ')">
-                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
-            </button>                     
-
-            <!-- Add this line -->
-        </div>
         <div class="grid-item" id="tabs" data-component-name="tabs">
             <h2 class="fulliframe"><?php the_title(); ?></h2>
             <iframe data-src="./components/tabs/tabs.html" title="Live Preview"></iframe>
@@ -238,37 +207,6 @@
                 </button>
             </div>
             <button class="edit-button" onclick="editComponent('tabs')">
-                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
-            </button>                     
-
-            <!-- Add this line -->
-        </div>
-        <div class="grid-item" id="mala-maša" data-component-name="mala maša">
-            <h2 class="fulliframe"><?php the_title(); ?></h2>
-            <iframe data-src="./components/mala maša/mala maša.html" title="Live Preview"></iframe>
-            <ul class="tags">
-                <li>
-                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
-                </li>
-                <li>
-                    <?php _e( 'media', 'ohoho_components_app' ); ?>
-                </li>
-            </ul>
-            <button class="close-button">
-                <?php _e( 'Close', 'ohoho_components_app' ); ?>
-            </button>
-            <div class="button-container">
-                <button onclick="copyFileContent('components/mala maša/mala maša.html', this)">
-                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/mala maša/mala maša.js', this)">
-                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
-                </button>
-                <button onclick="copyFileContent('components/mala maša/mala maša.css', this)">
-                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
-                </button>
-            </div>
-            <button class="edit-button" onclick="editComponent('mala maša')">
                 <?php _e( 'Edit', 'ohoho_components_app' ); ?>
             </button>                     
 
@@ -305,9 +243,9 @@
 
             <!-- Add this line -->
         </div>
-        <div class="grid-item" id="mobile-nav" data-component-name="mobile-nav">
+        <div class="grid-item" id="MOJA-LUDILO-KOMPONENTA" data-component-name="MOJA LUDILO KOMPONENTA">
             <h2 class="fulliframe"><?php the_title(); ?></h2>
-            <iframe data-src="./components/mobile-nav/mobile-nav.html" title="Live Preview"></iframe>
+            <iframe data-src="./components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.html" title="Live Preview"></iframe>
             <ul class="tags">
                 <li>
                     <?php _e( 'mobile', 'ohoho_components_app' ); ?>
@@ -320,17 +258,265 @@
                 <?php _e( 'Close', 'ohoho_components_app' ); ?>
             </button>
             <div class="button-container">
-                <button onclick="copyFileContent('components/mobile-nav/mobile-nav.html', this)">
+                <button onclick="copyFileContent('components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.html', this)">
                     <?php _e( 'HTML', 'ohoho_components_app' ); ?>
                 </button>
-                <button onclick="copyFileContent('components/mobile-nav/mobile-nav.js', this)">
+                <button onclick="copyFileContent('components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.js', this)">
                     <?php _e( 'JS', 'ohoho_components_app' ); ?>
                 </button>
-                <button onclick="copyFileContent('components/mobile-nav/mobile-nav.css', this)">
+                <button onclick="copyFileContent('components/MOJA LUDILO KOMPONENTA/MOJA LUDILO KOMPONENTA.css', this)">
                     <?php _e( 'CSS', 'ohoho_components_app' ); ?>
                 </button>
             </div>
-            <button class="edit-button" onclick="editComponent('mobile-nav')">
+            <button class="edit-button" onclick="editComponent('MOJA LUDILO KOMPONENTA')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="mala-mašanka" data-component-name="mala mašanka">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/mala mašanka/mala mašanka.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/mala mašanka/mala mašanka.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/mala mašanka/mala mašanka.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/mala mašanka/mala mašanka.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('mala mašanka')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="screen3" data-component-name="screen3">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/screen3/screen3.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/screen3/screen3.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/screen3/screen3.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/screen3/screen3.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('screen3')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="screenshotich" data-component-name="screenshotich">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/screenshotich/screenshotich.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/screenshotich/screenshotich.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/screenshotich/screenshotich.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/screenshotich/screenshotich.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('screenshotich')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="ajpliz" data-component-name="ajpliz">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/ajpliz/ajpliz.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/ajpliz/ajpliz.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/ajpliz/ajpliz.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/ajpliz/ajpliz.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('ajpliz')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="lucky" data-component-name="lucky">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/lucky/lucky.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/lucky/lucky.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/lucky/lucky.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/lucky/lucky.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('lucky')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="screen2" data-component-name="screen2">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/screen2/screen2.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/screen2/screen2.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/screen2/screen2.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/screen2/screen2.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('screen2')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="cetv" data-component-name="cetv">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/cetv/cetv.html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/cetv/cetv.html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/cetv/cetv.js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/cetv/cetv.css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('cetv')">
+                <?php _e( 'Edit', 'ohoho_components_app' ); ?>
+            </button>                     
+
+            <!-- Add this line -->
+        </div>
+        <div class="grid-item" id="Interactive-Mouse-Cursor-Effect-" data-component-name="Interactive Mouse Cursor Effect ">
+            <h2 class="fulliframe"><?php the_title(); ?></h2>
+            <iframe data-src="./components/Interactive Mouse Cursor Effect /Interactive Mouse Cursor Effect .html" title="Live Preview"></iframe>
+            <ul class="tags">
+                <li>
+                    <?php _e( 'mobile', 'ohoho_components_app' ); ?>
+                </li>
+                <li>
+                    <?php _e( 'media', 'ohoho_components_app' ); ?>
+                </li>
+            </ul>
+            <button class="close-button">
+                <?php _e( 'Close', 'ohoho_components_app' ); ?>
+            </button>
+            <div class="button-container">
+                <button onclick="copyFileContent('components/Interactive Mouse Cursor Effect /Interactive Mouse Cursor Effect .html', this)">
+                    <?php _e( 'HTML', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/Interactive Mouse Cursor Effect /Interactive Mouse Cursor Effect .js', this)">
+                    <?php _e( 'JS', 'ohoho_components_app' ); ?>
+                </button>
+                <button onclick="copyFileContent('components/Interactive Mouse Cursor Effect /Interactive Mouse Cursor Effect .css', this)">
+                    <?php _e( 'CSS', 'ohoho_components_app' ); ?>
+                </button>
+            </div>
+            <button class="edit-button" onclick="editComponent('Interactive Mouse Cursor Effect ')">
                 <?php _e( 'Edit', 'ohoho_components_app' ); ?>
             </button>                     
 
