@@ -104,7 +104,10 @@ document
 		attachEventListeners();
 		event.preventDefault();
 
-		let oldComponentName = document.getElementById("component-name").dataset.oldName || "";
+		let oldComponentName = document.getElementById("component-name").dataset.oldName;
+		if (!oldComponentName) {
+		    oldComponentName = "";
+		}
 		let componentName = document.getElementById("component-name").value;
 		let htmlCode = document.getElementById("html-code").value;
 		let cssCode = document.getElementById("css-code").value;
@@ -120,13 +123,28 @@ document
 			jsCode: jsCode,
 		};
 
-		fetch("/save-component", {
+  if (componentName && htmlCode && cssCode && jsCode) {
+                        fetch("/save-component", {
+                                method: "POST",
+                                headers: {
+                                        "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify(componentData),
+                        })
+                } else {
+                        alert('All fields are required');
+                }
+
+		/* fetch("/save-component", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(componentData),
-		})
+		}) */
+
+
+
 			.then((response) => response.json())
 			.then((data) => {
 				if (data.status === "success") {
@@ -208,7 +226,13 @@ document
 			.then((data) => {
 			//	window.location.reload();
 						})
-			.catch((error) => console.error("Error:", error));
+			.catch((error) => {
+                if (error.message === "Unexpected token E in JSON at position 0") {
+                    console.error("Error:", error, "The server responded with a non-JSON error message.");
+                } else {
+                    console.error("Error:", error);
+                }
+            });
 	});
 
 document
