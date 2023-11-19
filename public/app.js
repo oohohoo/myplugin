@@ -263,15 +263,15 @@ document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 
 	gridItem.addEventListener("mouseover", function () {
 		iframe.classList.remove("fade-out");
-		iframe.src = dataSrc;
+		iframe.src = `./components/${gridItem.dataset.componentName}/${gridItem.dataset.componentName}.html`;
 		iframe.offsetHeight;
 		iframe.classList.add("fade-in");
 	});
 
 	gridItem.addEventListener("mouseleave", function () {
 		iframe.classList.remove("fade-in");
-		iframe.classList.add("fade-out");
-		iframe.src = "";
+		//iframe.classList.add("fade-out");
+		iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 
 		setTimeout(function () {
 			iframe.classList.remove("fade-out");
