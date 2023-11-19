@@ -274,9 +274,9 @@ document.querySelectorAll(".close-button").forEach((button) => {
 document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 	let iframe = gridItem.querySelector("iframe");
 	iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
-	iframe.style.width = "100%";
+	/* iframe.style.width = "100%";
 	iframe.style.height = "100%";
-	iframe.style.objectFit = "cover";
+	iframe.style.objectFit = "cover"; */
 
 	gridItem.addEventListener("mouseover", function () {
 		iframe.classList.remove("fade-out");
@@ -294,4 +294,30 @@ document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 			iframe.classList.remove("fade-out");
 		}, 500); 
 	});
+});
+
+
+// Select all iframes on the page
+var iframes = document.querySelectorAll('iframe');
+
+// Loop through each iframe
+iframes.forEach(function(iframe) {
+    // Set the source of the iframe
+    iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
+
+    // Wait for the iframe content to load
+    iframe.onload = function() {
+        // Access the document inside the iframe
+        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+        // Access all image elements inside the iframe
+        var images = iframeDocument.querySelectorAll('img');
+
+        // Apply CSS styles to each image
+        images.forEach(function(imageElement) {
+            imageElement.style.width = '100%';
+            imageElement.style.height = '100px'; // Change this value to the desired height
+            imageElement.style.objectFit = 'cover';
+        });
+    };
 });
