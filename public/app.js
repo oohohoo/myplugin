@@ -27,11 +27,19 @@ function attachEventListeners() {
 		let dataSrc = iframe.dataset.src; 
 
 		gridItem.addEventListener("mouseover", function () {
-			iframe.src = dataSrc;
+			iframe.classList.remove("fade-out");
+			iframe.src = `./components/${gridItem.dataset.componentName}/${gridItem.dataset.componentName}.html`;
+			iframe.offsetHeight;
+			iframe.classList.add("fade-in");
 		});
 
 		gridItem.addEventListener("mouseleave", function () {
-			iframe.src = "";
+			iframe.classList.remove("fade-in");
+			iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
+
+			setTimeout(function () {
+				iframe.classList.remove("fade-out");
+			}, 500); 
 		});
 	});
 
