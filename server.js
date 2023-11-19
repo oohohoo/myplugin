@@ -49,6 +49,9 @@ app.post('/save-component', (req, res) => {
 
   if (fs.existsSync(oldComponentDir)) {
     fs.renameSync(oldComponentDir, newComponentDir);
+    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.html`), path.join(newComponentDir, `${componentName}.html`));
+    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.css`), path.join(newComponentDir, `${componentName}.css`));
+    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.js`), path.join(newComponentDir, `${componentName}.js`));
   } else {
     fs.mkdirSync(newComponentDir, { recursive: true });
   }
@@ -67,9 +70,9 @@ app.post('/save-component', (req, res) => {
     </html>
   `;
 
-  fs.writeFileSync(path.join(componentDir, `${componentName}.html`), linkedHtmlCode);
-  fs.writeFileSync(path.join(componentDir, `${componentName}.css`), cssCode);
-  fs.writeFileSync(path.join(componentDir, `${componentName}.js`), jsCode);
+  fs.writeFileSync(path.join(newComponentDir, `${componentName}.html`), linkedHtmlCode);
+  fs.writeFileSync(path.join(newComponentDir, `${componentName}.css`), cssCode);
+  fs.writeFileSync(path.join(newComponentDir, `${componentName}.js`), jsCode);
 
   console.log('Component created:', componentName);
   
