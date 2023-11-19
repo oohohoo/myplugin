@@ -168,7 +168,7 @@ fs.watch('./public/components', (eventType, filename) => {
   const componentHTML = updateComponents();
   wss.broadcast(JSON.stringify(componentHTML));
 });
-const fs = require('fs');
+/* const fs = require('fs'); */
 const puppeteer = require('puppeteer');
 
 app.post('/generate-screenshot/:name', async (req, res) => {

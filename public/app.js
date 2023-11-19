@@ -501,5 +501,6 @@ function filterItems() {
   
   document.getElementById('close-button').addEventListener('click', function () {
 	document.getElementById('fullscreen-container').classList.add('hidden');
+	document.getElementById('fullscreen-iframe').src = '';
   });
   
