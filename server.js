@@ -21,8 +21,13 @@ app.use(function (err, req, res, next) {
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
+  if (!req.body.oldComponentName || !req.body.componentName) {
+    res.status(400).send('Component name is missing');
+    return;
+  }
+
   let oldComponentName = req.body.oldComponentName;
-  let componentName = req.body.componentName || oldComponentName;
+  let componentName = req.body.componentName;
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
