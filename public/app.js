@@ -318,6 +318,7 @@ iframes.forEach(function(iframe) {
             imageElement.style.width = '100%';
             imageElement.style.height = '100px'; // Change this value to the desired height
             imageElement.style.objectFit = 'cover';
+            // Add more styles here as needed
         });
     };
 });
