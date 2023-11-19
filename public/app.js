@@ -447,3 +447,59 @@ function deleteComponent(componentId) {
   });
 }
  */
+
+
+
+
+/*************************************************************************/
+/* FILTER & SEARCH
+/*************************************************************************/
+
+function filterItems() {
+    var query = document.getElementById('search-input').value.toLowerCase();
+    var checkboxes = document.querySelectorAll('#tag-filter input[type=checkbox]');
+    var tags = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
+  
+    var allItems = document.querySelectorAll('.grid-item');
+    allItems.forEach(function(item) {
+      var name = item.querySelector('h2').textContent.toLowerCase();
+      var itemTags = Array.from(item.querySelectorAll('.tags li')).map(li => li.textContent);
+  
+      if ((tags.length === 0 || tags.some(tag => itemTags.includes(tag))) && (!query || name.includes(query))) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+  
+  // Event listeners for checkboxes and search input
+  var checkboxes = document.querySelectorAll('#tag-filter input[type=checkbox]');
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', filterItems);
+  });
+  document.getElementById('search-input').addEventListener('input', filterItems);
+  
+  // Button to clear search field
+  document.getElementById('clear-search').addEventListener('click', function() {
+    document.getElementById('search-input').value = '';
+    filterItems();
+  });
+
+
+  /*************************************************************************/
+/* FULLSCREEN IFRAME 
+/*************************************************************************/
+
+ document.querySelectorAll('.grid-item').forEach(button => {
+	button.addEventListener('click', function () {
+	  const iframeSrc = this.querySelector('iframe').src; // Get the src from the smaller iframe
+	  document.getElementById('fullscreen-iframe').src = iframeSrc; // Set the src of the fullscreen iframe
+	  document.getElementById('fullscreen-container').classList.remove('hidden');
+	});
+  });
+  
+  document.getElementById('close-button').addEventListener('click', function () {
+	document.getElementById('fullscreen-container').classList.add('hidden');
+  });
+  
