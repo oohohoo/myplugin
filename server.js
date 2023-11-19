@@ -38,8 +38,8 @@ app.use(function (err, req, res, next) {
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
-  let componentName = req.body.newComponentName;
-  let oldComponentName = req.body.oldComponentName;
+  let componentName = req.body.newComponentName || 'defaultComponentName';
+  let oldComponentName = req.body.oldComponentName || 'defaultOldComponentName';
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
