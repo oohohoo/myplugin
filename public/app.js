@@ -31,11 +31,17 @@ function attachEventListeners() {
 			iframe.src = `./components/${gridItem.dataset.componentName}/${gridItem.dataset.componentName}.html`;
 			iframe.offsetHeight;
 			iframe.classList.add("fade-in");
+			iframe.style.width = "100%";
+			iframe.style.height = "100%";
+			iframe.style.objectFit = "cover";
 		});
 
 		gridItem.addEventListener("mouseleave", function () {
 			iframe.classList.remove("fade-in");
 			iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
+			iframe.style.width = "100%";
+			iframe.style.height = "100%";
+			iframe.style.objectFit = "cover";
 
 			setTimeout(function () {
 				iframe.classList.remove("fade-out");
@@ -268,6 +274,9 @@ document.querySelectorAll(".close-button").forEach((button) => {
 document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 	let iframe = gridItem.querySelector("iframe");
 	iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
+	iframe.style.width = "100%";
+	iframe.style.height = "100%";
+	iframe.style.objectFit = "cover";
 
 	gridItem.addEventListener("mouseover", function () {
 		iframe.classList.remove("fade-out");
