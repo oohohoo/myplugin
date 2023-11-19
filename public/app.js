@@ -124,28 +124,17 @@ document
 		};
 
   if (componentName && htmlCode && cssCode && jsCode) {
-                        fetch("/save-component", {
-                                method: "POST",
-                                headers: {
-                                        "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify(componentData),
-                        })
-                } else {
-                        alert('All fields are required');
-                }
-
-		/* fetch("/save-component", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(componentData),
-		}) */
-
-
-
-			.then((response) => response.json())
+    fetch("/save-component", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(componentData),
+    })
+    .then((response) => response.json())
+  } else {
+    alert('All fields are required');
+  }
 			.then((data) => {
 				if (data.status === "success") {
 					fetch("/components")
