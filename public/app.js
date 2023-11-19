@@ -267,7 +267,7 @@ document.querySelectorAll(".close-button").forEach((button) => {
 /* load unload iframe*/
 document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 	let iframe = gridItem.querySelector("iframe");
-	let dataSrc = iframe.dataset.src; 
+	iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 
 	gridItem.addEventListener("mouseover", function () {
 		iframe.classList.remove("fade-out");
