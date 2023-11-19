@@ -297,11 +297,14 @@ document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 });
 
 
-// Select all iframes on the page
-var iframes = document.querySelectorAll('iframe');
+// Select all grid-items on the page
+var gridItems = document.querySelectorAll('.grid-item');
 
-// Loop through each iframe
-iframes.forEach(function(iframe) {
+// Loop through each grid-item
+gridItems.forEach(function(gridItem) {
+    // Select the iframe inside the grid-item
+    var iframe = gridItem.querySelector('iframe');
+
     // Set the source of the iframe
     iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 
