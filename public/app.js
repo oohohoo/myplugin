@@ -90,7 +90,7 @@ document
 		attachEventListeners();
 		event.preventDefault();
 
-		let oldComponentName = document.getElementById("component-name").dataset.oldName;
+		let oldComponentName = document.getElementById("component-name").dataset.oldName || "";
 		let componentName = document.getElementById("component-name").value;
 		let htmlCode = document.getElementById("html-code").value;
 		let cssCode = document.getElementById("css-code").value;
