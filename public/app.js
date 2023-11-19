@@ -111,7 +111,7 @@ document
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(componentData, null, 2),
+			body: JSON.stringify(componentData),
 		})
 			.then((response) => response.json())
 			.then((data) => {
