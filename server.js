@@ -6,10 +6,6 @@ const port = 3000;
 
 const { generateComponents, updateComponents } = require('./generateComponents.js'); // Import the generateComponents function
 
-
-/*************************************************************************/
-/* UPDATE COMPONENTS ON SERVER START
-/*************************************************************************/
 updateComponents(); 
 
 app.use(express.static('public'));
@@ -21,20 +17,7 @@ app.use(function (err, req, res, next) {
 });
 
 
-/* app.post('/create-component', (req, res) => {
-  // Code to create new component goes here...
-
-  // After new component is created, update components
-  updateComponents();
-
-  // Send response
-  res.send('Component created successfully!');
-});
- */
-
-/*************************************************************************/
-/* SAVE COMPONENT
-/*************************************************************************/
+/* SAVE */
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
@@ -55,8 +38,13 @@ app.post('/save-component', (req, res) => {
   } else {
     fs.mkdirSync(newComponentDir, { recursive: true });
   }
+
+  if (oldComponentName !== componentName) {
+    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.html`), path.join(newComponentDir, `${componentName}.html`));
+    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.css`), path.join(newComponentDir, `${componentName}.css`));
+    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.js`), path.join(newComponentDir, `${componentName}.js`));
+  }
   
-  // Add links to the CSS and JS files in the HTML code
   let linkedHtmlCode = `
     <!DOCTYPE html>
     <html>
@@ -76,18 +64,13 @@ app.post('/save-component', (req, res) => {
 
   console.log('Component created:', componentName);
   
-  generateComponents(); // Call the function after a new component is created
+  generateComponents(); 
 
   res.send({ status: 'success' });
 });
 
 
-/* const { updateComponents } = require('./generateComponents.js'); */
-
-
-/*************************************************************************/
-/* DELETE COMPONENT
-/*************************************************************************/
+/* DELETE */
 app.delete('/delete-component/:id', (req, res) => {
   const componentId = req.params.id;
   const componentPath = path.join(__dirname, 'public', 'components', componentId); 
@@ -97,7 +80,6 @@ app.delete('/delete-component/:id', (req, res) => {
       return;
   }
 
- // Delete the component
  fs.rmdir(componentPath, { recursive: true }, (err) => {
   if(err){
     console.error(err);
@@ -105,7 +87,6 @@ app.delete('/delete-component/:id', (req, res) => {
     return;
   }
 
-  // Update the components list in index.html
   updateComponents();
 
   res.json({ message: 'Component deleted' });
@@ -144,9 +125,7 @@ app.get('/components', (req, res) => {
   res.send(componentDirs);
 });
 
-/*************************************************************************/
-/* RESET COMPONENTS ON EVERY RELOAD
-/*************************************************************************/
+/* RESET ON RELOAD */
 app.get('/', function(req, res) {
   updateComponents();
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -156,13 +135,7 @@ app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-
-/*************************************************************************/
-/* PUSH UPDATES WHEN APPLICATION ADDED
-/*************************************************************************/
-
-
-// Ensure WebSocket server is correctly set up
+/* PUSH UPDATES */
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 wss.broadcast = function(data) {
@@ -177,7 +150,7 @@ fs.watch('./public/components', (eventType, filename) => {
   const componentHTML = updateComponents();
   wss.broadcast(JSON.stringify(componentHTML));
 });
-/* const fs = require('fs'); */
+
 const puppeteer = require('puppeteer');
 
 app.post('/generate-screenshot/:name', async (req, res) => {
