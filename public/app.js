@@ -84,6 +84,7 @@ function attachEventListeners() {
 				.then((response) => response.json())
 				.then((data) => {
 					document.getElementById("component-name").value = data.componentName;
+					document.getElementById("component-name").dataset.oldName = data.componentName;
 					document.getElementById("html-code").value = data.htmlCode;
 					document.getElementById("css-code").value = data.cssCode;
 					document.getElementById("js-code").value = data.jsCode;
@@ -104,6 +105,7 @@ document
 		attachEventListeners();
 		event.preventDefault();
 
+		let oldComponentName = document.getElementById("component-name").dataset.oldName;
 		let componentName = document.getElementById("component-name").value;
 		let htmlCode = document.getElementById("html-code").value;
 		let cssCode = document.getElementById("css-code").value;
@@ -111,6 +113,7 @@ document
 		let componentId = componentName.replace(/ /g, "");
 
 		let componentData = {
+		  oldComponentName: oldComponentName,
 			id: componentId,
 			componentName: componentName,
 			htmlCode: htmlCode,
