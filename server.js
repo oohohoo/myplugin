@@ -38,18 +38,19 @@ app.use(function (err, req, res, next) {
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
-  let componentName = req.body.componentName || 'defaultComponentName';
   let oldComponentName = req.body.oldComponentName;
+  let componentName = req.body.componentName || oldComponentName;
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
-  
-  let componentDir = path.join(__dirname, 'public', 'components', componentName);
-  
-  if (componentName !== oldComponentName) {
-    fs.renameSync(path.join(__dirname, 'public', 'components', oldComponentName), componentDir);
+
+  let oldComponentDir = path.join(__dirname, 'public', 'components', oldComponentName);
+  let newComponentDir = path.join(__dirname, 'public', 'components', componentName);
+
+  if (fs.existsSync(oldComponentDir)) {
+    fs.renameSync(oldComponentDir, newComponentDir);
   } else {
-    fs.mkdirSync(componentDir, { recursive: true });
+    fs.mkdirSync(newComponentDir, { recursive: true });
   }
   
   // Add links to the CSS and JS files in the HTML code
