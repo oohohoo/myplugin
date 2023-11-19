@@ -44,6 +44,13 @@ app.post('/save-component', (req, res) => {
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
 
+  if (!oldComponentName) {
+    // Handle the case when oldComponentName is not provided
+    // For example, you might want to send a response with an error message
+    res.status(400).send('Error: oldComponentName is required');
+    return;
+  }
+
   let oldComponentDir = path.join(__dirname, 'public', 'components', oldComponentName);
   let newComponentDir = path.join(__dirname, 'public', 'components', componentName);
 
