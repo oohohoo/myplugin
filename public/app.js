@@ -191,7 +191,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 										componentElement.id = componentName.replace(/ /g, "-");
 										componentElement.dataset.componentName = componentName;
 										componentElement.innerHTML = `
-    <h2 class="fulliframe" cms-post-title>${componentName}</h2>
+    <h2 class="fulliframe" cms-post-title>${componentName.replace(/-/g, " ")}</h2>
     <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
     <ul class="tags">
       <li>mobile</li>
