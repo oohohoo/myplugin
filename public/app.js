@@ -137,7 +137,7 @@ document
   }
 			.then((data) => {
 				if (data.status === "success") {
-					fetch("/components")
+					return fetch("/components")
 						.then((response) => response.json())
 						.then((components) => {
 							fetch("/components")
