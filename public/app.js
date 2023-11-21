@@ -108,10 +108,8 @@ document
 		event.preventDefault();
 
 		let oldComponentName = document.getElementById("component-name").dataset.oldName;
-		if (!oldComponentName) {
-		    oldComponentName = "";
-		}
 		let componentName = document.getElementById("component-name").value;
+		document.getElementById("component-name").dataset.oldName = componentName;
 		let htmlCode = document.getElementById("html-code").value;
 		let cssCode = document.getElementById("css-code").value;
 		let jsCode = document.getElementById("js-code").value;
