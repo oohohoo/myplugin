@@ -16,23 +16,26 @@ function updateComponents() {
     .map(dirent => dirent.name);
   
 
-const componentHTML = componentDirs.map(dir => `
-<div class="grid-item" id="${dir.replace(/ /g, "-")}" data-component-name="${dir}">
+const componentHTML = componentDirs.map(dir => {
+  const id = dir.replace(/ /g, "-");
+  return `
+<div class="grid-item" id="${id}" data-component-name="${dir}">
   <h2 class="fulliframe" cms-post-title>${dir}</h2>
-  <iframe data-src="./components/${dir}/${dir}.html" title="Live Preview"></iframe>
+  <iframe data-src="./components/${id}/${id}.html" title="Live Preview"></iframe>
   <ul class="tags">
     <li>mobile</li>
     <li>media</li>
   </ul>
   <button class="close-button">Close</button>
   <div class="button-container">
-    <button onclick="copyFileContent('components/${dir}/${dir}.html', this)">HTML</button>
-    <button onclick="copyFileContent('components/${dir}/${dir}.js', this)">JS</button>
-    <button onclick="copyFileContent('components/${dir}/${dir}.css', this)">CSS</button>
+    <button onclick="copyFileContent('components/${id}/${id}.html', this)">HTML</button>
+    <button onclick="copyFileContent('components/${id}/${id}.js', this)">JS</button>
+    <button onclick="copyFileContent('components/${id}/${id}.css', this)">CSS</button>
   </div>
-  <button class="edit-button" onclick="editComponent('${dir}')">Edit</button> <!-- Add this line -->
+  <button class="edit-button" onclick="editComponent('${dir}')">Edit</button>
 </div>
-`).join('\n');
+`;
+}).join('\n');
 
   let indexHTML = fs.readFileSync('./public/index.html', 'utf-8');
   const startTag = '<!-- START AUTO-GENERATED COMPONENTS -->';

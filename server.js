@@ -61,13 +61,14 @@ app.post('/save-component', (req, res) => {
     </html>
   `;
 
-  fs.writeFileSync(path.join(componentDir, `${componentName}.html`), linkedHtmlCode);
-  fs.writeFileSync(path.join(componentDir, `${componentName}.css`), cssCode);
-  fs.writeFileSync(path.join(componentDir, `${componentName}.js`), jsCode);
+  let componentId = componentName.replace(/ /g, "-");
+  fs.writeFileSync(path.join(componentDir, `${componentId}.html`), linkedHtmlCode);
+  fs.writeFileSync(path.join(componentDir, `${componentId}.css`), cssCode);
+  fs.writeFileSync(path.join(componentDir, `${componentId}.js`), jsCode);
 
   console.log('Component created:', componentName);
   
-  generateComponents(); // Call the function after a new component is created
+  updateComponents(); // Call the function after a new component is created
 
   res.send({ status: 'success' });
 });
