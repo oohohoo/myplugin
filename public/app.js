@@ -2,6 +2,7 @@
 let socket = new WebSocket("ws://localhost:8080");
 let isEditing = false; // Add this line
 let isEditing = false; // Add this line
+let isEditing = false; // Add this line
 socket.onopen = function (e) {
 	console.log("[open] Connection established");
 	console.log("Sending to server");
@@ -83,6 +84,7 @@ function attachEventListeners() {
 		newButton.addEventListener("click", function () {
 		    isEditing = true; // Add this line
 		    isEditing = true; // Add this line
+		    isEditing = true; // Add this line
 			let oldComponentName = this.closest(".grid-item").dataset.componentName;
 			document.getElementById("component-name").dataset.oldName = oldComponentName;
 			let componentName = oldComponentName;
@@ -150,12 +152,12 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 	if (componentName && htmlCode && cssCode && jsCode) {
 		let fetchUrl = "/save-component";
 		let fetchMethod = "POST";
-	
+
 		if (isEditing) {
-			fetchUrl = `/update-component/${oldComponentName}`;
-			fetchMethod = "PUT";
+		    fetchUrl = `/update-component/${oldComponentName}`;
+		    fetchMethod = "PUT";
 		}
-	
+
 		fetch(fetchUrl, {
 			method: fetchMethod,
 			headers: {
@@ -258,6 +260,7 @@ document
 
 /* ADD COMP*/
 document.getElementById("add-component").addEventListener("click", function () {
+    isEditing = false; // Add this line
     isEditing = false; // Add this line
     isEditing = false; // Add this line
 	document.getElementById("side-panel").classList.add("side-panel-shown");
