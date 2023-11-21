@@ -83,8 +83,7 @@ function attachEventListeners() {
 		    isEditing = true;
 		    let oldComponentName = this.closest(".grid-item").dataset.componentName;
 		    document.getElementById("component-name").dataset.oldName = oldComponentName;
-			let oldComponentName = this.closest(".grid-item").dataset.componentName;
-			document.getElementById("component-name").dataset.oldName = oldComponentName;
+			
 			let componentName = oldComponentName;
 			fetch(`/components/${componentName}`)
 				.then((response) => response.json())
