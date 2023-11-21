@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap");
+:root {
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: #EBEBE3;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+code {
+  color: #7ea5b9;
+}
+
+h1 {
+  font-weight: 100;
+  text-align: center;
+}
+
+.cards {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-auto-rows: 200px auto auto;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20ch), 1fr));
+  gap: 1em;
+  width: min(100ch, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.card {
+  background-color: #F9F6EF;
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  border: 1px solid #0002;
+  box-shadow: 0.1em 0.1em 0.5em #0003;
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+.card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: 50% 80%;
+}
+.card h3, .card .actions {
+  padding-inline: 0.5em;
+  margin: 0;
+}
+.card .actions {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1em;
+  color: #1784ba;
+}
+.card .actions button {
+  all: unset;
+  animation: 0.3s ease;
+  padding: 0.1em 0.5em;
+  border: 1px solid transparent;
+  border-radius: 0.3em;
+  cursor: pointer;
+}
+.card .actions button:hover {
+  border: 1px solid currentcolor;
+}
+.card .actions button:active {
+  background-color: #1784ba;
+  color: #F9F3EE;
+  border: 1px solid #000;
+}
+.card .actions > * {
+  padding: 0.1em 0.5em;
+}
+
+.big {
+  grid-column: 1/-1;
+  grid-row: 4/7;
+  grid-template-rows: auto 1fr;
+}
+.big .notes {
+  padding: 0.5em;
+}
+.big h3 {
+  padding-top: 0.5em;
+}

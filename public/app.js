@@ -143,15 +143,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 	jsCode: jsCode,
   };
 
-  if (componentName && htmlCode && cssCode && jsCode) {
-    isEditing ? fetch(`/update-component/${oldComponentName}`, { // Change this line
-      method: "PUT", // Change method to PUT
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(componentData),
-    })
-    .then((response) => response.json()).catch(() => {}) // Remove semicolon
+  
  
 	if (componentName && htmlCode && cssCode && jsCode) {
 		let fetchUrl = "/save-component";
@@ -169,7 +161,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 			},
 			body: JSON.stringify(componentData),
 		})
-		
+
         .then((response) => response.json())
         .then((data) => {
             if (data.status === "success") {
