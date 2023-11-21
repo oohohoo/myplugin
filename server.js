@@ -50,6 +50,13 @@ app.post('/save-component', (req, res, next) => {
   }
 
   componentNameURL = componentName.replace(/ /g, "-");
+  if (oldComponentName !== componentName) {
+    const oldComponentPath = path.join(__dirname, 'public', 'components', oldComponentName);
+    if (fs.existsSync(oldComponentPath)) {
+      fs.rmdirSync(oldComponentPath, { recursive: true });
+    }
+  }
+
   let componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
   
   fs.mkdirSync(componentDir, { recursive: true });
