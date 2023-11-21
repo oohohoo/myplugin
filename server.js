@@ -50,9 +50,16 @@ app.post('/save-component', (req, res, next) => {
     }
   }
 
-  let componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
-  
-  fs.mkdirSync(componentDir, { recursive: true });
+  let oldComponentDir = path.join(__dirname, 'public', 'components', oldComponentName.replace(/ /g, "-"));
+  let newComponentDir = path.join(__dirname, 'public', 'components', componentNameURL);
+
+  if (fs.existsSync(oldComponentDir) && oldComponentName !== componentName) {
+      fs.renameSync(oldComponentDir, newComponentDir);
+  } else {
+      fs.mkdirSync(newComponentDir, { recursive: true });
+  }
+
+  let componentDir = newComponentDir;
   
   let linkedHtmlCode = `
     <!DOCTYPE html>
