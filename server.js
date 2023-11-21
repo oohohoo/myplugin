@@ -38,7 +38,7 @@ app.use(function (err, req, res, next) {
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
-  let oldComponentName = req.body.oldComponentName;
+  let oldComponentName = req.body.oldComponentName || "";
   let componentName = req.body.componentName || oldComponentName;
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
