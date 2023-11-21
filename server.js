@@ -38,11 +38,25 @@ app.use(function (err, req, res, next) {
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
+  let oldComponentName = req.body.oldComponentName;
   let componentName = req.body.componentName;
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
-  
+
+  // If the old component name is not provided, assume it's a new component
+  if (!oldComponentName) {
+    oldComponentName = componentName;
+  }
+
+  // If the old component name is different from the new one, delete the old component
+  if (oldComponentName !== componentName) {
+    const oldComponentPath = path.join(__dirname, 'public', 'components', oldComponentName);
+    if (fs.existsSync(oldComponentPath)) {
+      fs.rmdirSync(oldComponentPath, { recursive: true });
+    }
+  }
+
   let componentDir = path.join(__dirname, 'public', 'components', componentName);
   
   fs.mkdirSync(componentDir, { recursive: true });
