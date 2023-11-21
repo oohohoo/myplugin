@@ -69,7 +69,7 @@ app.put('/update-component/:oldName', (req, res, next) => {
   }
 });
 
-app.post('/save-component', (req, res, next) => {
+app.post('/create-component', (req, res, next) => {
   console.log('POST /save-component');
   
   let oldComponentName = req.body.oldComponentName;

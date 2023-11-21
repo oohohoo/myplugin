@@ -146,13 +146,8 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
   
  
 	if (componentName && htmlCode && cssCode && jsCode) {
-		let fetchUrl = "/save-component";
-		let fetchMethod = "POST";
-
-		if (isEditing) {
-		    fetchUrl = `/update-component/${oldComponentName}`;
-		    fetchMethod = "PUT";
-		}
+		let fetchUrl = isEditing ? `/update-component/${oldComponentName}` : "/create-component";
+		let fetchMethod = isEditing ? "PUT" : "POST";
 
 		fetch(fetchUrl, {
 			method: fetchMethod,
