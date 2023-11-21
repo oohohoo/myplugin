@@ -38,16 +38,7 @@ app.use(function (err, req, res, next) {
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
-  let oldComponentName = req.body.oldComponentName;
   let componentName = req.body.componentName;
-
-  // Delete the old component if it exists and is different from the new component
-  if (oldComponentName && oldComponentName !== componentName) {
-    let oldComponentDir = path.join(__dirname, 'public', 'components', oldComponentName);
-    if (fs.existsSync(oldComponentDir)) {
-      fs.rmdirSync(oldComponentDir, { recursive: true });
-    }
-  }
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
@@ -178,4 +169,25 @@ wss.broadcast = function(data) {
 fs.watch('./public/components', (eventType, filename) => {
   const componentHTML = updateComponents();
   wss.broadcast(JSON.stringify(componentHTML));
+});
+
+/* const fs = require('fs'); */
+const puppeteer = require('puppeteer');
+
+app.post('/generate-screenshot/:name', async (req, res) => {
+	const componentName = req.params.name;
+	const componentDir = path.join(__dirname, 'public', 'components', componentName);
+	if (!fs.existsSync(componentDir)) {
+		res.status(404).send('Component not found');
+		return;
+	}
+	const screenshotPath = path.join(componentDir, 'screenshot.jpg');
+	if (!fs.existsSync(screenshotPath)) {
+	    const browser = await puppeteer.launch();
+	    const page = await browser.newPage();
+	    await page.goto(`http://localhost:${port}/components/${componentName}/${componentName}.html`);
+	    await page.screenshot({ path: screenshotPath });
+	    await browser.close();
+	}
+	res.send({ status: 'success' });
 });
