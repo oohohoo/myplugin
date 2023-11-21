@@ -145,13 +145,13 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 
   if (componentName && htmlCode && cssCode && jsCode) {
     isEditing ? fetch(`/update-component/${oldComponentName}`, { // Change this line
-      method: "POST",
+      method: "PUT", // Change method to PUT
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(componentData),
     })
-    .then((response) => response.json())
+    .then((response) => response.json()) : // Add else condition
  
 
 /*   fetch("/save-component", {
