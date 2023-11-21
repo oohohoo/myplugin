@@ -132,14 +132,14 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
   
 
 
-		let componentData = {
-		  oldComponentName: oldComponentName,
-			id: componentId,
-			componentName: componentName,
-			htmlCode: htmlCode,
-			cssCode: cssCode,
-			jsCode: jsCode,
-		};
+  let componentData = {
+	oldComponentName: document.getElementById("component-name").dataset.oldName,
+	id: componentId,
+	componentName: componentName,
+	htmlCode: htmlCode,
+	cssCode: cssCode,
+	jsCode: jsCode,
+  };
 
   if (componentName && htmlCode && cssCode && jsCode) {
     fetch("/save-component", {

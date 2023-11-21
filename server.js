@@ -44,16 +44,9 @@ app.post('/save-component', (req, res, next) => {
 
   if (oldComponentName !== componentName) {
     const oldComponentPath = path.join(__dirname, 'public', 'components', oldComponentName);
+    const newComponentPath = path.join(__dirname, 'public', 'components', componentName);
     if (fs.existsSync(oldComponentPath)) {
-      fs.rmdirSync(oldComponentPath, { recursive: true });
-    }
-  }
-
-  componentNameURL = componentName.replace(/ /g, "-");
-  if (oldComponentName !== componentName) {
-    const oldComponentPath = path.join(__dirname, 'public', 'components', oldComponentName);
-    if (fs.existsSync(oldComponentPath)) {
-      fs.rmdirSync(oldComponentPath, { recursive: true });
+      fs.renameSync(oldComponentPath, newComponentPath);
     }
   }
 
