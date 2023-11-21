@@ -1,7 +1,6 @@
 /* ADD NEW COMP - FORM */
 let socket = new WebSocket("ws://localhost:8080");
 let isEditing = false;
-let isEditing = false;
 socket.onopen = function (e) {
 	console.log("[open] Connection established");
 	console.log("Sending to server");
@@ -137,18 +136,18 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 
 
   let componentData = {
-	oldComponentName: document.getElementById("component-name").dataset.oldName,
+	oldComponentName: isEditing ? document.getElementById("component-name").dataset.oldName : null,
 	id: componentId,
 	componentName: componentName,
 	htmlCode: htmlCode,
 	cssCode: cssCode,
 	jsCode: jsCode,
-  };
+};
 
   
  
 	if (componentName && htmlCode && cssCode && jsCode) {
-		let fetchUrl = isEditing ? `/update-component/${oldComponentName}` : "/create-component";
+		let fetchUrl = isEditing ? `/update-component` : "/create-component";
 		let fetchMethod = isEditing ? "PUT" : "POST";
 
 		fetch(fetchUrl, {
