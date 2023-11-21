@@ -78,7 +78,9 @@ function attachEventListeners() {
 		oldButton.parentNode.replaceChild(newButton, oldButton);
 
 		newButton.addEventListener("click", function () {
-			let componentName = this.closest(".grid-item").dataset.componentName;
+			let oldComponentName = this.closest(".grid-item").dataset.componentName;
+			document.getElementById("component-name").dataset.oldName = oldComponentName;
+			let componentName = oldComponentName;
 			fetch(`/components/${componentName}`)
 				.then((response) => response.json())
 				.then((data) => {
