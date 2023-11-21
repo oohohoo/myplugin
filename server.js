@@ -203,7 +203,7 @@ fs.watch('./public/components', (eventType, filename) => {
 const puppeteer = require('puppeteer');
 
 app.post('/generate-screenshot/:name', async (req, res) => {
-	const componentName = req.params.name;
+	const componentName = req.params.name.replace(/-/g, " ");
 	const componentDir = path.join(__dirname, 'public', 'components', componentName);
 	if (!fs.existsSync(componentDir)) {
 		res.status(404).send('Component not found');
