@@ -69,7 +69,7 @@ app.post('/save-component', (req, res) => {
     }
   }
 
-  let componentNameURL = componentName.replace(/ /g, "-");
+  componentNameURL = componentName.replace(/ /g, "-");
   let componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
   
   fs.mkdirSync(componentDir, { recursive: true });
