@@ -115,7 +115,7 @@ return componentHTML;
 }
 
 /* EDIT COMPONENT*/
-function editComponent(componentName) {
+exports.editComponent = function editComponent(componentName) {
   fetch(`/components/${componentName}`)
     .then(response => response.json())
     .then(data => {
