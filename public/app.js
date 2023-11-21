@@ -81,6 +81,8 @@ function attachEventListeners() {
 
 		newButton.addEventListener("click", function () {
 		    isEditing = true;
+		    let oldComponentName = this.closest(".grid-item").dataset.componentName;
+		    document.getElementById("component-name").dataset.oldName = oldComponentName;
 			let oldComponentName = this.closest(".grid-item").dataset.componentName;
 			document.getElementById("component-name").dataset.oldName = oldComponentName;
 			let componentName = oldComponentName;
@@ -109,9 +111,9 @@ document
 		attachEventListeners();
 		event.preventDefault();
 
-		let oldComponentName = document.getElementById("component-name").dataset.oldName;
+		let oldComponentName = isEditing ? document.getElementById("component-name").dataset.oldName : null;
 		let componentName = document.getElementById("component-name").value;
-		if (oldComponentName !== componentName) {
+		if (isEditing && oldComponentName !== componentName) {
 		    document.getElementById("component-name").dataset.oldName = componentName;
 		}
 		let htmlCode = document.getElementById("html-code").value;
@@ -252,6 +254,7 @@ document
 /* ADD COMP*/
 document.getElementById("add-component").addEventListener("click", function () {
     isEditing = false;
+    document.getElementById("component-name").dataset.oldName = "";
 	document.getElementById("side-panel").classList.add("side-panel-shown");
 	document.getElementById("side-panel").classList.remove("side-panel-hidden");
 });
