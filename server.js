@@ -1,5 +1,5 @@
-const fs = require('fs');
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const app = express();
 const port = 3000;
@@ -38,30 +38,14 @@ app.use(function (err, req, res, next) {
 app.post('/save-component', (req, res) => {
   console.log('POST /save-component');
   
-  let oldComponentName = req.body.oldComponentName || "";
-  let componentName = req.body.componentName || oldComponentName;
+  let componentName = req.body.componentName;
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
-
-  if (!oldComponentName) {
-    // Handle the case when oldComponentName is not provided
-    // For example, you might want to send a response with an error message
-    res.status(400).send('Error: oldComponentName is required');
-    return;
-  }
-
-  let oldComponentDir = path.join(__dirname, 'public', 'components', oldComponentName);
-  let newComponentDir = path.join(__dirname, 'public', 'components', componentName);
-
-  if (fs.existsSync(oldComponentDir)) {
-    fs.renameSync(oldComponentDir, newComponentDir);
-    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.html`), path.join(newComponentDir, `${componentName}.html`));
-    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.css`), path.join(newComponentDir, `${componentName}.css`));
-    fs.renameSync(path.join(newComponentDir, `${oldComponentName}.js`), path.join(newComponentDir, `${componentName}.js`));
-  } else {
-    fs.mkdirSync(newComponentDir, { recursive: true });
-  }
+  
+  let componentDir = path.join(__dirname, 'public', 'components', componentName);
+  
+  fs.mkdirSync(componentDir, { recursive: true });
   
   // Add links to the CSS and JS files in the HTML code
   let linkedHtmlCode = `
@@ -77,9 +61,9 @@ app.post('/save-component', (req, res) => {
     </html>
   `;
 
-  fs.writeFileSync(path.join(newComponentDir, `${componentName}.html`), linkedHtmlCode);
-  fs.writeFileSync(path.join(newComponentDir, `${componentName}.css`), cssCode);
-  fs.writeFileSync(path.join(newComponentDir, `${componentName}.js`), jsCode);
+  fs.writeFileSync(path.join(componentDir, `${componentName}.html`), linkedHtmlCode);
+  fs.writeFileSync(path.join(componentDir, `${componentName}.css`), cssCode);
+  fs.writeFileSync(path.join(componentDir, `${componentName}.js`), jsCode);
 
   console.log('Component created:', componentName);
   
@@ -118,6 +102,7 @@ app.delete('/delete-component/:id', (req, res) => {
   res.json({ message: 'Component deleted' });
 });
 });
+
 
 // Server.js
 app.get('/components/:name', (req, res) => {
@@ -183,24 +168,4 @@ wss.broadcast = function(data) {
 fs.watch('./public/components', (eventType, filename) => {
   const componentHTML = updateComponents();
   wss.broadcast(JSON.stringify(componentHTML));
-});
-/* const fs = require('fs'); */
-const puppeteer = require('puppeteer');
-
-app.post('/generate-screenshot/:name', async (req, res) => {
-	const componentName = req.params.name;
-	const componentDir = path.join(__dirname, 'public', 'components', componentName);
-	if (!fs.existsSync(componentDir)) {
-		res.status(404).send('Component not found');
-		return;
-	}
-	const screenshotPath = path.join(componentDir, 'screenshot.jpg');
-	if (!fs.existsSync(screenshotPath)) {
-	    const browser = await puppeteer.launch();
-	    const page = await browser.newPage();
-	    await page.goto(`http://localhost:${port}/components/${componentName}/${componentName}.html`);
-	    await page.screenshot({ path: screenshotPath });
-	    await browser.close();
-	}
-	res.send({ status: 'success' });
 });
