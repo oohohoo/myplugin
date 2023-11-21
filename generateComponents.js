@@ -16,12 +16,13 @@ function updateComponents() {
     .map(dirent => dirent.name);
   
 
-const componentHTML = componentDirs.map(dir => {
+    const componentHTML = componentDirs.map((dir, index) => {
   let dirURL = dir.replace(/ /g, "-");
 const id = dirURL;
 return `
 <div class="grid-item" id="${id}" data-component-name="${dir}">
-  <h2 class="fulliframe" cms-post-title>${componentDirs.length - componentDirs.indexOf(dir)}. ${dir}</h2>
+<h2 class="fulliframe" cms-post-title>${dir}</h2>
+<h2 class="fulliframe" cms-post-title>${componentDirs.length - index}</h2>
   <iframe data-src="./components/${dirURL}/${dirURL}.html" title="Live Preview"></iframe>
   <ul class="tags">
     <li>mobile</li>
