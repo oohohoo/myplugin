@@ -151,7 +151,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
       },
       body: JSON.stringify(componentData),
     })
-    .then((response) => response.json()).catch(() => {}); // Add catch condition
+    .then((response) => response.json()).catch(() => {}) // Remove semicolon
  
 if (componentName && htmlCode && cssCode && jsCode) {
     let fetchUrl = "/save-component";
