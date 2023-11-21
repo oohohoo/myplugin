@@ -1,5 +1,6 @@
 /* ADD NEW COMP - FORM */
 let socket = new WebSocket("ws://localhost:8080");
+let isEditing = false; // Add this line
 socket.onopen = function (e) {
 	console.log("[open] Connection established");
 	console.log("Sending to server");
@@ -79,6 +80,7 @@ function attachEventListeners() {
 		oldButton.parentNode.replaceChild(newButton, oldButton);
 
 		newButton.addEventListener("click", function () {
+		    isEditing = true; // Add this line
 			let oldComponentName = this.closest(".grid-item").dataset.componentName;
 			document.getElementById("component-name").dataset.oldName = oldComponentName;
 			let componentName = oldComponentName;
@@ -142,7 +144,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
   };
 
   if (componentName && htmlCode && cssCode && jsCode) {
-    fetch("/save-component", {
+    isEditing ? fetch(`/update-component/${oldComponentName}`, { // Change this line
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -268,6 +270,7 @@ document
 
 /* ADD COMP*/
 document.getElementById("add-component").addEventListener("click", function () {
+    isEditing = false; // Add this line
 	document.getElementById("side-panel").classList.add("side-panel-shown");
 	document.getElementById("side-panel").classList.remove("side-panel-hidden");
 });

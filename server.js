@@ -18,6 +18,10 @@ app.use(function (err, req, res, next) {
 });
 
 /* SAVE COMPONENT */
+app.put('/update-component/:oldName', (req, res, next) => { // Add this block
+  // Similar to the save-component route but update the existing component instead of creating a new one
+});
+
 app.post('/save-component', (req, res, next) => {
   console.log('POST /save-component');
   
