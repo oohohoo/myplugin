@@ -40,6 +40,7 @@ app.post('/save-component', (req, res, next) => {
   
   let oldComponentName = req.body.oldComponentName;
   let componentName = req.body.componentName;
+  let componentNameURL = componentName.replace(/ /g, "-");
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
