@@ -28,7 +28,8 @@ function attachEventListeners() {
 
 		gridItem.addEventListener("mouseover", function () {
 			iframe.classList.remove("fade-out");
-			iframe.src = `./components/${gridItem.dataset.componentName}/${gridItem.dataset.componentName}.html`;
+			let componentNameURL = gridItem.dataset.componentName.replace(/ /g, "-");
+			iframe.src = `./components/${componentNameURL}/${componentNameURL}.html`;
 			iframe.offsetHeight;
 			iframe.classList.add("fade-in");
 			iframe.style.width = "100%";
@@ -130,7 +131,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
   }
   
 
-  
+
 		let componentData = {
 		  oldComponentName: oldComponentName,
 			id: componentId,
@@ -325,7 +326,8 @@ document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 
 	gridItem.addEventListener("mouseover", function () {
 		iframe.classList.remove("fade-out");
-		iframe.src = `./components/${gridItem.dataset.componentName}/${gridItem.dataset.componentName}.html`;
+		let componentNameURL = gridItem.dataset.componentName.replace(/ /g, "-");
+iframe.src = `./components/${componentNameURL}/${componentNameURL}.html`;
 		iframe.offsetHeight;
 		iframe.classList.add("fade-in");
 	});
