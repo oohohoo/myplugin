@@ -116,6 +116,21 @@ document
 		let jsCode = document.getElementById("js-code").value;
 		let componentId = componentName.replace(/ /g, "");
 
+
+		// Validate component name
+if (!componentName || typeof componentName !== 'string' || componentName.trim() === '') {
+	alert('Invalid component name');
+	return;
+  }
+  
+  // Validate HTML, CSS, and JS code
+  if (!htmlCode || typeof htmlCode !== 'string' || !cssCode || typeof cssCode !== 'string' || !jsCode || typeof jsCode !== 'string') {
+	alert('Invalid HTML, CSS, or JS code');
+	return;
+  }
+  
+
+  
 		let componentData = {
 		  oldComponentName: oldComponentName,
 			id: componentId,

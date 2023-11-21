@@ -44,6 +44,18 @@ app.post('/save-component', (req, res) => {
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
 
+  // Validate component name
+  if (!componentName || typeof componentName !== 'string' || componentName.trim() === '') {
+    res.status(400).send({ status: 'error', message: 'Invalid component name' });
+    return;
+  }
+
+  // Validate HTML, CSS, and JS code
+  if (!htmlCode || typeof htmlCode !== 'string' || !cssCode || typeof cssCode !== 'string' || !jsCode || typeof jsCode !== 'string') {
+    res.status(400).send({ status: 'error', message: 'Invalid HTML, CSS, or JS code' });
+    return;
+  }
+
   // If the old component name is not provided, assume it's a new component
   if (!oldComponentName) {
     oldComponentName = componentName;
