@@ -18,8 +18,55 @@ app.use(function (err, req, res, next) {
 });
 
 /* SAVE COMPONENT */
-app.put('/update-component/:oldName', (req, res, next) => { // Add this block
-  // Similar to the save-component route but update the existing component instead of creating a new one
+app.put('/update-component/:oldName', (req, res, next) => {
+  console.log('PUT /update-component/:oldName');
+
+  let oldComponentName = req.params.oldName;
+  let newComponentData = req.body;
+  let newComponentName = newComponentData.componentName;
+  let newComponentNameURL = newComponentName.replace(/ /g, "-");
+
+  let oldComponentDir = path.join(__dirname, 'public', 'components', oldComponentName.replace(/ /g, "-"));
+  let newComponentDir = path.join(__dirname, 'public', 'components', newComponentNameURL);
+
+  if (!fs.existsSync(oldComponentDir)) {
+    res.status(404).send({ status: 'error', message: 'Component not found' });
+    return;
+  }
+
+  if (oldComponentName !== newComponentName) {
+    fs.renameSync(oldComponentDir, newComponentDir);
+  }
+
+  let componentDir = newComponentDir;
+
+  let linkedHtmlCode = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <link rel="stylesheet" type="text/css" href="${newComponentNameURL}.css">
+    </head>
+    <body>
+      ${newComponentData.htmlCode}
+      <script src="${newComponentNameURL}.js"></script>
+    </body>
+    </html>
+  `;
+
+  let componentId = newComponentName.replace(/ /g, "-");
+  fs.writeFileSync(path.join(componentDir, `${componentId}.html`), linkedHtmlCode);
+  fs.writeFileSync(path.join(componentDir, `${componentId}.css`), newComponentData.cssCode);
+  fs.writeFileSync(path.join(componentDir, `${componentId}.js`), newComponentData.jsCode);
+
+  console.log('Component updated:', newComponentName);
+
+  updateComponents(); // Call the function after the component is updated
+
+  try {
+    res.send({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.post('/save-component', (req, res, next) => {
