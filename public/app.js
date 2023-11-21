@@ -153,22 +153,23 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
     })
     .then((response) => response.json()).catch(() => {}) // Remove semicolon
  
-if (componentName && htmlCode && cssCode && jsCode) {
-    let fetchUrl = "/save-component";
-    let fetchMethod = "POST";
-
-    if (isEditing) {
-        fetchUrl = `/update-component/${oldComponentName}`;
-        fetchMethod = "PUT";
-    }
-
-    fetch(fetchUrl, {
-        method: fetchMethod,
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(componentData),
-    })
+	if (componentName && htmlCode && cssCode && jsCode) {
+		let fetchUrl = "/save-component";
+		let fetchMethod = "POST";
+	
+		if (isEditing) {
+			fetchUrl = `/update-component/${oldComponentName}`;
+			fetchMethod = "PUT";
+		}
+	
+		fetch(fetchUrl, {
+			method: fetchMethod,
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(componentData),
+		})
+		
         .then((response) => response.json())
         .then((data) => {
             if (data.status === "success") {
