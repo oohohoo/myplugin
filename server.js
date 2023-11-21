@@ -74,15 +74,16 @@ app.post('/save-component', (req, res) => {
   fs.mkdirSync(componentDir, { recursive: true });
   
   // Add links to the CSS and JS files in the HTML code
+  let componentNameURL = componentName.replace(/ /g, "-");
   let linkedHtmlCode = `
     <!DOCTYPE html>
     <html>
     <head>
-      <link rel="stylesheet" type="text/css" href="${componentName}.css">
+      <link rel="stylesheet" type="text/css" href="${componentNameURL}.css">
     </head>
     <body>
       ${htmlCode}
-      <script src="${componentName}.js"></script>
+      <script src="${componentNameURL}.js"></script>
     </body>
     </html>
   `;
