@@ -35,7 +35,7 @@ app.use(function (err, req, res, next) {
 /*************************************************************************/
 /* SAVE COMPONENT
 /*************************************************************************/
-app.post('/save-component', (req, res) => {
+app.post('/save-component', (req, res, next) => {
   console.log('POST /save-component');
   
   let oldComponentName = req.body.oldComponentName;
@@ -98,7 +98,7 @@ app.post('/save-component', (req, res) => {
   
   updateComponents(); // Call the function after a new component is created
 
-  res.send({ status: 'success' });
+  res.send({ status: 'success' }).catch(next);
 });
 
 
