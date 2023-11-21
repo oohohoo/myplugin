@@ -58,7 +58,7 @@ app.put('/update-component', (req, res, next) => {
   fs.writeFileSync(path.join(componentDir, `${componentId}.css`), newComponentData.cssCode);
   fs.writeFileSync(path.join(componentDir, `${componentId}.js`), newComponentData.jsCode);
 
-  console.log('Component updated:', newComponentName);
+  console.log(`Component updated: ${newComponentName} (Component No. ${componentDirs.indexOf(newComponentName) + 1})`);
 
   updateComponents(); // Call the function after the component is updated
 
@@ -134,7 +134,7 @@ app.post('/create-component', (req, res, next) => {
   fs.writeFileSync(path.join(componentDir, `${componentId}.css`), cssCode);
   fs.writeFileSync(path.join(componentDir, `${componentId}.js`), jsCode);
 
-  console.log('Component created:', componentName);
+  console.log(`Component created: ${componentName} (Component No. ${componentDirs.indexOf(componentName) + 1})`);
   
   updateComponents(); // Call the function after a new component is created
 
