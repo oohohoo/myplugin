@@ -1,6 +1,7 @@
 /* ADD NEW COMP - FORM */
 let socket = new WebSocket("ws://localhost:8080");
 let isEditing = false;
+let isEditing = false;
 socket.onopen = function (e) {
 	console.log("[open] Connection established");
 	console.log("Sending to server");
