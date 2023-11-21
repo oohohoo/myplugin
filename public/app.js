@@ -8,6 +8,9 @@ socket.onopen = function (e) {
 };
 socket.onmessage = function (event) {
 	console.log(`[message] Data received from server: ${event.data}`);
+	if (event.data === 'componentAdded') {
+		window.location.reload();
+	}
 };
 socket.onclose = function (event) {
 	if (event.wasClean) {

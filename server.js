@@ -262,7 +262,7 @@ wss.broadcast = function(data) {
 
 fs.watch('./public/components', (eventType, filename) => {
   const componentHTML = updateComponents();
-  wss.broadcast(JSON.stringify(componentHTML));
+  wss.broadcast('componentAdded');
 });
 
 const puppeteer = require('puppeteer');
