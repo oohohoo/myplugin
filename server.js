@@ -18,7 +18,7 @@ app.use(function (err, req, res, next) {
 });
 
 /* SAVE COMPONENT */
-app.put('/update-component/:oldName', (req, res, next) => {
+app.put('/update-component', (req, res, next) => {
   console.log('PUT /update-component/:oldName');
 
   let oldComponentName = req.params.oldName;
