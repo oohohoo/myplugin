@@ -76,7 +76,7 @@ app.post('/save-component', (req, res, next) => {
   fs.mkdirSync(componentDir, { recursive: true });
   
   // Add links to the CSS and JS files in the HTML code
-  let componentNameURL = componentName.replace(/ /g, "-");
+ // let componentNameURL = componentName.replace(/ /g, "-");
   let linkedHtmlCode = `
     <!DOCTYPE html>
     <html>
@@ -137,7 +137,7 @@ app.delete('/delete-component/:id', (req, res) => {
 // Server.js
 app.get('/components/:name', (req, res) => {
   const componentName = req.params.name;
-  let componentNameURL = componentName.replace(/ /g, "-");
+ // let componentNameURL = componentName.replace(/ /g, "-");
   const componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
   if (!fs.existsSync(componentDir)) {
     res.status(404).send('Component not found');

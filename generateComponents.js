@@ -17,11 +17,12 @@ function updateComponents() {
   
 
 const componentHTML = componentDirs.map(dir => {
-  const id = dir.replace(/ /g, "-");
-  return `
+  let dirURL = dir.replace(/ /g, "-");
+const id = dirURL;
+return `
 <div class="grid-item" id="${id}" data-component-name="${dir}">
   <h2 class="fulliframe" cms-post-title>${dir}</h2>
-  <iframe data-src="./components/${id}/${id}.html" title="Live Preview"></iframe>
+  <iframe data-src="./components/${dirURL}/${dirURL}.html" title="Live Preview"></iframe>
   <ul class="tags">
     <li>mobile</li>
     <li>media</li>
