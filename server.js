@@ -83,7 +83,11 @@ app.post('/save-component', (req, res, next) => {
   
   updateComponents(); // Call the function after a new component is created
 
-  res.send({ status: 'success' }).catch(next);
+  try {
+    res.send({ status: 'success' });
+  } catch (error) {
+    next(error);
+  }
 });
 
 /* DELETE COMPONENT */
