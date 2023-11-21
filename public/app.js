@@ -153,111 +153,104 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
     })
     .then((response) => response.json()) : () => {} // Add else condition
  
+if (componentName && htmlCode && cssCode && jsCode) {
+    let fetchUrl = "/save-component";
+    let fetchMethod = "POST";
 
-/*   fetch("/save-component", {
-	method: "POST",
-	headers: {
-		"Content-Type": "application/json",
-	},
-	body: JSON.stringify(componentData),
-}) */
+    if (isEditing) {
+        fetchUrl = `/update-component/${oldComponentName}`;
+        fetchMethod = "PUT";
+    }
 
-			.then((data) => {
-				if (data.status === "success") {
-					fetch("/components")
-						.then((response) => response.json())
-						.then((components) => {
-							fetch("/components")
-								.then((response) => response.json())
-								.then((components) => {
-									const componentContainer = document.getElementById(
-										"component-container"
-									);
-									if (!componentContainer) {
-										console.error(
-											'No element with id "component-container" found'
-										);
-										return;
-									}
-									while (componentContainer.firstChild) {
-										componentContainer.removeChild(
-											componentContainer.firstChild
-										);
-									}
+    fetch(fetchUrl, {
+        method: fetchMethod,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(componentData),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === "success") {
+                fetch("/components")
+                    .then((response) => response.json())
+                    .then((components) => {
+                        fetch("/components")
+                            .then((response) => response.json())
+                            .then((components) => {
+                                const componentContainer = document.getElementById("component-container");
+                                if (!componentContainer) {
+                                    console.error('No element with id "component-container" found');
+                                    return;
+                                }
+                                while (componentContainer.firstChild) {
+                                    componentContainer.removeChild(componentContainer.firstChild);
+                                }
 
+                                // Add comp to DOM
+                                components.forEach(async (componentName) => {
+                                    const componentElement = document.createElement("div");
+                                    componentElement.className = "grid-item";
+                                    componentElement.id = componentName.replace(/ /g, "-");
+                                    componentElement.dataset.componentName = componentName;
+                                    componentElement.innerHTML = `
+                                        <h2 class="fulliframe" cms-post-title>${componentName.replace(/-/g, " ")}</h2>
+                                        <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
+                                        <ul class="tags">
+                                            <li>mobile</li>
+                                            <li>media</li>
+                                        </ul>
+                                        <button class="close-button">Close</button>
+                                        <div class="button-container">
+                                            <button onclick="copyFileContent('components/${componentName}/${componentName}.html', this)">HTML</button>
+                                            <button onclick="copyFileContent('components/${componentName}/${componentName}.js', this)">JS</button>
+                                            <button onclick="copyFileContent('components/${componentName}/${componentName}.css', this)">CSS</button>
+                                        </div>
+                                        <button class="edit-button" onclick="editComponent('${componentName}')">Edit</button>
+                                    `;
+                                    componentContainer.appendChild(componentElement);
 
-									// Add comp to DOM
-									components.forEach(async (componentName) => {
-										const componentElement = document.createElement("div");
-										componentElement.className = "grid-item";
-										componentElement.id = componentName.replace(/ /g, "-");
-										componentElement.dataset.componentName = componentName;
-										componentElement.innerHTML = `
-    <h2 class="fulliframe" cms-post-title>${componentName.replace(/-/g, " ")}</h2>
-    <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
-    <ul class="tags">
-      <li>mobile</li>
-      <li>media</li>
-    </ul>
-    <button class="close-button">Close</button>
-    <div class="button-container">
-      <button onclick="copyFileContent('components/${componentName}/${componentName}.html', this)">HTML</button>
-      <button onclick="copyFileContent('components/${componentName}/${componentName}.js', this)">JS</button>
-      <button onclick="copyFileContent('components/${componentName}/${componentName}.css', this)">CSS</button>
-    </div>
-    <button class="edit-button" onclick="editComponent('${componentName}')">Edit</button>
-  `;
-										componentContainer.appendChild(componentElement);
+                                    fetch(`/generate-screenshot/${componentName}`, {
+                                        method: "POST",
+                                    });
+                                });
+                                attachEventListeners();
+                            });
+                    });
 
-										fetch(`/generate-screenshot/${componentName}`, {
-											method: "POST",
-										});
-									});
-									attachEventListeners();
-								});
-						});
+                document.getElementById("component-name").value = "";
+                document.getElementById("html-code").value = "";
+                document.getElementById("css-code").value = "";
+                document.getElementById("js-code").value = "";
 
-					document.getElementById("component-name").value = "";
-					document.getElementById("html-code").value = "";
-					document.getElementById("css-code").value = "";
-					document.getElementById("js-code").value = "";
+                document.getElementById("component-form").reset();
+                document
+                    .getElementById("side-panel")
+                    .classList.remove("side-panel-shown");
+                document
+                    .getElementById("side-panel")
+                    .classList.add("side-panel-hidden");
 
-					document.getElementById("component-form").reset();
-					document
-						.getElementById("side-panel")
-						.classList.remove("side-panel-shown");
-					document
-						.getElementById("side-panel")
-						.classList.add("side-panel-hidden");
+                socket.onerror = function (error) {
+                    console.log(`WebSocket error: ${error}`);
+                };
 
-					socket.onerror = function (error) {
-						console.log(`WebSocket error: ${error}`);
-					};
-
-					socket.onmessage = function (event) {
-						console.log("Server says: " + event.data);
-					};
-				}
-			})
-
-			.then((data) => {
-				//	window.location.reload();
-							})
-
-							.catch((error) => {
-								if (error.message === "Unexpected token E in JSON at position 0") {
-									console.error("Error:", error, "The server responded with a non-JSON error message.");
-								} else {
-									console.error("Error:", error);
-								}
-							});
-		} else {
-			alert('All fields are required');
-		  } 
-
-
-
-			
+                socket.onmessage = function (event) {
+                    console.log("Server says: " + event.data);
+                };
+            }
+        })
+        .catch((error) => {
+            if (error.message === "Unexpected token E in JSON at position 0") {
+                console.error("Error:", error, "The server responded with a non-JSON error message.");
+            } else {
+                console.error("Error:", error);
+            }
+        });
+} else {
+    alert('All fields are required');
+}
+	
 			
 	});
 
