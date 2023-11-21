@@ -151,7 +151,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
       },
       body: JSON.stringify(componentData),
     })
-    .then((response) => response.json()) : // Add else condition
+    .then((response) => response.json()) : () => {} // Add else condition
  
 
 /*   fetch("/save-component", {
