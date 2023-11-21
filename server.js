@@ -5,6 +5,10 @@ const app = express();
 const port = 3000;
 const { generateComponents, updateComponents } = require('./generateComponents.js'); // Import the generateComponents function
 
+let componentDirs = fs.readdirSync(path.join(__dirname, 'public', 'components'), { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+
 /* UPDATE COMPONENTS ON SERVER START*/
 
 updateComponents(); 
@@ -58,6 +62,9 @@ app.put('/update-component', (req, res, next) => {
   fs.writeFileSync(path.join(componentDir, `${componentId}.css`), newComponentData.cssCode);
   fs.writeFileSync(path.join(componentDir, `${componentId}.js`), newComponentData.jsCode);
 
+  componentDirs = fs.readdirSync(path.join(__dirname, 'public', 'components'), { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name);
   console.log(`Component updated: ${newComponentName} (Component No. ${componentDirs.indexOf(newComponentName) + 1})`);
 
   updateComponents(); // Call the function after the component is updated
@@ -134,6 +141,9 @@ app.post('/create-component', (req, res, next) => {
   fs.writeFileSync(path.join(componentDir, `${componentId}.css`), cssCode);
   fs.writeFileSync(path.join(componentDir, `${componentId}.js`), jsCode);
 
+  componentDirs = fs.readdirSync(path.join(__dirname, 'public', 'components'), { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name);
   console.log(`Component created: ${componentName} (Component No. ${componentDirs.indexOf(componentName) + 1})`);
   
   updateComponents(); // Call the function after a new component is created
@@ -164,6 +174,9 @@ app.delete('/delete-component/:id', (req, res) => {
 
     updateComponents();
 
+    componentDirs = fs.readdirSync(path.join(__dirname, 'public', 'components'), { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name);
     res.json({ message: 'Component deleted' });
   });
 });
