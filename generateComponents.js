@@ -21,7 +21,7 @@ const componentHTML = componentDirs.map(dir => {
 const id = dirURL;
 return `
 <div class="grid-item" id="${id}" data-component-name="${dir}">
-  <h2 class="fulliframe" cms-post-title>${componentDirs.indexOf(dir) + 1}. ${dir}</h2>
+  <h2 class="fulliframe" cms-post-title>${componentDirs.length - componentDirs.indexOf(dir)}. ${dir}</h2>
   <iframe data-src="./components/${dirURL}/${dirURL}.html" title="Live Preview"></iframe>
   <ul class="tags">
     <li>mobile</li>
