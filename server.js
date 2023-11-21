@@ -134,7 +134,8 @@ app.delete('/delete-component/:id', (req, res) => {
 // Server.js
 app.get('/components/:name', (req, res) => {
   const componentName = req.params.name;
-  const componentDir = path.join(__dirname, 'public', 'components', componentName);
+  let componentNameURL = componentName.replace(/ /g, "-");
+  const componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
   if (!fs.existsSync(componentDir)) {
     res.status(404).send('Component not found');
     return;
