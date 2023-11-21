@@ -1,3 +1,5 @@
+let componentDirs;
+
 /* ADD NEW COMP - FORM */
 let socket = new WebSocket("ws://localhost:8080");
 let isEditing = false;
@@ -252,7 +254,13 @@ document
 	.addEventListener("click", function () {
 		document.getElementById("side-panel").classList.remove("side-panel-shown");
 		document.getElementById("side-panel").classList.add("side-panel-hidden");
+		document.getElementById("component-form").reset();
+		console.log("forma resetirana");
 	});
+
+
+
+
 
 /* ADD COMP*/
 document.getElementById("add-component").addEventListener("click", function () {
