@@ -53,10 +53,14 @@ app.post('/save-component', (req, res, next) => {
   let oldComponentDir = path.join(__dirname, 'public', 'components', oldComponentName.replace(/ /g, "-"));
   let newComponentDir = path.join(__dirname, 'public', 'components', componentNameURL);
 
-  if (fs.existsSync(oldComponentDir) && oldComponentName !== componentName) {
-      fs.renameSync(oldComponentDir, newComponentDir);
+  if (oldComponentName !== componentName) {
+      if (fs.existsSync(oldComponentDir)) {
+          fs.renameSync(oldComponentDir, newComponentDir);
+      }
   } else {
-      fs.mkdirSync(newComponentDir, { recursive: true });
+      if (!fs.existsSync(newComponentDir)) {
+          fs.mkdirSync(newComponentDir, { recursive: true });
+      }
   }
 
   let componentDir = newComponentDir;
