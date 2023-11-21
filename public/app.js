@@ -1,4 +1,4 @@
-let componentDirs;
+let componentDirs = [];
 
 /* ADD NEW COMP - FORM */
 let socket = new WebSocket("ws://localhost:8080");
@@ -182,7 +182,8 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
                                 }
 
                                 // Add comp to DOM
-                                components.forEach(async (componentName) => {
+                                components.forEach(async (dir) => {
+                                  let componentName = dir;
                                     const componentElement = document.createElement("div");
                                     componentElement.className = "grid-item";
                                     componentElement.id = componentName.replace(/ /g, "-");
