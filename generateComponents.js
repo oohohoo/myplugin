@@ -30,8 +30,8 @@ return `
 </div>
 <h2 class="fulliframe" cms-post-title>${dir}</h2>
 <h2 class="fulliframe" cms-post-title>${componentDirs.length - index}</h2>
-
-  <iframe data-src="./components/${dirURL}/${dirURL}.html" title="Live Preview"></iframe>
+<div class="preloader"></div>
+  <iframe style="visibility: hidden; data-src="./components/${dirURL}/${dirURL}.html" title="Live Preview"></iframe>
   <ul class="tags">
     <li>mobile</li>
     <li>media</li>

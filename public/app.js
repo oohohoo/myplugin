@@ -335,29 +335,74 @@ document.querySelectorAll(".close-button").forEach((button) => {
 });
 
 /* load unload iframe*/
+
 document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 	let iframe = gridItem.querySelector("iframe");
-	iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
+	let preloader = gridItem.querySelector(".preloader");
 
+	gridItem.addEventListener("mouseover", function () {
+		let componentNameURL = gridItem.dataset.componentName.replace(/ /g, "-");
+		iframe.src = `./components/${componentNameURL}/${componentNameURL}.html`;
+	});
+
+	gridItem.addEventListener("mouseleave", function () {
+		iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
+	});
+
+	iframe.addEventListener("load", function() {
+		preloader.style.opacity = "0"; /* Add this line */
+		iframe.style.visibility = "visible";
+		iframe.style.opacity = "1";
+		let img = this.contentDocument.querySelector("img");
+		if (img) {
+			img.style.width = "100%";
+			img.style.height = "100%";
+			img.style.objectFit = "cover";
+		}
+	});
+});
+
+
+
+/* document.querySelectorAll(".grid-item").forEach(function (gridItem) {
+	let iframe = gridItem.querySelector("iframe");
+	iframe.classList.add("myIframe");
+	iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 
 	gridItem.addEventListener("mouseover", function () {
 		iframe.classList.remove("fade-out");
 		let componentNameURL = gridItem.dataset.componentName.replace(/ /g, "-");
-iframe.src = `./components/${componentNameURL}/${componentNameURL}.html`;
+		iframe.src = `./components/${componentNameURL}/${componentNameURL}.html`;
 		iframe.offsetHeight;
 		iframe.classList.add("fade-in");
 	});
 
 	gridItem.addEventListener("mouseleave", function () {
 		iframe.classList.remove("fade-in");
-		//iframe.classList.add("fade-out");
 		iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 
 		setTimeout(function () {
 			iframe.classList.remove("fade-out");
 		}, 500); 
 	});
+
+	iframe.addEventListener("load", function() {
+		let img = this.contentDocument.querySelector("img");
+		if (img) {
+			img.style.width = "100%";
+			img.style.height = "100%";
+			img.style.objectFit = "cover";
+		}
+	});
 });
+
+ */
+
+
+
+
+
+
 
 
 var gridItems = document.querySelectorAll('.grid-item');
