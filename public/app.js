@@ -377,14 +377,16 @@ gridItems.forEach(function(gridItem) {
   
 	  if (componentId) {
 	    fetch('/tags/' + componentId)
-	  } else {
-	    console.error('componentId is not set');
-	  }
+	 
 		.then(response => response.json())
 		.then(data => {
 		  tagList = data;
 		  tagListRender(tagListElement);
 		});
+
+	} else {
+	    console.error('componentId is not set');
+	  }
   
 	  function tagListRender(element) {
 		element.innerHTML = '';
