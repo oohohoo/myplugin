@@ -22,7 +22,7 @@ app.use(function (err, req, res, next) {
 });
 
 /* SAVE COMPONENT */
-app.put('/update-component', (req, res, next) => {
+app.put('/update-component/:oldName', (req, res, next) => {
   console.log('PUT /update-component/:oldName');
 
   let oldComponentName = req.params.oldName;
@@ -124,17 +124,17 @@ app.post('/create-component', (req, res, next) => {
   let componentDir = newComponentDir;
   
   let linkedHtmlCode = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <link rel="stylesheet" type="text/css" href="${componentNameURL}.css">
-    </head>
-    <body>
-      ${htmlCode}
-      <script src="${componentNameURL}.js"></script>
-    </body>
-    </html>
-  `;
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="${componentNameURL}.css">
+  </head>
+  <body>
+    ${htmlCode}
+    <script src="${componentNameURL}.js"></script>
+  </body>
+  </html>
+`;
 
   let componentId = componentName.replace(/ /g, "-");
   fs.writeFileSync(path.join(componentDir, `${componentId}.html`), linkedHtmlCode);
@@ -180,29 +180,6 @@ app.delete('/delete-component/:id', (req, res) => {
     res.json({ message: 'Component deleted' });
   });
 });
-/* app.delete('/delete-component/:id', (req, res) => {
-  const componentId = req.params.id;
-  const componentPath = path.join(__dirname, 'public', 'components', componentId); 
-
-  if (!fs.existsSync(componentPath)) {
-      res.status(404).send('File not found');
-      return;
-  }
-
- // Delete the component
- fs.rmdir(componentPath, { recursive: true }, (err) => {
-  if(err){
-    console.error(err);
-    res.status(500).json({ message: err.message });
-    return;
-  }
-
-  // Update the components list in index.html
-  updateComponents();
-
-  res.json({ message: 'Component deleted' });
-});
-}); */
 
 
 // Server.js
@@ -252,10 +229,26 @@ app.listen(port, () => {
 /* PUSH UPDATES WHEN APPLICATION ADDED*/
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
+
 wss.broadcast = function(data) {
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);
+
+      // Add logic to add links to HTML file here
+    /*   const componentName = 'exampleComponent'; // Replace with the actual component name
+      const componentDir = path.join(__dirname, 'public', 'components', componentName);
+      const htmlFilePath = path.join(componentDir, `${componentName}.html`);
+      const linkTag = `<link rel="stylesheet" type="text/css" href="example.css">`; // Replace with the actual link tag
+
+      // Read the existing HTML content
+      let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
+
+      // Add the link tag to the HTML content
+      htmlContent = htmlContent.replace('</head>', `${linkTag}\n</head>`);
+
+      // Write the modified HTML content back to the file
+      fs.writeFileSync(htmlFilePath, htmlContent); */
     }
   });
 };

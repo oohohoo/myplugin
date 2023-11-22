@@ -91,8 +91,13 @@ function attachEventListeners() {
 			
 			let componentName = oldComponentName;
 			fetch(`/components/${componentName}`)
-				.then((response) => response.json())
-				.then((data) => {
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then((data) => {
 					document.getElementById("component-name").value = data.componentName;
 					document.getElementById("component-name").dataset.oldName = data.componentName;
 					document.getElementById("html-code").value = data.htmlCode;
@@ -104,7 +109,10 @@ function attachEventListeners() {
 					document
 						.getElementById("side-panel")
 						.classList.remove("side-panel-hidden");
-				});
+				})
+				.catch((error) => {
+					console.error('There was a problem with the fetch uhvaaati operation: ', error);
+				});				;
 		});
 	});
 }
@@ -140,15 +148,16 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
   
 
 
+  let libraryLinks = Array.from(document.querySelectorAll('.tagList li')).map(li => li.textContent);
   let componentData = {
-	oldComponentName: isEditing ? document.getElementById("component-name").dataset.oldName : null,
-	id: componentId,
-	componentName: componentName,
-	htmlCode: htmlCode,
-	cssCode: cssCode,
-	jsCode: jsCode,
-};
-
+		  oldComponentName: isEditing ? document.getElementById("component-name").dataset.oldName : null,
+		  id: componentId,
+		  componentName: componentName,
+		  htmlCode: htmlCode,
+		  cssCode: cssCode,
+		  jsCode: jsCode,
+		  libraryLinks: libraryLinks,
+  };
   
  
 	if (componentName && htmlCode && cssCode && jsCode) {
@@ -384,6 +393,9 @@ gridItems.forEach(function(gridItem) {
   
 	  tagListRender(tagListElement);
   
+
+
+
 	  function tagListRender(element) {
 		element.innerHTML = '';
   
