@@ -372,7 +372,7 @@ gridItems.forEach(function(gridItem) {
   
 	tagListElements.forEach(function(tagListElement, i) {
 	  var newTagInput = newTagInputs[i];
-	  var componentId = tagListElement.parentNode.id; 
+	  var componentId = tagListElement.closest('.grid-item').id; 
 	  var tagList = [];
   
 	  if (componentId) {
