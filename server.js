@@ -3,13 +3,11 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 const port = 3000;
-const { generateComponents, updateComponents } = require('./generateComponents.js'); // Import the generateComponents function
+const { generateComponents, updateComponents } = require('./generateComponents.js'); 
 
 let componentDirs = fs.readdirSync(path.join(__dirname, 'public', 'components'), { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
-
-/* UPDATE COMPONENTS ON SERVER START*/
 
 updateComponents(); 
 
@@ -19,6 +17,53 @@ app.use(express.json());
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Internal Server Error');
+});
+
+/* TAGS */
+
+app.get('/tags/:componentId', (req, res) => {
+  const componentId = req.params.componentId;
+  console.log('GET /tags/' + componentId); 
+  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
+  if (fs.existsSync(tagsFilePath)) {
+    const tags = JSON.parse(fs.readFileSync(tagsFilePath));
+    res.json(tags);
+  } else {
+    console.log('tags.json does not exist for component ' + componentId); 
+    res.json([]);
+  }
+});
+
+app.post('/tags/:componentId', (req, res) => {
+  const componentId = req.params.componentId;
+  const newTag = req.body.tag;
+  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
+  let tags = [];
+  if (fs.existsSync(tagsFilePath)) {
+    tags = JSON.parse(fs.readFileSync(tagsFilePath));
+  }
+  tags.push(newTag);
+  fs.writeFile(tagsFilePath, JSON.stringify(tags), err => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({ error: 'Failed to write to file' });
+    } else {
+      res.json(tags);
+    }
+  });
+});
+
+app.delete('/tags/:componentId/:tagIndex', (req, res) => {
+  const componentId = req.params.componentId;
+  const tagIndex = req.params.tagIndex;
+  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
+  let tags = [];
+  if (fs.existsSync(tagsFilePath)) {
+    tags = JSON.parse(fs.readFileSync(tagsFilePath));
+    tags.splice(tagIndex, 1);
+    fs.writeFileSync(tagsFilePath, JSON.stringify(tags));
+  }
+  res.json(tags);
 });
 
 /* SAVE COMPONENT */
@@ -67,7 +112,7 @@ app.put('/update-component/:oldName', (req, res, next) => {
       .map(dirent => dirent.name);
   console.log(`Component updated: ${newComponentName} (Component No. ${componentDirs.indexOf(newComponentName) + 1})`);
 
-  updateComponents(); // Call the function after the component is updated
+  updateComponents(); 
 
   try {
     res.send({ status: 'success' });
@@ -146,7 +191,7 @@ app.post('/create-component', (req, res, next) => {
       .map(dirent => dirent.name);
   console.log(`Component created: ${componentName} (Component No. ${componentDirs.indexOf(componentName) + 1})`);
   
-  updateComponents(); // Call the function after a new component is created
+  updateComponents(); 
 
   try {
     res.send({ status: 'success' });
@@ -180,7 +225,6 @@ app.delete('/delete-component/:id', (req, res) => {
     res.json({ message: 'Component deleted' });
   });
 });
-
 
 // Server.js
 app.get('/components/:name', (req, res) => {
@@ -216,7 +260,7 @@ app.get('/components', (req, res) => {
 });
 
 
-/* RESET COMPONENTS ON EVERY RELOAD */
+/* RESET ON  RELOAD */
 app.get('/', function(req, res) {
   updateComponents();
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -226,7 +270,7 @@ app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-/* PUSH UPDATES WHEN APPLICATION ADDED*/
+/* PUSH UPDATES - app ADDED*/
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 
@@ -234,21 +278,6 @@ wss.broadcast = function(data) {
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);
-
-      // Add logic to add links to HTML file here
-    /*   const componentName = 'exampleComponent'; // Replace with the actual component name
-      const componentDir = path.join(__dirname, 'public', 'components', componentName);
-      const htmlFilePath = path.join(componentDir, `${componentName}.html`);
-      const linkTag = `<link rel="stylesheet" type="text/css" href="example.css">`; // Replace with the actual link tag
-
-      // Read the existing HTML content
-      let htmlContent = fs.readFileSync(htmlFilePath, 'utf-8');
-
-      // Add the link tag to the HTML content
-      htmlContent = htmlContent.replace('</head>', `${linkTag}\n</head>`);
-
-      // Write the modified HTML content back to the file
-      fs.writeFileSync(htmlFilePath, htmlContent); */
     }
   });
 };
@@ -272,7 +301,7 @@ app.post('/generate-screenshot/:name', async (req, res) => {
     const browser = await puppeteer.launch({ headless: "new" });
 	    const page = await browser.newPage();
 	    await page.goto(`http://localhost:${port}/components/${componentName}/${componentName}.html`);
-	    await page.waitForTimeout(1000); // Add a delay of 1 second
+	    await page.waitForTimeout(1000); 
       await page.screenshot({ path: screenshotPath });
 	    await browser.close();
 	}
