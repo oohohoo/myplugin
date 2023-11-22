@@ -22,9 +22,9 @@ app.use(function (err, req, res, next) {
 
 /* SAVE COMPONENT */
 app.put('/update-component/:oldName', (req, res, next) => {
-  const tags = req.body.tags;
+  const tags = req.body.tags || [];
 
-  fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
+  fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags), 'utf8');
   console.log('PUT /update-component/:oldName');
 
   let oldComponentName = req.params.oldName;
