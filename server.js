@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(500).send('Internal Server Error');
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
 /* TAGS */
@@ -126,6 +126,9 @@ app.put('/update-component/:oldName', (req, res, next) => {
 
 app.post('/create-component', (req, res, next) => {
   const tags = req.body.tags;
+  let componentName = req.body.componentName;
+  let componentNameURL = componentName.replace(/ /g, "-");
+  let componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
   // Save the tags to a JSON file in the component directory
   fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
   console.log('POST /save-component');
