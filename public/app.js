@@ -127,7 +127,6 @@ document
 		let jsCode = document.getElementById("js-code").value;
 		let componentId = componentName.replace(/ /g, "");
 
-
 if (!componentName || typeof componentName !== 'string' || componentName.trim() === '') {
 	alert('Invalid component name');
 	return;
@@ -148,8 +147,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 		  jsCode: jsCode,
 		  libraryLinks: libraryLinks,
   };
-  
- 
+   
 	if (componentName && htmlCode && cssCode && jsCode) {
 		let fetchUrl = isEditing ? `/update-component` : "/create-component";
 		let fetchMethod = isEditing ? "PUT" : "POST";
@@ -253,8 +251,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 } else {
     alert('All fields are required');
 }
-	
-			
+				
 	});
 
 document
@@ -265,10 +262,6 @@ document
 		document.getElementById("component-form").reset();
 		console.log("forma resetirana");
 	});
-
-
-
-
 
 /* ADD COMP*/
 document.getElementById("add-component").addEventListener("click", function () {
@@ -352,14 +345,12 @@ document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 	});
 });
 
-
 var gridItems = document.querySelectorAll('.grid-item');
 
 gridItems.forEach(function(gridItem) {
     var iframe = gridItem.querySelector('iframe');
     iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 });
-
 
 /* TAGS SERVER */
 (function () {
@@ -427,116 +418,3 @@ gridItems.forEach(function(gridItem) {
 	  });
 	});
 })();
-
-
-
-
-/* LOCAL STORAGE*/
-/* 
-(function () {
-	var tagListElements = document.querySelectorAll('.tagList');
-	var newTagInputs = document.querySelectorAll('.newTag');
-  
-	tagListElements.forEach(function(tagListElement, i) {
-	  var newTagInput = newTagInputs[i];
-	  var localStorageKey = 'tagList' + i; // unique key for each component
-	  var tagList = JSON.parse(localStorage.getItem(localStorageKey)) || [];
-  
-	  tagListRender(tagListElement);
-  
-	  function tagListRender(element) {
-		element.innerHTML = '';
-  
-		tagList.forEach(function (tag, index) {
-		  var listItem = document.createElement('li');
-		  listItem.textContent = tag;
-  
-		  var removeButton = document.createElement('span');
-		  removeButton.className = 'rmTag';
-		  removeButton.textContent = '×';
-  
-		  listItem.appendChild(removeButton);
-		  element.appendChild(listItem);
-		});
-	  }
-  
-	  newTagInput.addEventListener('keyup', function (e) {
-		if (e.keyCode === 13) {
-		  var newTag = newTagInput.value.trim();
-  
-		  if (newTag !== '') {
-			tagList.push(newTag);
-			newTagInput.value = '';
-			tagListRender(tagListElement);
-			localStorage.setItem(localStorageKey, JSON.stringify(tagList));
-		  }
-		}
-	  });
-  
-	  tagListElement.addEventListener('click', function (e) {
-		if (e.target.classList.contains('rmTag')) {
-		  var listItem = e.target.parentNode;
-		  var index = Array.from(listItem.parentNode.children).indexOf(listItem);
-  
-		  tagList.splice(index, 1);
-		  tagListRender(tagListElement);
-		  localStorage.setItem(localStorageKey, JSON.stringify(tagList));
-		}
-	  });
-	});
-})(); */
-
-
-/* 
-(function () {
-	var tagListElements = document.querySelectorAll('.tagList');
-	var newTagInputs = document.querySelectorAll('.newTag');
-  
-	tagListElements.forEach(function(tagListElement, i) {
-	  var newTagInput = newTagInputs[i];
-	  var tagList = [];
-  
-	  tagListRender(tagListElement);
-  
-
-
-
-	  function tagListRender(element) {
-		element.innerHTML = '';
-  
-		tagList.forEach(function (tag, index) {
-		  var listItem = document.createElement('li');
-		  listItem.textContent = tag;
-  
-		  var removeButton = document.createElement('span');
-		  removeButton.className = 'rmTag';
-		  removeButton.textContent = '×';
-  
-		  listItem.appendChild(removeButton);
-		  element.appendChild(listItem);
-		});
-	  }
-  
-	  newTagInput.addEventListener('keyup', function (e) {
-		if (e.keyCode === 13) {
-		  var newTag = newTagInput.value.trim();
-  
-		  if (newTag !== '') {
-			tagList.push(newTag);
-			newTagInput.value = '';
-			tagListRender(tagListElement);
-		  }
-		}
-	  });
-  
-	  tagListElement.addEventListener('click', function (e) {
-		if (e.target.classList.contains('rmTag')) {
-		  var listItem = e.target.parentNode;
-		  var index = Array.from(listItem.parentNode.children).indexOf(listItem);
-  
-		  tagList.splice(index, 1);
-		  tagListRender(tagListElement);
-		}
-	  });
-	});
-  })(); */
