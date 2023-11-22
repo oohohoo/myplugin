@@ -137,17 +137,25 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 	return;
   }
   
-  let libraryLinks = Array.from(document.getElementById(componentId).querySelectorAll('.tagList li')).map(li => li.textContent);
-  let componentData = {
+let libraryLinks = [];
+const componentElement = document.getElementById(componentId);
+if (componentElement) {
+  const tagListItems = componentElement.querySelectorAll('.tagList li');
+  if (tagListItems.length > 0) {
+    libraryLinks = Array.from(tagListItems).map(li => li.textContent);
+}
+}
+let componentData = {
     tags: libraryLinks,
-		  oldComponentName: isEditing ? document.getElementById("component-name").dataset.oldName : null,
-		  id: componentId,
-		  componentName: componentName,
-		  htmlCode: htmlCode,
-		  cssCode: cssCode,
-		  jsCode: jsCode,
-		  libraryLinks: libraryLinks,
-  };
+    oldComponentName: isEditing ? document.getElementById("component-name").dataset.oldName : null,
+    id: componentId,
+    componentName: componentName,
+    htmlCode: htmlCode,
+    cssCode: cssCode,
+    jsCode: jsCode,
+    libraryLinks: libraryLinks,
+    componentId: componentId, // Add this line
+};
    
 	if (componentName && htmlCode && cssCode && jsCode) {
 		let fetchUrl = isEditing ? `/update-component` : "/create-component";
@@ -348,8 +356,8 @@ if (gridItems) {
 		}
 	});
 });
-
-var gridItems = document.querySelectorAll('.grid-item');
+}
+/* var gridItems = document.querySelectorAll('.grid-item'); */
 
 gridItems.forEach(function(gridItem) {
     var iframe = gridItem.querySelector('iframe');
@@ -360,6 +368,7 @@ gridItems.forEach(function(gridItem) {
 (function () {
 	var tagListElements = document.querySelectorAll('.tagList');
 	var newTagInputs = document.querySelectorAll('.newTag');
+	var addTagButton = document.getElementById('addTag');
   
 	tagListElements.forEach(function(tagListElement, i) {
 	  var newTagInput = newTagInputs[i];
@@ -389,8 +398,10 @@ gridItems.forEach(function(gridItem) {
 		});
 	  }
   
-	  newTagInput.addEventListener('keyup', function (e) {
-		if (e.keyCode === 13) {
+	  addTagButton.addEventListener('click', function () {
+	
+
+
 		  var newTag = newTagInput.value.trim();
   
 		  if (newTag !== '') {
@@ -405,7 +416,8 @@ gridItems.forEach(function(gridItem) {
 			  body: JSON.stringify({ tag: newTag }),
 			});
 		  }
-		}
+		  
+		
 	  });
   
 	  tagListElement.addEventListener('click', function (e) {

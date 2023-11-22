@@ -23,7 +23,6 @@ app.use(function (err, req, res, next) {
 
 app.get('/components/:name/tags', (req, res) => {
   const componentId = req.params.name;
- /*  console.log('GET /tags/' + componentId);  */
   const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
   if (fs.existsSync(tagsFilePath)) {
     const tags = JSON.parse(fs.readFileSync(tagsFilePath));
@@ -69,7 +68,6 @@ app.delete('/tags/:componentId/:tagIndex', (req, res) => {
 /* SAVE COMPONENT */
 app.put('/update-component/:oldName', (req, res, next) => {
   const tags = req.body.tags;
-  // Save the tags to a JSON file in the component directory
   fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
   console.log('PUT /update-component/:oldName');
 
@@ -130,13 +128,15 @@ app.post('/create-component', (req, res, next) => {
   let componentName = req.body.componentName;
   let componentNameURL = componentName.replace(/ /g, "-");
   let componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
-  // Save the tags to a JSON file in the component directory
+  if (!fs.existsSync(componentDir)) {
+    fs.mkdirSync(componentDir, { recursive: true });
+}
+
+
   fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
   console.log('POST /save-component');
   
   let oldComponentName = req.body.oldComponentName;
-  //let componentName = req.body.componentName;
- // let componentNameURL = componentName.replace(/ /g, "-");
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
@@ -165,6 +165,10 @@ app.post('/create-component', (req, res, next) => {
 
   let oldComponentDir = path.join(__dirname, 'public', 'components', oldComponentName.replace(/ /g, "-"));
   let newComponentDir = path.join(__dirname, 'public', 'components', componentNameURL);
+  if (!fs.existsSync(newComponentDir)) {
+      fs.mkdirSync(newComponentDir, { recursive: true });
+  }
+
 
   if (oldComponentName !== componentName) {
       if (fs.existsSync(oldComponentDir)) {
