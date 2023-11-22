@@ -22,7 +22,7 @@ app.use(function (err, req, res, next) {
 /* TAGS */
 
 app.get('/components/:name/tags', (req, res) => {
-  const componentId = req.params.componentId;
+  const componentId = req.params.name;
   console.log('GET /tags/' + componentId); 
   const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
   if (fs.existsSync(tagsFilePath)) {
