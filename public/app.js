@@ -375,7 +375,7 @@ gridItems.forEach(function(gridItem) {
 	  var componentId = tagListElement.parentNode.id; 
 	  var tagList = [];
   
-	  fetch('/tags/' + componentId)
+	  fetch('/tags/' + (componentId || 'default'))
 		.then(response => response.json())
 		.then(data => {
 		  tagList = data;
