@@ -125,6 +125,7 @@ app.put('/update-component/:oldName', (req, res, next) => {
 });
 
 app.post('/create-component', (req, res, next) => {
+  console.log('Received request to /create-component with data:', req.body);
   const tags = req.body.tags;
   let componentName = req.body.componentName;
   let componentNameURL = componentName.replace(/ /g, "-");
