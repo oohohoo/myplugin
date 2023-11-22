@@ -90,7 +90,7 @@ app.put('/update-component/:oldName', (req, res, next) => {
     fs.renameSync(oldComponentDir, newComponentDir);
   }
 
-  let componentDir = newComponentDir;
+/*   let componentDir = newComponentDir; */
 
   let linkedHtmlCode = `
     <!DOCTYPE html>
@@ -134,8 +134,8 @@ app.post('/create-component', (req, res, next) => {
   console.log('POST /save-component');
   
   let oldComponentName = req.body.oldComponentName;
-  let componentName = req.body.componentName;
-  let componentNameURL = componentName.replace(/ /g, "-");
+  //let componentName = req.body.componentName;
+ // let componentNameURL = componentName.replace(/ /g, "-");
   let htmlCode = req.body.htmlCode;
   let cssCode = req.body.cssCode;
   let jsCode = req.body.jsCode;
@@ -175,7 +175,7 @@ app.post('/create-component', (req, res, next) => {
       }
   }
 
-  let componentDir = newComponentDir;
+ /*  let componentDir = newComponentDir; */
   
   let linkedHtmlCode = `
   <!DOCTYPE html>
