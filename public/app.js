@@ -137,8 +137,9 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 	return;
   }
   
-  let libraryLinks = Array.from(document.querySelectorAll('.tagList li')).map(li => li.textContent);
+  let libraryLinks = Array.from(document.getElementById(componentId).querySelectorAll('.tagList li')).map(li => li.textContent);
   let componentData = {
+    tags: libraryLinks,
 		  oldComponentName: isEditing ? document.getElementById("component-name").dataset.oldName : null,
 		  id: componentId,
 		  componentName: componentName,

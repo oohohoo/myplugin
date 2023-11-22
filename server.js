@@ -21,7 +21,7 @@ app.use(function (err, req, res, next) {
 
 /* TAGS */
 
-app.get('/tags/:componentId', (req, res) => {
+app.get('/components/:name/tags', (req, res) => {
   const componentId = req.params.componentId;
   console.log('GET /tags/' + componentId); 
   const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
@@ -68,6 +68,9 @@ app.delete('/tags/:componentId/:tagIndex', (req, res) => {
 
 /* SAVE COMPONENT */
 app.put('/update-component/:oldName', (req, res, next) => {
+  const tags = req.body.tags;
+  // Save the tags to a JSON file in the component directory
+  fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
   console.log('PUT /update-component/:oldName');
 
   let oldComponentName = req.params.oldName;
@@ -122,6 +125,9 @@ app.put('/update-component/:oldName', (req, res, next) => {
 });
 
 app.post('/create-component', (req, res, next) => {
+  const tags = req.body.tags;
+  // Save the tags to a JSON file in the component directory
+  fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
   console.log('POST /save-component');
   
   let oldComponentName = req.body.oldComponentName;
