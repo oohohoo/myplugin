@@ -34,7 +34,7 @@ app.get('/components/:name/tags', (req, res) => {
   }
 });
 
-app.post('/tags/:componentId', (req, res) => {
+app.post('/tags/', (req, res) => {
   const componentId = req.params.componentId;
   const newTag = req.body.tag;
   const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
