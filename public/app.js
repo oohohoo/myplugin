@@ -197,13 +197,7 @@ let componentData = {
                                     componentElement.dataset.componentName = componentName;
                                     componentElement.innerHTML = `
                               
-									<div class="_box">
-  <label for="tagList">Add tag (Press ENTER to Add new Tag)</label>
-  <input type="text" class="newTag" />
-  <ul class="tagList">
-    <!-- All TagList Here! -->
-  </ul>  
-</div>
+	
 									<h2 class="fulliframe" cms-post-title>${componentName.replace(/-/g, " ")}</h2>
 										<h2 class="fulliframe" cms-post-title>${componentDirs.indexOf(dir) + 1}</h2>
                                         <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>

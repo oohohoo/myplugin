@@ -19,56 +19,11 @@ app.use(function (err, req, res, next) {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-/* TAGS */
-
-app.get('/components/:name/tags', (req, res) => {
-  const componentId = req.params.name;
-  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
-  if (fs.existsSync(tagsFilePath)) {
-    const tags = JSON.parse(fs.readFileSync(tagsFilePath));
-    res.json(tags);
-  } else {
-    console.log('tags.json does not exist for component ' + componentId); 
-    res.json([]);
-  }
-});
-
-app.post('/tags/', (req, res) => {
-  const componentId = req.body.componentId;
-  const newTag = req.body.tag;
-  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
-  let tags = [];
-  if (fs.existsSync(tagsFilePath)) {
-    tags = JSON.parse(fs.readFileSync(tagsFilePath));
-  }
-  tags.push(newTag);
-  fs.writeFile(tagsFilePath, JSON.stringify(tags), err => {
-    if (err) {
-      console.error(err);
-      res.status(500).send({ error: 'Failed to write to file' });
-    } else {
-      res.json(tags);
-    }
-  });
-});
-
-app.delete('/tags/:componentId/:tagIndex', (req, res) => {
-  const componentId = req.params.componentId;
-  const tagIndex = req.params.tagIndex;
-  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
-  let tags = [];
-  if (fs.existsSync(tagsFilePath)) {
-    tags = JSON.parse(fs.readFileSync(tagsFilePath));
-    tags.splice(tagIndex, 1);
-    fs.writeFileSync(tagsFilePath, JSON.stringify(tags));
-  }
-  res.json(tags);
-});
 
 /* SAVE COMPONENT */
 app.put('/update-component/:oldName', (req, res, next) => {
   const tags = req.body.tags;
-  const tags = req.body.tags;
+
   fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
   console.log('PUT /update-component/:oldName');
 
@@ -126,7 +81,7 @@ app.put('/update-component/:oldName', (req, res, next) => {
 app.post('/create-component', (req, res, next) => {
   const tags = req.body.tags;
   console.log('Received request to /create-component with data:', req.body);
-  const tags = req.body.tags;
+
   let componentName = req.body.componentName;
   let componentNameURL = componentName.replace(/ /g, "-");
   let componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
@@ -274,6 +229,57 @@ app.get('/components', (req, res) => {
 
   res.send(componentDirs);
 });
+
+
+
+
+/* TAGS */
+
+
+app.get('/components/:name/tags', (req, res) => {
+  const componentId = req.params.name;
+  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
+  if (fs.existsSync(tagsFilePath)) {
+    const tags = JSON.parse(fs.readFileSync(tagsFilePath));
+    res.json(tags);
+  } else {
+    console.log('tags.json does not exist for component ' + componentId); 
+    res.json([]);
+  }
+});
+
+app.post('/tags/', (req, res) => {
+  const componentId = req.body.componentId;
+  const newTag = req.body.tag;
+  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
+  let tags = [];
+  if (fs.existsSync(tagsFilePath)) {
+    tags = JSON.parse(fs.readFileSync(tagsFilePath));
+  }
+  tags.push(newTag);
+  fs.writeFile(tagsFilePath, JSON.stringify(tags), err => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({ error: 'Failed to write to file' });
+    } else {
+      res.json(tags);
+    }
+  });
+});
+
+app.delete('/tags/:componentId/:tagIndex', (req, res) => {
+  const componentId = req.params.componentId;
+  const tagIndex = req.params.tagIndex;
+  const tagsFilePath = path.join(__dirname, 'public', 'components', componentId, 'tags.json');
+  let tags = [];
+  if (fs.existsSync(tagsFilePath)) {
+    tags = JSON.parse(fs.readFileSync(tagsFilePath));
+    tags.splice(tagIndex, 1);
+    fs.writeFileSync(tagsFilePath, JSON.stringify(tags));
+  }
+  res.json(tags);
+});
+
 
 
 /* RESET ON  RELOAD */
