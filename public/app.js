@@ -321,7 +321,9 @@ document.querySelectorAll(".close-button").forEach((button) => {
 
 /* load unload iframe*/
 
-document.querySelectorAll(".grid-item").forEach(function (gridItem) {
+let gridItems = document.querySelectorAll(".grid-item");
+if (gridItems) {
+    gridItems.forEach(function (gridItem) {
 	let iframe = gridItem.querySelector("iframe");
 	let preloader = gridItem.querySelector(".preloader");
 
