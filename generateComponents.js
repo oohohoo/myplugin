@@ -21,8 +21,16 @@ function updateComponents() {
 const id = dirURL;
 return `
 <div class="grid-item" id="${id}" data-component-name="${dir}">
+<div class="_box">
+  <label for="tagList">Add tag (Press ENTER to Add new Tag)</label>
+  <input type="text" class="newTag" />
+  <ul class="tagList">
+    <!-- All TagList Here! -->
+  </ul>  
+</div>
 <h2 class="fulliframe" cms-post-title>${dir}</h2>
 <h2 class="fulliframe" cms-post-title>${componentDirs.length - index}</h2>
+
   <iframe data-src="./components/${dirURL}/${dirURL}.html" title="Live Preview"></iframe>
   <ul class="tags">
     <li>mobile</li>

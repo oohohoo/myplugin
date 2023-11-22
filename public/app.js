@@ -38,17 +38,17 @@ function attachEventListeners() {
 			iframe.src = `./components/${componentNameURL}/${componentNameURL}.html`;
 			iframe.offsetHeight;
 			iframe.classList.add("fade-in");
-			iframe.style.width = "100%";
+			/* iframe.style.width = "100%";
 			iframe.style.height = "100%";
-			iframe.style.objectFit = "cover";
+			iframe.style.objectFit = "cover"; */
 		});
 
 		gridItem.addEventListener("mouseleave", function () {
 			iframe.classList.remove("fade-in");
 			iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
-			iframe.style.width = "100%";
+			/* iframe.style.width = "100%";
 			iframe.style.height = "100%";
-			iframe.style.objectFit = "cover";
+			iframe.style.objectFit = "cover"; */
 
 			setTimeout(function () {
 				iframe.classList.remove("fade-out");
@@ -189,8 +189,16 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
                                     componentElement.id = componentName.replace(/ /g, "-");
                                     componentElement.dataset.componentName = componentName;
                                     componentElement.innerHTML = `
-                                        <h2 class="fulliframe" cms-post-title>${componentName.replace(/-/g, " ")}</h2>
-										<h2 class="fulliframe" cms-post-title>${componentDirs.indexOf(dir) + 1}. ${dir}</h2>
+                              
+									<div class="_box">
+  <label for="tagList">Add tag (Press ENTER to Add new Tag)</label>
+  <input type="text" class="newTag" />
+  <ul class="tagList">
+    <!-- All TagList Here! -->
+  </ul>  
+</div>
+									<h2 class="fulliframe" cms-post-title>${componentName.replace(/-/g, " ")}</h2>
+										<h2 class="fulliframe" cms-post-title>${componentDirs.indexOf(dir) + 1}</h2>
                                         <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
                                         <ul class="tags">
                                             <li>mobile</li>
@@ -350,7 +358,7 @@ gridItems.forEach(function(gridItem) {
 
     iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 
-    iframe.onload = function() {
+  /*   iframe.onload = function() {
         var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
         var images = iframeDocument.querySelectorAll('img');
         images.forEach(function(imageElement) {
@@ -359,5 +367,59 @@ gridItems.forEach(function(gridItem) {
             imageElement.style.objectFit = 'cover';
    
         });
-    };
+    }; */
 });
+
+
+
+/* TAGS */
+
+(function () {
+	var tagListElements = document.querySelectorAll('.tagList');
+	var newTagInputs = document.querySelectorAll('.newTag');
+  
+	tagListElements.forEach(function(tagListElement, i) {
+	  var newTagInput = newTagInputs[i];
+	  var tagList = [];
+  
+	  tagListRender(tagListElement);
+  
+	  function tagListRender(element) {
+		element.innerHTML = '';
+  
+		tagList.forEach(function (tag, index) {
+		  var listItem = document.createElement('li');
+		  listItem.textContent = tag;
+  
+		  var removeButton = document.createElement('span');
+		  removeButton.className = 'rmTag';
+		  removeButton.textContent = '×';
+  
+		  listItem.appendChild(removeButton);
+		  element.appendChild(listItem);
+		});
+	  }
+  
+	  newTagInput.addEventListener('keyup', function (e) {
+		if (e.keyCode === 13) {
+		  var newTag = newTagInput.value.trim();
+  
+		  if (newTag !== '') {
+			tagList.push(newTag);
+			newTagInput.value = '';
+			tagListRender(tagListElement);
+		  }
+		}
+	  });
+  
+	  tagListElement.addEventListener('click', function (e) {
+		if (e.target.classList.contains('rmTag')) {
+		  var listItem = e.target.parentNode;
+		  var index = Array.from(listItem.parentNode.children).indexOf(listItem);
+  
+		  tagList.splice(index, 1);
+		  tagListRender(tagListElement);
+		}
+	  });
+	});
+  })();

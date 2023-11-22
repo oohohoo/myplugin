@@ -208,7 +208,7 @@ app.delete('/delete-component/:id', (req, res) => {
 // Server.js
 app.get('/components/:name', (req, res) => {
   const componentName = req.params.name;
-  const componentNameURL = componentName.replace(/ /g, "-");
+  const componentNameURL = componentName.replace(/ /g, " ");
   const componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
   if (!fs.existsSync(componentDir)) {
     res.status(404).send('Component not found');
@@ -276,10 +276,11 @@ app.post('/generate-screenshot/:name', async (req, res) => {
 	}
 	const screenshotPath = path.join(componentDir, 'screenshot.jpg');
 	if (!fs.existsSync(screenshotPath)) {
-	    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: "new" });
 	    const page = await browser.newPage();
 	    await page.goto(`http://localhost:${port}/components/${componentName}/${componentName}.html`);
-	    await page.screenshot({ path: screenshotPath });
+	    await page.waitForTimeout(1000); // Add a delay of 1 second
+      await page.screenshot({ path: screenshotPath });
 	    await browser.close();
 	}
 	res.send({ status: 'success' });
