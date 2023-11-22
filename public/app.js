@@ -153,6 +153,7 @@ if (!componentName || typeof componentName !== 'string' || componentName.trim() 
 		let fetchUrl = isEditing ? `/update-component` : "/create-component";
 		let fetchMethod = isEditing ? "PUT" : "POST";
 
+		console.log('Fetching URL:', fetchUrl);
 		fetch(fetchUrl, {
 			method: fetchMethod,
 			headers: {
