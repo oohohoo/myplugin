@@ -24,7 +24,7 @@ app.use(function (err, req, res, next) {
 app.put('/update-component/:oldName', (req, res, next) => {
   const tags = req.body.tags || [];
 
-  fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags), 'utf8');
+  fs.writeFileSync(path.join(newComponentDir, 'tags.json'), JSON.stringify(tags), 'utf8');
   console.log('PUT /update-component/:oldName');
 
   let oldComponentName = req.params.oldName;
@@ -79,7 +79,7 @@ app.put('/update-component/:oldName', (req, res, next) => {
 });
 
 app.post('/create-component', (req, res, next) => {
-  const tags = req.body.tags;
+  const tags = req.body.tags || [];
   console.log('Received request to /create-component with data:', req.body);
 
   let componentName = req.body.componentName;
@@ -87,10 +87,9 @@ app.post('/create-component', (req, res, next) => {
   let componentDir = path.join(__dirname, 'public', 'components', componentNameURL);
   if (!fs.existsSync(componentDir)) {
     fs.mkdirSync(componentDir, { recursive: true });
-}
+  }
 
-
-  fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
+  fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags), 'utf8');
   console.log('POST /save-component');
   
   let oldComponentName = req.body.oldComponentName;
