@@ -68,6 +68,7 @@ app.delete('/tags/:componentId/:tagIndex', (req, res) => {
 /* SAVE COMPONENT */
 app.put('/update-component/:oldName', (req, res, next) => {
   const tags = req.body.tags;
+  const tags = req.body.tags;
   fs.writeFileSync(path.join(componentDir, 'tags.json'), JSON.stringify(tags));
   console.log('PUT /update-component/:oldName');
 
@@ -123,6 +124,7 @@ app.put('/update-component/:oldName', (req, res, next) => {
 });
 
 app.post('/create-component', (req, res, next) => {
+  const tags = req.body.tags;
   console.log('Received request to /create-component with data:', req.body);
   const tags = req.body.tags;
   let componentName = req.body.componentName;
