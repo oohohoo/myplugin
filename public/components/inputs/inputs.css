@@ -1,0 +1,10 @@
+ .inputContainer {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .inputContainer input {
+            flex-grow: 1;
+        }
+        .inputContainer button {
+            margin-left: 10px;
+        }

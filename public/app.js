@@ -10,8 +10,9 @@ socket.onopen = function (e) {
 };
 socket.onmessage = function (event) {
 	console.log(`[message] Data received from server: ${event.data}`);
-	if (event.data === 'componentAdded') {
+	if (event.data === "componentAdded") {
 		window.location.reload();
+		console.log("LOCATION RELOADED");
 	}
 };
 socket.onclose = function (event) {
@@ -27,10 +28,12 @@ socket.onclose = function (event) {
 socket.onerror = function (error) {
 	console.log(`[error] ${error.message}`);
 };
+
+
 function attachEventListeners() {
 	document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 		let iframe = gridItem.querySelector("iframe");
-		let dataSrc = iframe.dataset.src; 
+		let dataSrc = iframe.dataset.src;
 
 		gridItem.addEventListener("mouseover", function () {
 			iframe.classList.remove("fade-out");
@@ -46,7 +49,7 @@ function attachEventListeners() {
 
 			setTimeout(function () {
 				iframe.classList.remove("fade-out");
-			}, 500); 
+			}, 500);
 		});
 	});
 
@@ -79,24 +82,29 @@ function attachEventListeners() {
 		oldButton.parentNode.replaceChild(newButton, oldButton);
 
 		newButton.addEventListener("click", function () {
-		    isEditing = true;
-		    let oldComponentName = this.closest(".grid-item").dataset.componentName;
-		    document.getElementById("component-name").dataset.oldName = oldComponentName;
-			
+			isEditing = true;
+			let oldComponentName = this.closest(".grid-item").dataset.componentName;
+			document.getElementById("component-name").dataset.oldName =
+				oldComponentName;
+
 			let componentName = oldComponentName;
 			fetch(`/components/${componentName}`)
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! status: ${response.status}`);
-				}
-				return response.json();
-			})
-			.then((data) => {
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(`HTTP error! status: ${response.status}`);
+					}
+					return response.json();
+				})
+				.then((data) => {
 					document.getElementById("component-name").value = data.componentName;
-					document.getElementById("component-name").dataset.oldName = data.componentName;
+					document.getElementById("component-name").dataset.oldName =
+						data.componentName;
 					document.getElementById("html-code").value = data.htmlCode;
 					document.getElementById("css-code").value = data.cssCode;
 					document.getElementById("js-code").value = data.jsCode;
+					document.getElementById("external-css").value = data.excssCode;
+					document.getElementById("external-js").value = data.exjsCode;
+
 					document
 						.getElementById("side-panel")
 						.classList.add("side-panel-shown");
@@ -105,8 +113,11 @@ function attachEventListeners() {
 						.classList.remove("side-panel-hidden");
 				})
 				.catch((error) => {
-					console.error('There was a problem with the fetch uhvaaati operation: ', error);
-				});				;
+					console.error(
+						"There was a problem with the fetch uhvaaati operation: ",
+						error
+					);
+				});
 		});
 	});
 }
@@ -117,87 +128,110 @@ document
 		attachEventListeners();
 		event.preventDefault();
 
-		let oldComponentName = isEditing ? document.getElementById("component-name").dataset.oldName : null;
+		let oldComponentName = isEditing
+			? document.getElementById("component-name").dataset.oldName
+			: null;
 		let componentName = document.getElementById("component-name").value;
 		if (isEditing && oldComponentName !== componentName) {
-		    document.getElementById("component-name").dataset.oldName = componentName;
+			document.getElementById("component-name").dataset.oldName = componentName;
 		}
 		let htmlCode = document.getElementById("html-code").value;
 		let cssCode = document.getElementById("css-code").value;
 		let jsCode = document.getElementById("js-code").value;
+		let excssCode = document.getElementById("external-js").value;
+		let exjsCode = document.getElementById("external-css").value;
+
 		let componentId = componentName.replace(/ /g, "");
 
-if (!componentName || typeof componentName !== 'string' || componentName.trim() === '') {
-	alert('Invalid component name');
-	return;
-  }
-  
-  if (!htmlCode || typeof htmlCode !== 'string' || !cssCode || typeof cssCode !== 'string' || !jsCode || typeof jsCode !== 'string') {
-	alert('Invalid HTML, CSS, or JS code');
-	return;
-  }
-  
-let libraryLinks = [];
-const componentElement = document.getElementById(componentId);
-if (componentElement) {
-  const tagListItems = componentElement.querySelectorAll('.tagList li');
-  if (tagListItems.length > 0) {
-    libraryLinks = Array.from(tagListItems).map(li => li.textContent);
-}
-}
-let componentData = {
-    tags: libraryLinks,
-    oldComponentName: isEditing ? document.getElementById("component-name").dataset.oldName : null,
-    id: componentId,
-    componentName: componentName,
-    htmlCode: htmlCode,
-    cssCode: cssCode,
-    jsCode: jsCode,
-    libraryLinks: libraryLinks,
-    componentId: componentId, // Add this line
-};
-   
-	if (componentName && htmlCode && cssCode && jsCode) {
-		let fetchUrl = isEditing ? `/update-component` : "/create-component";
-		let fetchMethod = isEditing ? "PUT" : "POST";
+		if (
+			!componentName ||
+			typeof componentName !== "string" ||
+			componentName.trim() === ""
+		) {
+			alert("Invalid component name");
+			return;
+		}
 
-		console.log('Fetching URL:', fetchUrl);
-		fetch(fetchUrl, {
-			method: fetchMethod,
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(componentData),
-		})
+		if (
+			!htmlCode ||
+			typeof htmlCode !== "string" ||
+			!cssCode ||
+			typeof cssCode !== "string" ||
+			!jsCode ||
+			typeof jsCode !== "string"
+		) {
+			alert("Invalid HTML, CSS, or JS code");
+			return;
+		}
 
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.status === "success") {
-                fetch("/components")
-                    .then((response) => response.json())
-                    .then((components) => {
-                        fetch("/components")
-                            .then((response) => response.json())
-                            .then((components) => {
-                                const componentContainer = document.getElementById("component-container");
-                                if (!componentContainer) {
-                                    console.error('No element with id "component-container" found');
-                                    return;
-                                }
-                                while (componentContainer.firstChild) {
-                                    componentContainer.removeChild(componentContainer.firstChild);
-                                }
+		let libraryLinks = Array.from(document.querySelectorAll(".tagList li")).map(
+			(li) => li.textContent
+		);
+		let componentData = {
+			oldComponentName: isEditing
+				? document.getElementById("component-name").dataset.oldName
+				: null,
+			id: componentId,
+			componentName: componentName,
+			htmlCode: htmlCode,
+			cssCode: cssCode,
+			jsCode: jsCode,
+			excssCode: excssCode,
+			exjsCode: exjsCode,
+			libraryLinks: libraryLinks,
+		};
 
-                                // Add comp to DOM
-                                components.forEach(async (dir) => {
-                                  let componentName = dir;
-                                    const componentElement = document.createElement("div");
-                                    componentElement.className = "grid-item";
-                                    componentElement.id = componentName.replace(/ /g, "-");
-                                    componentElement.dataset.componentName = componentName;
-                                    componentElement.innerHTML = `
+		if (componentName && htmlCode && cssCode && jsCode) {
+			let fetchUrl = isEditing ? `/update-component` : "/create-component";
+			let fetchMethod = isEditing ? "PUT" : "POST";
+
+			fetch(fetchUrl, {
+				method: fetchMethod,
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(componentData),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (data.status === "success") {
+						fetch("/components")
+							.then((response) => response.json())
+							.then((components) => {
+								fetch("/components")
+									.then((response) => response.json())
+									.then((components) => {
+										const componentContainer = document.getElementById(
+											"component-container"
+										);
+										if (!componentContainer) {
+											console.error(
+												'No element with id "component-container" found'
+											);
+											return;
+										}
+										while (componentContainer.firstChild) {
+											componentContainer.removeChild(
+												componentContainer.firstChild
+											);
+										}
+
+										// Add comp to DOM
+										components.forEach(async (dir) => {
+											let componentName = dir;
+											const componentElement = document.createElement("div");
+											componentElement.className = "grid-item";
+											componentElement.id = componentName.replace(/ /g, "-");
+											componentElement.dataset.componentName = componentName;
+											componentElement.innerHTML = `
                               
-	
+									<div class="_box">
+  <label for="tagList">Add tag (Press ENTER to Add new Tag)</label>
+  <input type="text" class="newTag" />
+  <ul class="tagList">
+    <!-- All TagList Here! -->
+  </ul>  
+</div>
 									<h2 class="fulliframe" cms-post-title>${componentName.replace(/-/g, " ")}</h2>
 										<h2 class="fulliframe" cms-post-title>${componentDirs.indexOf(dir) + 1}</h2>
                                         <iframe data-src="./components/${componentName}/${componentName}.html" title="Live Preview"></iframe>
@@ -213,49 +247,54 @@ let componentData = {
                                         </div>
                                         <button class="edit-button" onclick="editComponent('${componentName}')">Edit</button>
                                     `;
-                                    componentContainer.appendChild(componentElement);
+											componentContainer.appendChild(componentElement);
 
-                                    fetch(`/generate-screenshot/${componentName}`, {
-                                        method: "POST",
-                                    });
-                                });
-                                attachEventListeners();
-                            });
-                    });
+											fetch(`/generate-screenshot/${componentName}`, {
+												method: "POST",
+											});
+										});
+										attachEventListeners();
+									});
+							});
 
-                document.getElementById("component-name").value = "";
-                document.getElementById("html-code").value = "";
-                document.getElementById("css-code").value = "";
-                document.getElementById("js-code").value = "";
+						document.getElementById("component-name").value = "";
+						document.getElementById("html-code").value = "";
+						document.getElementById("css-code").value = "";
+						document.getElementById("js-code").value = "";
+						document.getElementById("external-css").value = data.excssCode;
+						document.getElementById("external-js").value = data.exjsCode;
 
-                document.getElementById("component-form").reset();
-                document
-                    .getElementById("side-panel")
-                    .classList.remove("side-panel-shown");
-                document
-                    .getElementById("side-panel")
-                    .classList.add("side-panel-hidden");
+						document.getElementById("component-form").reset();
+						document
+							.getElementById("side-panel")
+							.classList.remove("side-panel-shown");
+						document
+							.getElementById("side-panel")
+							.classList.add("side-panel-hidden");
 
-                socket.onerror = function (error) {
-                    console.log(`WebSocket error: ${error}`);
-                };
+						socket.onerror = function (error) {
+							console.log(`WebSocket error: ${error}`);
+						};
 
-                socket.onmessage = function (event) {
-                    console.log("Server says: " + event.data);
-                };
-            }
-        })
-        .catch((error) => {
-            if (error.message === "Unexpected token E in JSON at position 0") {
-                console.error("Error:", error, "The server responded with a non-JSON error message.");
-            } else {
-                console.error("Error:", error);
-            }
-        });
-} else {
-    alert('All fields are required');
-}
-				
+						socket.onmessage = function (event) {
+							console.log("Server says: " + event.data);
+						};
+					}
+				})
+				.catch((error) => {
+					if (error.message === "Unexpected token E in JSON at position 0") {
+						console.error(
+							"Error:",
+							error,
+							"The server responded with a non-JSON error message."
+						);
+					} else {
+						console.error("Error:", error);
+					}
+				});
+		} else {
+			alert("All fields are required");
+		}
 	});
 
 document
@@ -269,8 +308,8 @@ document
 
 /* ADD COMP*/
 document.getElementById("add-component").addEventListener("click", function () {
-    isEditing = false;
-    document.getElementById("component-name").dataset.oldName = "";
+	isEditing = false;
+	document.getElementById("component-name").dataset.oldName = "";
 	document.getElementById("side-panel").classList.add("side-panel-shown");
 	document.getElementById("side-panel").classList.remove("side-panel-hidden");
 });
@@ -289,6 +328,8 @@ oldButtons.forEach(function (oldButton) {
 				document.getElementById("html-code").value = data.htmlCode;
 				document.getElementById("css-code").value = data.cssCode;
 				document.getElementById("js-code").value = data.jsCode;
+				document.getElementById("external-css").value = data.excssCode;
+				document.getElementById("external-js").value = data.exjsCode;
 				document.getElementById("side-panel").classList.add("side-panel-shown");
 				document
 					.getElementById("side-panel")
@@ -323,9 +364,7 @@ document.querySelectorAll(".close-button").forEach((button) => {
 
 /* load unload iframe*/
 
-let gridItems = document.querySelectorAll(".grid-item");
-if (gridItems) {
-    gridItems.forEach(function (gridItem) {
+document.querySelectorAll(".grid-item").forEach(function (gridItem) {
 	let iframe = gridItem.querySelector("iframe");
 	let preloader = gridItem.querySelector(".preloader");
 
@@ -338,8 +377,8 @@ if (gridItems) {
 		iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 	});
 
-	iframe.addEventListener("load", function() {
-		preloader.style.opacity = "0"; 
+	iframe.addEventListener("load", function () {
+		preloader.style.opacity = "0";
 		iframe.style.visibility = "visible";
 		iframe.style.opacity = "1";
 		let img = this.contentDocument.querySelector("img");
@@ -350,38 +389,93 @@ if (gridItems) {
 		}
 	});
 });
-}
-/* var gridItems = document.querySelectorAll('.grid-item'); */
 
-gridItems.forEach(function(gridItem) {
-    var iframe = gridItem.querySelector('iframe');
-    iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
+var gridItems = document.querySelectorAll(".grid-item");
+
+gridItems.forEach(function (gridItem) {
+	var iframe = gridItem.querySelector("iframe");
+	iframe.src = `./components/${gridItem.dataset.componentName}/screenshot.jpg`;
 });
 
 /* TAGS SERVER */
 (function () {
+	var tagListElements = document.querySelectorAll(".tagList");
+	var newTagInputs = document.querySelectorAll(".newTag");
+
+	tagListElements.forEach(function (tagListElement, i) {
+		var newTagInput = newTagInputs[i];
+		var componentId = tagListElement.parentNode.id;
+		var tagList = [];
+
+		fetch("/tags/" + componentId)
+			.then((response) => response.json())
+			.then((data) => {
+				tagList = data;
+				tagListRender(tagListElement);
+			});
+
+		function tagListRender(element) {
+			element.innerHTML = "";
+
+			tagList.forEach(function (tag, index) {
+				var listItem = document.createElement("li");
+				listItem.textContent = tag;
+
+				var removeButton = document.createElement("span");
+				removeButton.className = "rmTag";
+				removeButton.textContent = "×";
+
+				listItem.appendChild(removeButton);
+				element.appendChild(listItem);
+			});
+		}
+
+		newTagInput.addEventListener("keyup", function (e) {
+			if (e.keyCode === 13) {
+				var newTag = newTagInput.value.trim();
+
+				if (newTag !== "") {
+					tagList.push(newTag);
+					newTagInput.value = "";
+					tagListRender(tagListElement);
+					fetch("/tags/" + componentId, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ tag: newTag }),
+					});
+				}
+			}
+		});
+
+		tagListElement.addEventListener("click", function (e) {
+			if (e.target.classList.contains("rmTag")) {
+				var listItem = e.target.parentNode;
+				var index = Array.from(listItem.parentNode.children).indexOf(listItem);
+
+				tagList.splice(index, 1);
+				tagListRender(tagListElement);
+				fetch("/tags/" + componentId + "/" + index, {
+					method: "DELETE",
+				});
+			}
+		});
+	});
+})();
+
+/* LOCAL STORAGE*/
+/* 
+(function () {
 	var tagListElements = document.querySelectorAll('.tagList');
 	var newTagInputs = document.querySelectorAll('.newTag');
-	var addTagButton = document.getElementById('addTag');
   
 	tagListElements.forEach(function(tagListElement, i) {
 	  var newTagInput = newTagInputs[i];
-	  var closestElement = tagListElement.closest('.grid-item');
-	  var componentId = closestElement ? closestElement.id : null;
-	  var tagList = [];
+	  var localStorageKey = 'tagList' + i; // unique key for each component
+	  var tagList = JSON.parse(localStorage.getItem(localStorageKey)) || [];
   
-	  if (componentId) {
-	    fetch('/tags/' + componentId)
-	 
-		.then(response => response.json())
-		.then(data => {
-		  tagList = data;
-		  tagListRender(tagListElement);
-		});
-
-	} else {
-	    console.error('componentId is not set');
-	  }
+	  tagListRender(tagListElement);
   
 	  function tagListRender(element) {
 		element.innerHTML = '';
@@ -399,26 +493,17 @@ gridItems.forEach(function(gridItem) {
 		});
 	  }
   
-	  addTagButton.addEventListener('click', function () {
-	
-
-
+	  newTagInput.addEventListener('keyup', function (e) {
+		if (e.keyCode === 13) {
 		  var newTag = newTagInput.value.trim();
   
 		  if (newTag !== '') {
 			tagList.push(newTag);
 			newTagInput.value = '';
 			tagListRender(tagListElement);
-			fetch('/tags/' + componentId, {
-			  method: 'POST',
-			  headers: {
-				'Content-Type': 'application/json',
-			  },
-			  body: JSON.stringify({ tag: newTag }),
-			});
+			localStorage.setItem(localStorageKey, JSON.stringify(tagList));
 		  }
-		  
-		
+		}
 	  });
   
 	  tagListElement.addEventListener('click', function (e) {
@@ -428,10 +513,62 @@ gridItems.forEach(function(gridItem) {
   
 		  tagList.splice(index, 1);
 		  tagListRender(tagListElement);
-		  fetch('/tags/' + componentId + '/' + index, {
-			method: 'DELETE',
-		  });
+		  localStorage.setItem(localStorageKey, JSON.stringify(tagList));
 		}
 	  });
 	});
-})();
+})(); */
+
+/* 
+(function () {
+	var tagListElements = document.querySelectorAll('.tagList');
+	var newTagInputs = document.querySelectorAll('.newTag');
+  
+	tagListElements.forEach(function(tagListElement, i) {
+	  var newTagInput = newTagInputs[i];
+	  var tagList = [];
+  
+	  tagListRender(tagListElement);
+  
+
+
+
+	  function tagListRender(element) {
+		element.innerHTML = '';
+  
+		tagList.forEach(function (tag, index) {
+		  var listItem = document.createElement('li');
+		  listItem.textContent = tag;
+  
+		  var removeButton = document.createElement('span');
+		  removeButton.className = 'rmTag';
+		  removeButton.textContent = '×';
+  
+		  listItem.appendChild(removeButton);
+		  element.appendChild(listItem);
+		});
+	  }
+  
+	  newTagInput.addEventListener('keyup', function (e) {
+		if (e.keyCode === 13) {
+		  var newTag = newTagInput.value.trim();
+  
+		  if (newTag !== '') {
+			tagList.push(newTag);
+			newTagInput.value = '';
+			tagListRender(tagListElement);
+		  }
+		}
+	  });
+  
+	  tagListElement.addEventListener('click', function (e) {
+		if (e.target.classList.contains('rmTag')) {
+		  var listItem = e.target.parentNode;
+		  var index = Array.from(listItem.parentNode.children).indexOf(listItem);
+  
+		  tagList.splice(index, 1);
+		  tagListRender(tagListElement);
+		}
+	  });
+	});
+  })(); */
