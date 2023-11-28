@@ -17,5 +17,8 @@
     "puppeteer": "^21.5.2",
     "ws": "^8.14.2"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }

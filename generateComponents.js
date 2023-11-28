@@ -20,6 +20,10 @@ function updateComponents() {
 			const id = dirURL;
 			return `
 <div class="grid-item" id="${id}" data-component-name="${dir}">
+
+<button onclick="generateAndDisplayScreenshot('componentName')">Generate Screenshot</button>
+<img id="screenshotImage" src="" alt="Component Screenshot">
+
 <div class="_box">
   <label for="tagList">Add tag (Press ENTER to Add new Tag)</label>
   <input type="text" class="newTag" />

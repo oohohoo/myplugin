@@ -1,4 +1,5 @@
 const express = require("express");
+const router = express.Router();
 const fs = require("fs");
 const path = require("path");
 const app = express();
@@ -7,6 +8,7 @@ const {
 	generateComponents,
 	updateComponents,
 } = require("./generateComponents.js");
+const chokidar = require("chokidar");
 
 let componentDirs = fs
 	.readdirSync(path.join(__dirname, "public", "components"), {
@@ -25,7 +27,76 @@ app.use(function (err, req, res, next) {
 	res.status(500).send("Internal Server Error");
 });
 
-/* TAGS */
+const addTagToComponent = (componentId, tag) => {
+  let component;
+  const componentPath = `./public/components/${componentId}/component.json`;
+
+  fs.exists(componentPath, (exists) => {
+    if (exists) {
+      fs.readFile(componentPath, (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        component = JSON.parse(data);
+        component.tags.push(tag);
+        fs.writeFile(componentPath, JSON.stringify(component, null, 2), (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          console.log("TAG ADDED NAVODNO");
+        });
+      });
+    } else {
+      component = { tags: [] };
+      component.tags.push(tag);
+      fs.writeFile(componentPath, JSON.stringify(component, null, 2), (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log("TAG ADDED NAVODNO");
+      });
+    }
+  });
+};
+
+// Additional code outside the addTagToComponent function
+
+/* const updateComponents = () => {
+  // Code to update components
+};
+ */
+/* const wss = {
+  broadcast: (message) => {
+    // Code to broadcast message
+  }
+}; */
+
+chokidar.watch("./public/components").on("all", (event, path) => {
+  const componentHTML = updateComponents();
+  wss.broadcast("componentAdded");
+});
+
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send("Internal Server Error");
+});
+  
+  router.post('/components/:componentId/tags', (req, res) => {
+	const { componentId } = req.params;
+	const { tag } = req.body;
+	try {
+	  addTagToComponent(componentId, tag);
+	  res.status(200).send('Tag added successfully');
+	} catch (error) {
+	  res.status(500).send('Error adding tag');
+	}
+  });
+  
+  app.use('/api', router); // Use the router
+
 
 app.get("/tags/:componentId", (req, res) => {
 	const componentId = req.params.componentId;
@@ -37,12 +108,17 @@ app.get("/tags/:componentId", (req, res) => {
 		componentId,
 		"tags.json"
 	);
-	if (fs.existsSync(tagsFilePath)) {
-		const tags = JSON.parse(fs.readFileSync(tagsFilePath));
+	if (isValidComponentId(componentId)) {
+		let tags = [];
+		if (fs.existsSync(tagsFilePath)) {
+			tags = JSON.parse(fs.readFileSync(tagsFilePath));
+		} else {
+			fs.writeFileSync(tagsFilePath, JSON.stringify(tags));
+		}
 		res.json(tags);
 	} else {
-		console.log("tags.json does not exist for component " + componentId);
-		res.json([]);
+		console.log("Invalid componentId " + componentId);
+		res.status(404).send("Invalid componentId " + componentId);
 	}
 });
 
@@ -407,7 +483,7 @@ wss.broadcast = function (data) {
 	});
 };
 
-fs.watch("./public/components", (eventType, filename) => {
+chokidar.watch("./public/components").on("all", (event, path) => {
 	const componentHTML = updateComponents();
 	wss.broadcast("componentAdded");
 });
@@ -423,7 +499,7 @@ app.post("/generate-screenshot/:name", async (req, res) => {
 		componentName
 	);
 	if (!fs.existsSync(componentDir)) {
-		res.status(404).send("Component not found");
+		res.status(404).json("Component not found");
 		return;
 	}
 	const screenshotPath = path.join(componentDir, "screenshot.jpg");
@@ -437,5 +513,9 @@ app.post("/generate-screenshot/:name", async (req, res) => {
 		await page.screenshot({ path: screenshotPath });
 		await browser.close();
 	}
-	res.send({ status: "success" });
+	/* res.send({ status: "success" }); */
+	res.json({
+		status: "success",
+		screenshotPath: `/components/${componentName}/screenshot.jpg`,
+	});
 });

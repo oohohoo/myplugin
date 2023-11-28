@@ -8,13 +8,30 @@ socket.onopen = function (e) {
 	console.log("Sending to server");
 	socket.send("My name is John");
 };
-socket.onmessage = function (event) {
+/* socket.onmessage = function (event) {
 	console.log(`[message] Data received from server: ${event.data}`);
 	if (event.data === "componentAdded") {
-		window.location.reload();
-		console.log("LOCATION RELOADED");
+		console.log("KOMPONENTO ADDANA SI- ON MESSAGE 1");
+
+		// Send a request to the server to get the updated list of components
+		fetch("/get-components")
+			.then((response) => response.json())
+			.then((data) => {
+				// Update the component list
+				componentDirs = data;
+				// Update the UI based on the new list
+				updateComponentCounter();
+			})
+			.catch((error) => console.error("Error:", error));
 	}
-};
+}; */
+/* function updateComponentCounter() {
+	let counterValue = componentDirs.length;
+	document.querySelector(".fulliframe").textContent = counterValue || "";
+	// Update the counter value, display empty string if counterValue is 0
+}
+ */
+
 socket.onclose = function (event) {
 	if (event.wasClean) {
 		console.log(
@@ -28,7 +45,6 @@ socket.onclose = function (event) {
 socket.onerror = function (error) {
 	console.log(`[error] ${error.message}`);
 };
-
 
 function attachEventListeners() {
 	document.querySelectorAll(".grid-item").forEach(function (gridItem) {
@@ -278,6 +294,26 @@ document
 
 						socket.onmessage = function (event) {
 							console.log("Server says: " + event.data);
+							console.log(
+								"NOTE: OVDJE SE DODAJU KOMPONENTE KOMPONENTO ADDANA SI- ON MESSAGE 2"
+							);
+
+							console.log(`[message] Data received from server: ${event.data}`);
+							if (event.data === "componentAdded") {
+								// Send a request to the server to get the updated list of components
+								fetch("/get-components")
+									.then((response) => response.json())
+									.then((data) => {
+										// Update the component list
+										componentDirs = data;
+										// Update the UI based on the new list
+										updateComponentCounter();
+									})
+									.catch((error) => console.error("Error:", error));
+							}
+							/* componentDirs.push(event.data); */
+							// Refresh the page
+							/* location.reload();   */
 						};
 					}
 				})
@@ -297,6 +333,10 @@ document
 		}
 	});
 
+
+
+
+	
 document
 	.getElementById("close-form-button")
 	.addEventListener("click", function () {
@@ -464,6 +504,33 @@ gridItems.forEach(function (gridItem) {
 	});
 })();
 
+function generateAndDisplayScreenshot(componentName) {
+	componentName = componentName.replace(/ /g, "-");
+	fetch(`/generate-screenshot/${componentName}`, {
+		method: "POST",
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			if (data.status === "success") {
+				const screenshotImage = document.getElementById("screenshotImage");
+				screenshotImage.src = data.screenshotPath;
+			} else {
+				console.error("Failed to generate screenshot");
+			}
+		})
+		.catch((error) => {
+			console.error("Error:", error);
+		});
+}
+
+/* function updateComponentCounter() {
+	let counterValue = componentDirs.length;
+	document.querySelector(".fulliframe").textContent = counterValue || "";
+	console.log("counter poziv 2");
+	// Update the counter value, display empty string if counterValue is 0
+}
+ */
+
 /* LOCAL STORAGE*/
 /* 
 (function () {
@@ -572,3 +639,5 @@ gridItems.forEach(function (gridItem) {
 	  });
 	});
   })(); */
+
+/* GENERATE SCREENSHOT ON DEMAND */
