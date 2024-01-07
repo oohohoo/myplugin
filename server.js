@@ -62,18 +62,6 @@ const addTagToComponent = (componentId, tag) => {
   });
 };
 
-// Additional code outside the addTagToComponent function
-
-/* const updateComponents = () => {
-  // Code to update components
-};
- */
-/* const wss = {
-  broadcast: (message) => {
-    // Code to broadcast message
-  }
-}; */
-
 chokidar.watch("./public/components").on("all", (event, path) => {
   const componentHTML = updateComponents();
   wss.broadcast("componentAdded");
